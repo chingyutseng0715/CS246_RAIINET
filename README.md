@@ -1,7 +1,7 @@
 
 ---
 
-# CS246 progect - RAllnet (ignore the following contents for now)
+# CS246 project - RAllnet (ignore the following contents for now)
 
 Brief description of what the project does.
 

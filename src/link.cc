@@ -1,6 +1,10 @@
 export module Link;
 
-export class Link: public Ability {//replace LinkBoost with other abilities
-  public:
-    void operatingAbility() override;
+export struct Link {
+    int getStrength();
+    std::string getName();
+    std::string getType();
+    void setStrength(int strength);
+    void setType(std::string type);
+    auto operator<=>(const Link &other);
 };

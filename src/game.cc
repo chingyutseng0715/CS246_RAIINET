@@ -1,8 +1,14 @@
 export module Game;
 
+import <vector>;
+import Observer;
+import Link;
+
 export class Game {
-  public:
-    bool notifyObservers(Link *link, std::string state);
-    void attach(Observers *observer);
-    void detach(Observers *observer);
+	vector<Observer*> observers;
+	public:
+		void notifyObservers(Link *link);
+		void attach(Observer *observer);
+		void detach(Observer *observer);
+		virtual ~Game() = 0;
 };

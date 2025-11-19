@@ -12,16 +12,16 @@ export class Player : public Observer {
 	std::string player_name;
 	int downloaded_virus_amount;
     int downloaded_data_amount;
+	Board* board;
 	std::vector<Ability> abilities;
-	std::vector<Link> links;
+	std::vector<Link> owned_links;
 	std::vector<Link*> downloaded_links;
 	public:
-		std::string getPlayerName();
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();
-		void printAbility();
-		void notify(Link *link) override;
+		std::vector<Ability> &getAbility();
+		void download(Link *link) override;
 		void usingAbility(int ability_id);
 		void movingLink(char link_char, char direction);
 	friend ostream &operator<<(ostream &, const Player &);

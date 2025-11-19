@@ -3,13 +3,17 @@ export module Board;
 import <iostream>;
 import <vector>;
 import <map>;
-import Game;
+import Observer;
 import Link;
 
-export class Board : public Game {
+export class Board final {
+	int height;
+	int width;
+	vector<Observer*> players;
 	vector<vector<char>> theBoard;
-	map<char, Link*> char_map_link;
+	map<pair<int, int>, Observer*> charLinkMapping;
 	public:
+		Board(int height, int width);
 		void updateBoard(int row, int col, char changed_char);
 		char getState(int row, int col);
 	friend ostream &operator<<(ostream &, const Board &);

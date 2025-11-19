@@ -2,9 +2,8 @@ export module Link;
 
 import <string>;
 
-export struct Link {
+export class Link {
 	char link_char;
-	std::string type;
 	std::string name;
 	int strength;
 	bool revealed;

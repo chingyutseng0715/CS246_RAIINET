@@ -17,7 +17,7 @@ export class Player : public Observer {
 	std::vector<Link*> owned_links;
 	std::vector<Link*> downloaded_links;
 	public:
-		Player(std::string player_name, Board *board);
+		Player(std::string player_name, Board *board, std::vector<int> abilityidchosen);
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();

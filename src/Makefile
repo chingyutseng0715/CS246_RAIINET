@@ -4,7 +4,7 @@ CXXH = -std=c++20 -fmodules-ts -c -x c++-system-header
 
 HEADERS = iostream vector map string
 GCM = $(HEADERS:%=gcm.cache/usr/include/c++/14/%.gcm)
-SRCS = observer.cc board.cc link.cc ability.cc player.cc link_boost.cc firewall.cc download.cc polarize.cc scan.cc mode.cc twoplayer.cc fourplayer.cc main.cc
+SRCS = observer.cc link.cc board.cc ability.cc player.cc link-boost.cc firewall.cc download.cc polarize.cc scan.cc gamemode.cc twoplayer.cc fourplayer.cc main.cc
 OBJS = $(SRCS:.cc=.o)
 TARGET = RAllnet.out
 

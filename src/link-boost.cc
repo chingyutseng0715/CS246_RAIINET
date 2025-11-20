@@ -1,9 +1,9 @@
-export module Firewall;
+export module LinkBoost;
 
 import <string>;
 import Ability;
 
-export class Firewall: public Ability {
+export class LinkBoost: public Ability {
 	public:
 		void operatingAbility(std::string command) override;
 };

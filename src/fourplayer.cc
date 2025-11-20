@@ -1,8 +1,8 @@
 export module FourPlayerMode;
 
-import Mode;
+import GameMode;
 
-export class FourPlayerMode: public Mode {
+export class FourPlayerMode: public GameMode {
 	public:
 		void operatingGame() override;
 };

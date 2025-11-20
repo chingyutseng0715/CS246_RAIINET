@@ -28,33 +28,25 @@ This is our CS246 project, aiming to build a board game(RAIINET), using CS246's 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/username/project-name.git
+   git clone https://github.com/chingyutseng0715/CS246_RAIINET
    ```
 
 2. **Navigate to the project directory:**
 
    ```bash
-   cd project-name
+   cd CS246_RAIINET/src
    ```
 
-3. **Install dependencies:**
-   For example, if it's a Python project:
-
+3. **Compile the files:**
+   
    ```bash
-   pip install -r requirements.txt
-   ```
-
-   Or for a Node.js project:
-
-   ```bash
-   npm install
+   make
    ```
 
 4. **Run the application:**
 
    ```bash
-   python app.py  # For Python
-   npm start      # For Node.js
+   ./RAllnet
    ```
 
 ---

@@ -19,6 +19,7 @@ export class Board final {
 		void setcharOwnership(int row, int col, Observer *player);
 		Link* getLink(char link_char);
 		char getState(int row, int col);
+		Observer *getcharOwnership(int row, int col);
 	friend std::ostream &operator<<(std::ostream &, const Board &);
 };
 

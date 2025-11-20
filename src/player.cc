@@ -10,7 +10,6 @@ import Link;
 import Ability;
 
 export class Player : public Observer {
-	std::string player_name;
 	int downloaded_virus_amount;
     int downloaded_data_amount;
 	Board* board;

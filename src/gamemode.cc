@@ -10,5 +10,5 @@ export class GameMode {
 		std::vector<Observer *> players;
 	public:
 		virtual void operatingGame() = 0;
-		virtual ~Mode();
+		virtual ~GameMode();
 };

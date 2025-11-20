@@ -2,7 +2,7 @@ export module Polarize;
 
 import Ability;
 
-export class Polarize: public Ability {//replace LinkBoost with other abilities
+export class Polarize: public Ability {
 	public:
 		void operatingAbility() override;
 };

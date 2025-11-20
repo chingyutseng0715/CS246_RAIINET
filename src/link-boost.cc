@@ -2,7 +2,7 @@ export module LinkBoost;
 
 import Ability;
 
-export class LinkBoost: public Ability {//replace LinkBoost with other abilities
+export class LinkBoost: public Ability {
 	public:
 		void operatingAbility() override;
 };

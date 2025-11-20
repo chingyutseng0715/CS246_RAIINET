@@ -1,6 +1,7 @@
 export module Player;
 
 import <iostream>;
+import <map>;
 import <vector>;
 import <string>;
 import Observer;
@@ -13,7 +14,7 @@ export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
 	Board* board;
-	std::vector<Ability> abilities;
+	std::map<int, Ability> abilities;
 	std::vector<Link*> owned_links;
 	std::vector<Link*> downloaded_links;
 	public:

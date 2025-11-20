@@ -1,20 +1,10 @@
 import <iostream>;
-import fourplayer;
-import twoplayer;
-import ability;
-import board;
-import download;
-import firewall;
-import game;
-import link_boost;
-import link;
-import mode;
-import observer;
-import player;
-import polarize;
-import scan;
+import Mode;
+import TwoPlayerMode;
+import FourPlayerMode;
 
 using namespace std;
 
-int main(){
+int main() {
+	return 0;
 }

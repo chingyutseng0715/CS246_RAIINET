@@ -21,10 +21,11 @@ export class Player : public Observer {
 		int getDownloadedDataAmount();
 		int getAbilityAmount();
 		std::vector<Ability> &getAbility();
-		void download(Link *link) override;
+		void download(char link_char) override;
+		void reveal(char link_char) override;
 		void usingAbility(int ability_id);
 		void movingLink(char link_char, char direction);
-	friend ostream &operator<<(ostream &, const Player &);
+	friend std::ostream &operator<<(std::ostream &, const Player &);
 };
 
-export ostream &operator<<(ostream &os, const Player &player);
+export std::ostream &operator<<(std::ostream &os, const Player &player);

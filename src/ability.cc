@@ -1,14 +1,20 @@
 export module Ability;
 
 import <string>;
+import Observer;
+import Board;
 
 export class Ability {
 	protected:
 		std::string name;
-		std::string description; 	
+		std::string description;
+		Observer *player;
+		Board *board; 	
 	public:
+		Ability(std::string name, std::string description, Board *board, Observer *player);
+		virtual ~Ability();
 		virtual void operatingAbility() = 0;
-	friend ostream &operator<<(ostream &os, const Ability &);
+	friend std::ostream &operator<<(std::ostream &os, const Ability &);
 };
 
-export ostream &operator<<(ostream &os, const Ability &ability);
+export std::ostream &operator<<(std::ostream &os, const Ability &ability);

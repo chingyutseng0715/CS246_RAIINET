@@ -1,5 +1,5 @@
 import <iostream>;
-import Mode;
+import GameMode;
 import TwoPlayerMode;
 import FourPlayerMode;
 

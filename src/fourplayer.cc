@@ -1,6 +1,6 @@
 export module FourPlayerMode;
 
-import Mode;
+import GameMode;
 
 export class FourPlayerMode: public GameMode {
 	public:

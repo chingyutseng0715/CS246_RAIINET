@@ -1,6 +1,6 @@
 export module TwoPlayerMode;
 
-import Mode;
+import GameMode;
 
 export class TwoPlayerMode: public GameMode {
 	public:

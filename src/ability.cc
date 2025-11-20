@@ -13,7 +13,7 @@ export class Ability {
 	public:
 		Ability(std::string name, std::string description, Observer *owner, Board *board);
 		virtual ~Ability();
-		virtual void operatingAbility() = 0;
+		virtual void operatingAbility(std::string command) = 0;
 	friend std::ostream &operator<<(std::ostream &os, const Ability &);
 };
 

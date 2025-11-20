@@ -1,8 +1,9 @@
 export module Firewall;
 
+import <string>;
 import Ability;
 
 export class Firewall: public Ability {
 	public:
-		void operatingAbility() override;
+		void operatingAbility(std::string command) override;
 };

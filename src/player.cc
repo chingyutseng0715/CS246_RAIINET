@@ -22,7 +22,7 @@ export class Player : public Observer {
 		int getAbilityAmount();
 		std::vector<Ability> &getAbility();
 		void download(char link_char) override;
-		void usingAbility(int ability_id);
+		void usingAbility(int ability_id, std::string command);
 		void movingLink(char link_char, char direction);
 	friend std::ostream &operator<<(std::ostream &, const Player &);
 };

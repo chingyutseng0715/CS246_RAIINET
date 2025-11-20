@@ -1,8 +1,9 @@
 export module Scan;
 
+import <string>;
 import Ability;
 
 export class Scan: public Ability {
 	public:
-		void operatingAbility() override;
+		void operatingAbility(std::string command) override;
 };

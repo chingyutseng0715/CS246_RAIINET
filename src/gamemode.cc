@@ -7,7 +7,7 @@ import Player;
 export class GameMode {
 	protected:
 		Board board;
-		std::vector<Observer *> players;
+		std::vector<Player> players;
 	public:
 		virtual void operatingGame() = 0;
 		virtual ~GameMode();

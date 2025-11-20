@@ -3,7 +3,7 @@
 
 # CS246 project - RAllnet (ignore the following contents for now)
 
-Brief description of what the project does.
+This is our CS246 project, aiming to build a board game(RAIINET), using CS246's object-oriented approach. It has two game modes:  two players/ four players. Each player trys to download as much data and as less virus in order to win the game. 
 
 ---
 

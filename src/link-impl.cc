@@ -7,7 +7,7 @@ Link::Link(Observer *player, char symbol, char type, int strength, int move_per_
   player{player}, symbol{symbol}, type{type}, strength{strength},
   move_per_step{move_per_step}, revealed{false}, downloaded{false} {}
 
-auto operator<=>(const Link &other) {
+auto Link::operator<=>(const Link &other) {
 	if (strength < other.strength) {
 		return std::strong_ordering::less;
 	} else {
@@ -31,7 +31,7 @@ int Link::getStrength() { return strength; }
 
 int Link::getMovePerStep() { return move_per_step; }
 
-bool Link::isVirus() { return type == "V"; }
+bool Link::isVirus() { return type == 'V'; }
 
 bool Link::isRevealed() { return revealed; }
 

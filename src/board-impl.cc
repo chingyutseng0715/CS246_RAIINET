@@ -32,12 +32,8 @@ Board::Board(int height, int width): height{height + 2}, width{width} {
 	}
 }
 
-Board::addPlayer(Observer *player) {
-	players.emplace_back(player);
-	if (player->getName() == PLAYER1) {
-		for (int i = 0; i <  
 		
-		void updateBoard(int row, int col, char changed_char);
+void updateBoard(int row, int col, char changed_char);
 		void setcharOwnership(int row, int col, Observer *player);
 		Link* getLink(char link_char);
 		char getState(int row, int col);
@@ -45,4 +41,12 @@ Board::addPlayer(Observer *player) {
 	friend std::ostream &operator<<(std::ostream &, const Board &);
 };
 
-export std::ostream &operator<<(std::ostream &os, const Board &board);
+std::ostream &operator<<(std::ostream &os, const Board &board) {
+	for (int i = 0; i < board.height; ++i) {
+		for (int j = 0; j < board.width; ++j) {
+			os << board.theBoard[i][j];
+		}
+		os << '\n';
+	}
+	return os;
+}

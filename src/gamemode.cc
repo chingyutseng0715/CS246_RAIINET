@@ -18,6 +18,8 @@ export class GameMode {
 	public:
 		GameMode(Board board, std::vector<Player> players);
 		void operatingGame();
+		void displayMenu();
+		void displayGameOver();
 		virtual void runGame() = 0;
 		void setGameState(GameState new_game_state); // may not need since game_state is protected
 		virtual ~GameMode();

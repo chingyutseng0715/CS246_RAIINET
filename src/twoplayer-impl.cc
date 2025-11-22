@@ -1,7 +1,5 @@
 module TwoPlayerMode;
 
-using namespace std;
-
 TwoPlayerMode::TwoPlayerMode() : GameMode{} {
 }
 

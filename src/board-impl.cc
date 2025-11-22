@@ -3,6 +3,7 @@ export module Board;
 import <iostream>;
 import <vector>;
 import <map>;
+import <stdexcept>;
 import Observer;
 import Link;
 
@@ -32,14 +33,29 @@ Board::Board(int height, int width): height{height + 2}, width{width} {
 	}
 }
 
-		
-void updateBoard(int row, int col, char changed_char);
-		void setcharOwnership(int row, int col, Observer *player);
-		Link* getLink(char link_char);
-		char getState(int row, int col);
-		Observer *getcharOwnership(int row, int col);
-	friend std::ostream &operator<<(std::ostream &, const Board &);
-};
+void Board::updateLink(int row, int col, char link_char) {
+
+void setFireWall(int row, int col, Observer *player) {
+	if (row < 1 || row >= height - 1 || col < 0 || col >= width) {
+		throw std::out_of_range("The coordinate of the Firewall is invalid.");
+	} else if (theBoard[row][col] != '.') {
+		throw std::invalid_argument("The designated coordinate is invalid.");
+	}
+	if (player->getName() == PLAYER1) {
+		theBoard[row][col] = 'x';
+	} else if (player->getName() == PLAYER2) {
+        theBoard[row][col] = 'y';
+    } else if (player->getName() == PLAYER3) {
+        theBoard[row][col] = 'z';
+    } else if (player->getName() == PLAYER4) {
+        theBoard[row][col] = 'w';
+    }
+	charOwner[make_pair(row, col)] = player;
+}
+
+Link* getLink(char link_char);
+char getState(int row, int col);
+Observer *getcharOwnership(int row, int col);
 
 std::ostream &operator<<(std::ostream &os, const Board &board) {
 	for (int i = 0; i < board.height; ++i) {

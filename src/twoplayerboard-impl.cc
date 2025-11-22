@@ -29,17 +29,19 @@ void TwoPlayerBoard::addPlayer(Observer *player, std::string linkorder) {
 	if (player->getName() == PLAYER1) {
 		start_char = 'a';
 		for (int i = 0; i < width; ++i) {
-        	map[make_pair(1, i)] = player;
+        	charOwner[make_pair(0, i)] = player;
+			charOwner[make_pair(1, i)] = player;
     	}
-		map[make_pair(2, 3)] = player;
-		map[make_pair(2, 4)] = player;
+		charOwner[make_pair(2, 3)] = player;
+		charOwner[make_pair(2, 4)] = player;
 	} else if (player->getName() == PLAYER2) {
 		start_char = 'A';
 		for (int i = 0; i < width; ++i) {
-            map[make_pair(height - 2, i)] = player;
-        }
-        map[make_pair(height - 3, 3)] = player;
-        map[make_pair(height - 3, 4)] = player;
+	        charOwner[make_pair(height - 2, i)] = player;
+			charOwner[make_pair(height - 1, i)] = player;
+	    }
+		charOwner[make_pair(height - 3, 3)] = player;
+        charOwner[make_pair(height - 3, 4)] = player;
 	}
 	for (int i = 0; i < width; ++i) {
 		charLinkMapping[start_char + i] = Link(player, start_char + i, linkorder[2 * i], linkorder[2 * i + 1] - '0');

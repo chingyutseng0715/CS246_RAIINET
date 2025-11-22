@@ -26,7 +26,3 @@ void GameMode::displayMenu() {
 void GameMode::displayGameOver() {
     
 }
-
-void GameMode::setGameState(GameState::GameState new_game_state) {
-    game_state = new_game_state;
-}

@@ -1,6 +1,6 @@
 module GameMode;
 
-GameMode::GameMode(Board board, std::vector<Player> players) : board{board}, players{players} {
+GameMode::GameMode(std::shared_ptr<Board> board) : board{board} {
 }
 
 void GameMode::operatingGame() {

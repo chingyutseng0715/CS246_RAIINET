@@ -2,7 +2,8 @@ export module FourPlayerMode;
 
 import GameMode;
 
-export class FourPlayerMode: public GameMode {
+export class FourPlayerMode : public GameMode {
 	public:
-		void operatingGame() override;
+		FourPlayer();
+		void runGame() override;
 };

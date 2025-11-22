@@ -16,7 +16,8 @@ export class Board final {
 	public:
 		Board(int height, int width);
 		void updateBoard(int row, int col, char changed_char);
-		Link* getLink(char link_chat);
+		void setcharOwnership(int row, int col, Observer *player);
+		Link* getLink(char link_char);
 		char getState(int row, int col);
 	friend std::ostream &operator<<(std::ostream &, const Board &);
 };

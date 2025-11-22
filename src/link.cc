@@ -19,9 +19,10 @@ export class Link {
 		void setType(std::string type);
 		void setRevealed(bool revealed);
 		void setDownloaded(bool downloaded);
-		void setMoveperstep(int move_per_step);
+		void setMovePerStep(int move_per_step);
 		Observer* getPlayer();
 		std::string getType();
+		int getMovePerStep();
 		bool isRevealed();
 		bool isDownloaded();
 	friend std::ostream &operator<<(std::ostream &, const Link &);

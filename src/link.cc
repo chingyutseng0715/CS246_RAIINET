@@ -1,6 +1,7 @@
 export module Link;
 
 import <iostream>;
+import <compare>;
 import Observer;
 
 export class Link {
@@ -14,7 +15,7 @@ export class Link {
 	
 	public:
 		Link(Observer *player, char symbol, char type, int strength, int move_per_step = 1);
-		auto operator<=>(const Link &other);
+		std::strong_ordering operator<=>(const Link &other) const;
 		void setStrength(int strength);
 		void setType(char type);
 		void setMovePerStep(int move_per_step);

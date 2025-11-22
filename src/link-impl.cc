@@ -1,13 +1,14 @@
 module Link;
 
 import <iostream>;
+import <compare>;
 import Observer;
 
 Link::Link(Observer *player, char symbol, char type, int strength, int move_per_step) :
   player{player}, symbol{symbol}, type{type}, strength{strength},
   move_per_step{move_per_step}, revealed{false}, downloaded{false} {}
 
-auto Link::operator<=>(const Link &other) {
+std::strong_ordering Link::operator<=>(const Link &other) const {
 	if (strength < other.strength) {
 		return std::strong_ordering::less;
 	} else {

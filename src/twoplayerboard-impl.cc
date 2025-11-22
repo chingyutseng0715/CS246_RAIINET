@@ -1,8 +1,12 @@
 module TwoPlayerBoard;
 
+import <memory>;
 import <string>;
 import Observer;
 import Board;
+import Link;
+
+using std::make_pair;
 
 const std::string PLAYER1 = "Player 1";
 const std::string PLAYER2 = "Player 2";
@@ -44,6 +48,7 @@ void TwoPlayerBoard::addPlayer(Observer *player, std::string linkorder) {
         charOwner[make_pair(height - 3, 4)] = player;
 	}
 	for (int i = 0; i < width; ++i) {
-		charLinkMapping[start_char + i] = Link(player, start_char + i, linkorder[2 * i], linkorder[2 * i + 1] - '0');
+		charLinkMapping[start_char + i] = std::make_shared<Link>(player, start_char + i, linkorder[2 * i], linkorder[2 * i + 1] - '0');
 	}
+	players.emplace_back(player);
 }

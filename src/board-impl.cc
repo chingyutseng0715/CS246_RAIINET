@@ -1,4 +1,4 @@
-export module Board;
+module Board;
 
 import <iostream>;
 import <vector>;
@@ -7,22 +7,16 @@ import <stdexcept>;
 import Observer;
 import Link;
 
+using std::make_pair;
+
 const std::string PLAYER1 = "Player 1";
 const std::string PLAYER2 = "Player 2";
 const std::string PLAYER3 = "Player 3";
 const std::string PLAYER4 = "Player 4";
 
-export class Board final {
-	int height;
-	int width;
-	std::vector<Observer*> players;
-	std::vector<std::vector<char>> theBoard;
-	std::map<char, Link> charLinkMapping;
-	std::map<std::pair<int, int>, Observer*> charOwner;
-	public:
 Board::Board(int height, int width): height{height + 2}, width{width} {
 	for (int i = 0; i < height; ++i) {
-		theBoard.emplace_back({});
+		theBoard.emplace_back(std::vector<char>{});
 		for (int j = 0; j < width; ++j) {
 			if (i == 0 || i == height - 1) {
 				theBoard[i].emplace_back('=');
@@ -33,9 +27,81 @@ Board::Board(int height, int width): height{height + 2}, width{width} {
 	}
 }
 
-void Board::updateLink(int row, int col, char link_char) {
+void Board::updateLink(char link_char, char direction) {
+	int row = -1;
+	int col = -1;
+	for (int i = 1; i < height - 1; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (theBoard[i][j] == link_char) {
+				row = i;
+				col = j;
+			}
+		}
+	}
+	if (row == -1 && col == -1) {
+		throw std::invalid_argument("The link is not found.");
+	}
+	
+	int move_row = row;
+	int move_col = col;
+	int move = charLinkMapping[link_char].get()->getMovePerStep();
+	if (direction == 'u') {
+		move_row -= move;
+		if (move_row < 0) move_row = 0;
+	} else if (direction == 'd') {
+		move_row += move;
+		if (move_row > height - 1) move_row = height - 1;
+	} else if (direction == 'l') {
+		move_col -= move;
+	} else if (direction == 'r') {
+		move_col += move;
+	} else {
+		throw std::invalid_argument("The direction is invalid.");
+	}
+	
+	if (move_col < 0 || move_col >= width) {
+		throw std::invalid_argument("Invalid Move.");
+	}
+	
+	Link *link = charLinkMapping[link_char].get();
+	Observer *player = link->getPlayer();
+	char next_char = theBoard[move_row][move_col];
+	if (next_char != '.' && charOwner[make_pair(move_row, move_col)] != player) {
+		if (next_char == '=') {
+			player->download(link_char);
+		} else if (next_char == 'x' || next_char == 'y' || next_char == 'z' || next_char == 'w') {
+			link->Reveal();
+			if (link->isVirus()) {
+				player->download(link_char);
+				theBoard[move_row][move_col] = '.';
+				charOwner.erase(make_pair(row, col));
+			} else {
+				theBoard[move_row][move_col] = link_char;
+				charOwner[make_pair(move_row, move_col)] = player;
+			}
+		} else {
+			Link *other_link = charLinkMapping[next_char].get();
+			link->Reveal();
+			other_link->Reveal();
+			if (*link < *other_link) {
+				other_link->getPlayer()->download(link_char); 
+			} else {
+				player->download(next_char);
+				theBoard[move_row][move_col] = link_char;
+                charOwner[make_pair(move_row, move_col)] = player;
+			}
+		}
+	} else if (next_char == 'x' || next_char == 'y' || next_char == 'z' || next_char == 'w') {
+		theBoard[move_row][move_col] = link_char;
+        charOwner[make_pair(move_row, move_col)] = player;
+	} else {
+		throw std::invalid_argument("Invalid move.");
+	}
+	theBoard[row][col] = '.';
+	charOwner.erase(make_pair(row, col));
+}
 
-void setFireWall(int row, int col, Observer *player) {
+void Board::setFireWall(int row, int col, Observer *player) {
 	if (row < 1 || row >= height - 1 || col < 0 || col >= width) {
 		throw std::out_of_range("The coordinate of the Firewall is invalid.");
 	} else if (theBoard[row][col] != '.') {
@@ -53,9 +119,21 @@ void setFireWall(int row, int col, Observer *player) {
 	charOwner[make_pair(row, col)] = player;
 }
 
-Link* getLink(char link_char);
-char getState(int row, int col);
-Observer *getcharOwnership(int row, int col);
+Link* Board::getLink(char link_char) {
+	if (charLinkMapping.count(link_char)) {
+		return charLinkMapping[link_char].get();
+	}
+	return nullptr;
+}
+
+char Board::getState(int row, int col) { return theBoard[row][col]; }
+
+Observer *Board::getcharOwnership(int row, int col) {
+	if (charOwner.count(make_pair(row, col))) {
+		return charOwner[make_pair(row, col)];
+	}
+	return nullptr;
+}
 
 std::ostream &operator<<(std::ostream &os, const Board &board) {
 	for (int i = 0; i < board.height; ++i) {

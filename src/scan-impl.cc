@@ -20,5 +20,6 @@ void Scan::operatingAbility(std::string command) {
 	Link* target_link = board->getLink(link_char);
 	if (target_link) {
 		target_link->setRevealed(true);
+		markUsed();
 	}
 }

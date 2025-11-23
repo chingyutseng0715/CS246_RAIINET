@@ -19,4 +19,5 @@ voidObstacle::operatingAbility(std::string command) {
 	}
 	
 	board->setObstacle(row, col, dir);
+    markUsed();
 }

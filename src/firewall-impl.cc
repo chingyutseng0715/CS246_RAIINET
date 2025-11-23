@@ -18,4 +18,5 @@ void Firewall::operatingAbility(std::string command) {
 	}
 	
 	board->setFireWall(row, col, player);
+    markUsed();
 }

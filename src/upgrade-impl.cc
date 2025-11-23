@@ -20,5 +20,6 @@ void Upgrade::operatingAbility(std::string command){
     if (target_link && target_link->getPlayer() == player) {
         int cur_strength = target_link->getStrength();
         target_link->setStrength(cur_strength + 1);
+        markUsed();
     }
 }

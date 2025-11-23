@@ -22,8 +22,10 @@ void Polarize::operatingAbility(std::string command){
         std::string curType = target_link->getType();
         if (curType == "Virus"){
             target_link->setType("Data");
+            markUsed();
         } else if(curType == "Data") {
             target_link->setType("Virus");
+            markUsed();
         }
     }
 }

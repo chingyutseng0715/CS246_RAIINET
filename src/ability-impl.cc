@@ -1,12 +1,16 @@
 module Ability;
 
 Ability::Ability(std::string name, std::string description, Observer *owner, Board *board)
-	: name{name}, description{description}, player{owner}, board{board}, used{false} {}
+	: name{name}, description{description}, used{false}, player{owner}, board{board}, used{false} {}
 
 Ability::~Ability() {}
 
-std::string Ability::getName() const {
-    return name;
+bool Ability::isUsed() {
+	return used;
+}
+
+void Ability::markUsed() {
+	used = true;
 }
 
 std::ostream &operator<<(std::ostream &os, const Ability &ability) {

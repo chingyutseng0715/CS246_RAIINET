@@ -20,5 +20,6 @@ void Download::operatingAbility(std::string command){
     Link *target_link = board->getLink(link_char);
     if (target_link && target_link->getPlayer() != player){
         player->download(link_char);
+        markUsed();
     }
 }

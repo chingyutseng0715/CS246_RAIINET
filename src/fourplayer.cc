@@ -1,8 +1,19 @@
 export module FourPlayerMode;
 
+import <istream>;
+import <string>;
 import GameMode;
+import Board;
+import Player;
 
 const int NUM_PLAYERS = 4;
+
+export enum class Turn {
+	Player1,
+	Player2,
+	Player3,
+	Player4
+};
 
 export class FourPlayerMode : public GameMode {
 	public:

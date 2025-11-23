@@ -10,7 +10,7 @@ void GameMode::operatingGame() {
                 displayMenu();
                 break;
             case GameState::GameRunning:
-                runGame();
+                runGame(); // can store the winner enum and use that as a parameter in displayGameOver()
                 break;
             case GameState::GameOver:
                 displayGameOver();  // potentially let this or something else reset the game

@@ -1,34 +1,99 @@
 module Player;
 
 import <iostream>;
+import <sstream>;
+import <memory>;
 import <map>;
 import <vector>;
+import <stdexcept>;
 import <string>;
 import Observer;
 import Board;
 import Link;
 import Ability;
+import Download;
+import Firewall; 
+import LinkBoost;
+import Scan;
+import Polarize;
 
-export class Player : public Observer {
-	int downloaded_virus_amount;
-    int downloaded_data_amount;
-	Board* board;
-	std::map<int, Ability> abilities;
-	std::vector<Link*> owned_links;
-	std::vector<Link*> downloaded_links;
-	public:
-Player::Player(std::string player_name, Board *board, std::vector<int> abilityidchosen) :
-  Observer{player_name}, downloaded_virus_amount{0}, downloaded_data_amount{0}, board{board} {
-	board->addPlayer(this);
+Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, downloaded_virus_amount{0},
+  downloaded_data_amount{0}, board{board} {
+	char input = ' ';
+	std::istringstream iss{abilitychosen};
+	while (iss >> input) {
+		addAbility(input);
+	}
 }
-		int getDownloadedVirusAmount();
-		int getDownloadedDataAmount();
-		int getAbilityAmount();
-		std::vector<Ability> &getAbility();
-		void download(char link_char) override;
-		void usingAbility(int ability_id, std::string command);
-		void movingLink(char link_char, char direction);
-	friend std::ostream &operator<<(std::ostream &, const Player &);
-};
 
-export std::ostream &operator<<(std::ostream &os, const Player &player);
+int Player::getDownloadedVirusAmount() { return downloaded_virus_amount; }
+
+int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
+
+int Player::getAbilityAmount() { return abilities.size(); }
+
+Ability *Player::getAbility(int ability_id) { return abilities[ability_id - 1].get(); }
+
+void Player::download(char link_char) {
+	Link* link = board->getLink(link_char);
+	link->Download();
+	if (link->isVirus()) {
+		downloaded_virus_amount += 1;
+	} else {
+		downloaded_data_amount += 1;
+	}
+	downloaded_links.emplace_back(link);
+}
+
+void Player::addAbility(char ability_char) {
+	if (ability_char == 'D') {
+		abilities.emplace_back(std::make_shared<Download>(this, board));
+	} else if (ability_char == 'F') {
+        abilities.emplace_back(std::make_shared<Firewall>(this, board));
+    } else if (ability_char == 'L') {
+        abilities.emplace_back(std::make_shared<LinkBoost>(this, board));
+    } else if (ability_char == 'S') {
+        abilities.emplace_back(std::make_shared<Scan>(this, board));
+    } else if (ability_char == 'P') {
+        abilities.emplace_back(std::make_shared<Polarize>(this, board));
+    } else {
+		throw std::invalid_argument("Invalid ability symbol.");
+	}
+}
+
+void Player::removeAbility(int ability_id) {
+	Ability *ability = getAbility(ability_id);
+	if (ability->isUsed()) {
+		throw std::invalid_argument("Ability used or stolen.");
+	}
+	ability->markUsed();
+}
+
+void Player::usingAbility(int ability_id, std::string command) {
+	getAbility(ability_id)->operatingAbility(command);
+}
+
+void Player::movingLink(std::string command) {
+	std::istringstream iss{command};
+	char link_char = ' ';
+	char direction = ' ';
+	if (iss >> link_char >> direction) {
+		board->updateLink(link_char, direction);
+	} else {
+		throw std::invalid_argument("Invalid moving command.");
+	}
+}
+
+void Player::displayAbility(std::ostream &os) {
+	for (auto ability: abilities) {
+		os << ability;
+	}
+}
+
+void Player::printPlayerView(std::ostream &os) {
+	os << name << ":\n";
+	os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V\n";
+	os << "Abilities: " << getAbilityAmount() << '\n';
+	os << *board;
+	/* incomplete */
+}

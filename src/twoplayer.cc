@@ -2,6 +2,7 @@ export module TwoPlayerMode;
 
 import <istream>;
 import <string>;
+import <stdexcept>;
 import <vector>;
 import <memory>;
 import GameMode;

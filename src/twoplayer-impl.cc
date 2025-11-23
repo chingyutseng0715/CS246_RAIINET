@@ -79,6 +79,11 @@ bool conductPlayerTurn(Player current_turn, std::shared_ptr<Player> current_play
             if (!(iss >> command_sequence_file)) {
                 throw std::invalid_argument("Invalid file name.");
             }
+            std::ifstream file{command_sequence_file}
+            if (!file) {
+                throw std::invalid_argument("File does not exist.");
+            }
+            // ********************** MAYBE, call this function again with ifstream file as the stream type, and replace cin with a generic istream type **********************
             // INCLUDE OTHER FILE CHECKS (SUCH AS FILE DOESN'T EXIST OR EMPTY) AND SET ITS CONTENTS AS A LIST OF COMMANDS
         }
         if (cmd == "quit") {

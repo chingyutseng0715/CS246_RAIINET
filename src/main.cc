@@ -1,4 +1,7 @@
 import <iostream>;
+import <string>;
+import <stdexcept>;
+import <memory>;
 import GameMode;
 import TwoPlayerMode;
 import FourPlayerMode;

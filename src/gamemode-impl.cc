@@ -20,7 +20,7 @@ void GameMode::operatingGame() {
 }
 
 void GameMode::displayMenu() {
-
+    cout << ASCII_TITLE << endl;
 }
 
 void GameMode::displayGameOver() {

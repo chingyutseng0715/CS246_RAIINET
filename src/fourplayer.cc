@@ -1,25 +1,22 @@
 export module FourPlayerMode;
 
+import <iostream>;
+import <fstream>;
 import <istream>;
 import <string>;
+import <memory>;
+import <vector>;
+import <map>;
+import <stdexcept>;
 import GameMode;
+import CommandLineProcessor;
 import Board;
 import Player;
 
 const int NUM_PLAYERS = 4;
 
-export enum class Turn {
-	Player1,
-	Player2,
-	Player3,
-	Player4
-};
-
 export class FourPlayerMode : public GameMode {
 	public:
-		FourPlayerMode(std::string ability1_order, std::string ability2_order,
-					   std::string ability3_order, std::string ability4_order,
-					   std::string link1_order, std::string link2_order,
-					   std::string link3_order, std::string link4_order);
-		void runGame() override;
+		FourPlayerMode(const ProcessedInput &input);
+		Winner runGame() override;
 };

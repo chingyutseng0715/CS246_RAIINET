@@ -17,9 +17,9 @@ void highVirus::operatingAbility(std::string command) {
 		throw std::invalid_argument("Invalid command for high transmissible virus ability");
 	}
 	
-	Link* target_link = board->getLink(link_char);
+	Link *target_link = board->getLink(link_char);
 	if (target_link && target_link->getPlayer() == player && target_link->getType() == "Virus") {
-		target_link->setInfected(true);
+		board->infectLink(link_char, player);
 		markUsed();
 	}
 }

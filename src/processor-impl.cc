@@ -1,6 +1,6 @@
 module CommandLineProcessor;
 
-using std::string;
+using std::string, std::move, std::map, std::invalid_argument;
 
 ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int player_count) {
     ProcessedInput processed;
@@ -15,20 +15,20 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
 
         for (int j = 0; j < player_count; ++j) {
             if (string(argv[i]) == "-ability" + to_string(j + 1) && !ability_order_set[j]) {
-                if (argc <= i + 1) throw std::invalid_argument("Ordering not provided.");
+                if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
 
                 string ability_order = string(argv[i + 1]);
                 if (ability_order.length() != NUM_ABILITIES) {
-                    throw std::invalid_argument("Invalid number of abilities.");
+                    throw invalid_argument("Invalid number of abilities.");
                 }
                 
                 int char_frequency[NUM_LETTERS_ALPHABET] = {0};
                 for (char c : ability_order) {
                     if (AVAILABLE_ABILITIES.find(c) == AVAILABLE_ABILITIES.npos) {
-                        throw std::invalid_argument("Listed ability does not exist.");
+                        throw invalid_argument("Listed ability does not exist.");
                     }
                     if (++char_frequency[c - 'A'] > MAX_SHARED_ABILITIES) {
-                        throw std::invalid_argument("Same ability selected more than twice.");
+                        throw invalid_argument("Same ability selected more than twice.");
                     }
                 }
 
@@ -40,21 +40,21 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
             }
 
             if (string(argv[i]) == "-link" + to_string(j + 1) && !link_order_set[j]) {
-                if (argc <= i + 1) throw std::invalid_argument("Ordering not provided.");
+                if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
 
                 string link_order = string(argv[i + 1]);
                 if (link_order.length() != LINK_SEQUENCE_LENGTH) {
-                    throw std::invalid_argument("Invalid link sequence length.");
+                    throw invalid_argument("Invalid link sequence length.");
                 }
 
-                std::map<std::string, bool> link_appeared;
+                map<string, bool> link_appeared;
                 for (int k = 0; k < LINK_SEQUENCE_LENGTH; k += CHARS_IN_LINK) {
                     string current_link = link_order.substr(k, CHARS_IN_LINK);
                     if (DEFAULT_LINK_ORDER.find(current_link) == DEFAULT_LINK_ORDER.npos) {
-                        throw std::invalid_argument("Listed link does not exist.");
+                        throw invalid_argument("Listed link does not exist.");
                     }
                     if (link_appeared[current_link]) {
-                        throw std::invalid_argument("Same link selected more than once.");
+                        throw invalid_argument("Same link selected more than once.");
                     }
                     link_appeared[current_link] = true;
                 }
@@ -75,11 +75,11 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
             continue;
 		}
         
-        throw std::invalid_argument("Invalid command-line arguments.");
+        throw invalid_argument("Invalid command-line arguments.");
 	}
 
-    processed.ability_orders = std::move(ability_orders);
-    processed.link_orders = std::move(link_orders);
+    processed.ability_orders = move(ability_orders);
+    processed.link_orders = move(link_orders);
     processed.graphics_enabled = graphics_set;
     return processed;
 }

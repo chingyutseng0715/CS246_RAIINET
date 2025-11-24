@@ -36,22 +36,24 @@ export enum class Player {
 	Player1,
 	Player2,
 	Player3,
-	Player4
+	Player4,
+	Nobody
 };
 
 export class GameMode {
 	protected:
+		GameState game_state = GameState::GameRunning; // fine for now, CHANGE to GameState::Menu later once it's set up
 		std::shared_ptr<Board> board;
 		std::vector<std::string> ability_orders; // 'may' not be needed
 		std::vector<std::string> link_orders; // 'may' not be needed
 		std::vector<std::shared_ptr<Player>> players;
-		GameState game_state = GameRunning; // fine for now, change to Menu later once it's set up
 		std::ifstream sequence_file;
+		bool using_file = false;
 	public:
 		GameMode(std::shared_ptr<Board> board);
 		void operatingGame();
 		void displayMenu();
-		virtual Winner runGame() = 0;
-		void displayGameOver();
+		virtual Player runGame() = 0;
+		void displayGameOver(Player winner);
 		// virtual ~GameMode();
 };

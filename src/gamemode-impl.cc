@@ -5,15 +5,16 @@ GameMode::GameMode(std::shared_ptr<Board> board) : board{board} {
 
 void GameMode::operatingGame() {
     while (true) {
+        Player winner;
         switch (game_state) {
             case GameState::Menu:
                 displayMenu();
                 break;
             case GameState::GameRunning:
-                runGame(); // can store the winner enum and use that as a parameter in displayGameOver()
+                winner = runGame();
                 break;
             case GameState::GameOver:
-                displayGameOver();  // potentially let this or something else reset the game
+                displayGameOver(winner); // potentially let this or something else reset the game
                 break;
         }
     }
@@ -23,6 +24,6 @@ void GameMode::displayMenu() {
     cout << ASCII_TITLE << endl;
 }
 
-void GameMode::displayGameOver() {
+void GameMode::displayGameOver(Player winner) {
     
 }

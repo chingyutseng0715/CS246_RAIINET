@@ -18,5 +18,5 @@ const int NUM_PLAYERS = 4;
 export class FourPlayerMode : public GameMode {
 	public:
 		FourPlayerMode(const ProcessedInput &input);
-		Winner runGame() override;
+		Player runGame() override;
 };

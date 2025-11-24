@@ -18,5 +18,5 @@ const int NUM_PLAYERS = 2;
 export class TwoPlayerMode : public GameMode {
 	public:
 		TwoPlayerMode(const ProcessedInput &input);
-		Winner runGame() override;
+		Player runGame() override;
 };

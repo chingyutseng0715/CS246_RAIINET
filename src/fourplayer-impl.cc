@@ -2,10 +2,10 @@ module FourPlayerMode;
 
 using std::string, std::shared_ptr, std::make_shared, std::ifstream, std::invalid_argument;
 
-const std::string PLAYER1 = "Player 1";
-const std::string PLAYER2 = "Player 2";
-const std::string PLAYER3 = "Player 3";
-const std::string PLAYER4 = "Player 4";
+const string PLAYER1 = "Player 1";
+const string PLAYER2 = "Player 2";
+const string PLAYER3 = "Player 3";
+const string PLAYER4 = "Player 4";
 
 FourPlayerMode::FourPlayerMode(const ProcessedInput &input) : 
     GameMode{make_shared<FourPlayerBoard>()} {

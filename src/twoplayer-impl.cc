@@ -1,9 +1,9 @@
 module TwoPlayerMode;
 
-using std::string, std::shared_ptr, std::make_shared, std::ifstream, std::invalid_argument;
+using std::string, std::ifstream, std::istringstream, std::shared_ptr, std::make_shared, std::invalid_argument;
 
-const std::string PLAYER1 = "Player 1";
-const std::string PLAYER2 = "Player 2";
+const string PLAYER1 = "Player 1"; // CHANGE to enums later
+const string PLAYER2 = "Player 2";
 
 TwoPlayerMode::TwoPlayerMode(const ProcessedInput &input) : 
     GameMode{make_shared<TwoPlayerBoard>()} {
@@ -18,90 +18,119 @@ TwoPlayerMode::TwoPlayerMode(const ProcessedInput &input) :
     }
 }
 
-Winner TwoPlayerMode::runGame() {
-    Player current_turn = Player::Player1;
-    shared_ptr<Player> current_player = players[0];
-    
-    istream *input = &cin;
-    bool using_file = false;
+Player TwoPlayerMode::runGame() {
+    // Start the game with Player 1 having the first turn
+    Player current_player = Player::Player1;
+    shared_ptr<Player> current_player_ptr = players[0];
+
     while (true) {
         bool ability_used = false;
-        conductPlayerTurn(current_turn, current_player, input, ability_used, using_file); // Returns false upon EOF or 'quit' command
 
-        if (current_player->getDownloadedDataAmount() == 4) {
-            return current_turn;
-        }
-        if (current_player->getDownloadedVirusAmount() == 4) {
-            return current_turn == Player::Player1 ? Player::Player2 : Player::Player1; // Returns the other player
+        // Return false upon EOF or 'quit' and true upon a successful 'move'
+        if (!conductPlayerTurn(current_player, current_player_ptr, ability_used)) {
+            return Player::Nobody;
         }
 
-        if (current_turn == Player::Player1) {
-            current_turn = Player::Player2;
-            current_player = players[1];
-        } else if (current_turn == Player::Player2) {
-            current_turn = Player::Player1;
-            current_player = players[0];
+        // Return the current player they have downloaded 4 data
+        if (current_player_ptr->getDownloadedDataAmount() == 4) {
+            return current_player;
+        }
+
+        // Return the opposing player if the current player has downloaded 4 viruses
+        if (current_player_ptr->getDownloadedVirusAmount() == 4) {
+            return (current_player == Player::Player1) ? Player::Player2 : Player::Player1;
+        }
+
+        // Change which player's turn it is
+        switch (current_player) {
+            case Player::Player1:
+                current_player = Player::Player2;
+                current_player_ptr = players[1];
+                break;
+            case Player::Player2:
+                current_player = Player::Player1;
+                current_player_ptr = players[0];
+                break;
         }
     }
 }
 
-bool conductPlayerTurn(Player current_turn, shared_ptr<Player> current_player, 
-                       istream *&in, bool &ability_used, bool &using_file) {
-    string line;
-    while (getline(*in, line)) {
+bool conductPlayerTurn(Player current_player, shared_ptr<Player> current_player_ptr, // remove current_player if it isn't used
+                       bool &ability_used) {
+    while (true) {
+        // Read a line from input
+        string line;
+        bool valid_line;
+        if (using_file) {
+            valid_line = getline(sequence_file, line);
+        } else {
+            valid_line = getline(cin, line);
+        }
+
+        // Check whether a line couldn't be read
+        if (!valid_line) {
+            // Return to standard input if EOF has been reached while reading a file
+            if (using_file && sequence_file.eof()) {
+                using_file = false;
+                continue;
+            } else { // Otherwise, EOF has been reached on standard input, so terminate the game
+                return false;
+            }
+        }
+
         istringstream iss{line};
         string cmd;
-        
-        if (!(iss >> cmd)) continue; // skips blank lines
 
+        if (!(iss >> cmd)) continue; // Skip empty lines
+
+        // Parse the command
         if (cmd == "abilities") {
-            // print the abilities of current_player
+            // print the abilities of current_player_ptr
+            continue;
+
         } else if (cmd == "board") {
-            // print the board from the perspective of current_player
+            // print the board from the perspective of current_player_ptr
+            continue;
+
         } else if (cmd == "ability") {
-            if (ability_used) {
-                throw invalid_argument("An ability has already been played.");
-            }
+            if (ability_used) throw invalid_argument("An ability has already been played.");
             int ability_ID;
             if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
                 throw invalid_argument("Invalid ability ID.");
             }
-            // identify the ability and use iss to fetch the remaining info for the ability, and input it to a function
+            // use the ability with ability_ID
             ability_used = true;
+            continue;
+
         } else if (cmd == "move") {
             char link_char;
             string direction;
             if (!(iss >> link_char >> direction)) {
                 throw invalid_argument("Missing or invalid arguments.");
             }
-            if (PLAYER1_VALID_LINKS.find(link_char) == PLAYER1_VALID_LINKS.npos) {
+            if (/*CHECK FOR INVALID LINKS*/) {
                 throw invalid_argument("Invalid link.");
             }
             if (direction != "up" && direction != "down" && direction != "left" && direction != "right") {
                 throw invalid_argument("Invalid direction.");
             }
-            current_player->movingLink(link_char, direction);
+            current_player_ptr->movingLink(link_char, direction);
             return true;
+
         } else if (cmd == "sequence") {
             string sequence_file_name;
-            if (!(iss >> sequence_file_name)) {
-                throw invalid_argument("File name not provided.");
-            }
-            sequence_file = if_stream(sequence_file_name);
+            if (!(iss >> sequence_file_name)) throw invalid_argument("File name not provided.");
+            sequence_file = ifstream(sequence_file_name);
             if (!sequence_file) throw invalid_argument("File does not exist.");
             using_file = true;
-            in = &sequence_file;
             continue;
+
         } else if (cmd == "quit") {
             return false;
+
         } else {
             throw invalid_argument("Invalid command.");
+
         }
     }
-    if (in->eof() && using_file) {
-        in = &cin;
-        using_file = false;
-        return true;
-    }
-    return false; // change???
 }

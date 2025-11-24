@@ -17,7 +17,7 @@ void Polarize::operatingAbility(std::string command){
 		throw std::invalid_argument("Invalid command for Polarize ability");
 	}
 
-    Link *target_link = board->getlink(link_char);
+    Link *target_link = board->getLink(link_char);
     if (target_link && target_link->getPlayer() == player) {
         std::string curType = target_link->getType();
         if (curType == "Virus"){

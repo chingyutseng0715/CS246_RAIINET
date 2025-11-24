@@ -13,7 +13,7 @@ Theft::Theft(Observer *owner, Board *board)
 void Theft::operatingAbility(std::string command) {
 	std::istringstream iss(command);
 	int player_index;
-	iss >> player_index;
+
 
     if (!(iss >> player_index)) {
 		throw std::invalid_argument("Invalid command for Theft ability");

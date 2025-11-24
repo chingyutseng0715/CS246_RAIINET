@@ -7,7 +7,7 @@ import <string>;
 import <stdexcept>;
 
 highVirus::highVirus(Observer *owner, Board *board)
-    : Ability{"High Transmissible Virus", "Attach to virus, when infected make downloader's downloaded data become virus, if no data change one of it's virus on board to data, it no virus then the ability is directly mark used", owner, board} {}
+    : Ability{"High Transmissible Virus", "Attach to virus, when infected make downloader's downloaded data become virus, if no data change one of it's virus on board to data, if no virus then the ability is directly mark used", owner, board} {}
 
 void highVirus::operatingAbility(std::string command) {
 	std::istringstream iss(command);

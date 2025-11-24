@@ -2,9 +2,10 @@ module Download;
 import <string>;
 import <sstream>;
 import <stdexcept>;
+import Observer;
 import Ability;
 import Board;
-Import Link;
+import Link;
 
 Download::Download(Observer *owner, Board *board)
     :Ability("Download", "Immediately download opponent's link(no reveal)", owner, board){}

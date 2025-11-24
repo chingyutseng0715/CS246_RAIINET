@@ -18,7 +18,7 @@ void LinkBoost::operatingAbility(std::string command) {
 	
 	Link* target_link = board->getLink(link_char);
 	if (target_link && target_link->getPlayer() == player) {
-		target_link->setMoveperstep(2);
+		target_link->setMovePerStep(2);
         markUsed();
 	}
 }

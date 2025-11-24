@@ -16,7 +16,7 @@ void Upgrade::operatingAbility(std::string command){
 		throw std::invalid_argument("Invalid command for Upgrade ability");
 	}
 
-    Link *target_link = board->getlink(link_char);
+    Link *target_link = board->getLink(link_char);
     if (target_link && target_link->getPlayer() == player) {
         int cur_strength = target_link->getStrength();
         target_link->setStrength(cur_strength + 1);

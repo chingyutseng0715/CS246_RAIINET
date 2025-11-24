@@ -18,5 +18,8 @@ const int NUM_PLAYERS = 2;
 export class TwoPlayerMode : public GameMode {
 	public:
 		TwoPlayerMode(const ProcessedInput &input);
-		Player runGame() override;
+		PlayerID runGame() override;
+		bool conductPlayerTurn(PlayerID current_player, 
+							   std::shared_ptr<Player> current_player_ptr,
+							   bool &ability_used);
 };

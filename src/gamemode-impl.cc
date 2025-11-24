@@ -5,7 +5,7 @@ GameMode::GameMode(std::shared_ptr<Board> board) : board{board} {
 
 void GameMode::operatingGame() {
     while (true) {
-        Player winner;
+        PlayerID winner;
         switch (game_state) {
             case GameState::Menu:
                 displayMenu();
@@ -24,6 +24,6 @@ void GameMode::displayMenu() {
     cout << ASCII_TITLE << endl;
 }
 
-void GameMode::displayGameOver(Player winner) {
+void GameMode::displayGameOver(PlayerID winner) {
     
 }

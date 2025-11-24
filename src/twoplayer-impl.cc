@@ -18,9 +18,9 @@ TwoPlayerMode::TwoPlayerMode(const ProcessedInput &input) :
     }
 }
 
-Player TwoPlayerMode::runGame() {
+PlayerID TwoPlayerMode::runGame() {
     // Start the game with Player 1 having the first turn
-    Player current_player = Player::Player1;
+    PlayerID current_player = PlayerID::Player1;
     shared_ptr<Player> current_player_ptr = players[0];
 
     while (true) {
@@ -28,35 +28,36 @@ Player TwoPlayerMode::runGame() {
 
         // Return false upon EOF or 'quit' and true upon a successful 'move'
         if (!conductPlayerTurn(current_player, current_player_ptr, ability_used)) {
-            return Player::Nobody;
+            return PlayerID::Nobody;
         }
 
-        // Return the current player they have downloaded 4 data
+        // Return the current player if they have downloaded 4 data
         if (current_player_ptr->getDownloadedDataAmount() == 4) {
             return current_player;
         }
 
         // Return the opposing player if the current player has downloaded 4 viruses
         if (current_player_ptr->getDownloadedVirusAmount() == 4) {
-            return (current_player == Player::Player1) ? Player::Player2 : Player::Player1;
+            return (current_player == PlayerID::Player1) ? PlayerID::Player2 : PlayerID::Player1;
         }
 
         // Change which player's turn it is
         switch (current_player) {
-            case Player::Player1:
-                current_player = Player::Player2;
+            case PlayerID::Player1:
+                current_player = PlayerID::Player2;
                 current_player_ptr = players[1];
                 break;
-            case Player::Player2:
-                current_player = Player::Player1;
+            case PlayerID::Player2:
+                current_player = PlayerID::Player1;
                 current_player_ptr = players[0];
                 break;
         }
     }
 }
 
-bool conductPlayerTurn(Player current_player, shared_ptr<Player> current_player_ptr, // remove current_player if it isn't used
-                       bool &ability_used) {
+bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, 
+                                      shared_ptr<Player> current_player_ptr, // remove current_player if it isn't used
+                                      bool &ability_used) {
     while (true) {
         // Read a line from input
         string line;

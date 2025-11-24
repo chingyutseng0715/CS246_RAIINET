@@ -47,7 +47,7 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
                     throw invalid_argument("Invalid link sequence length.");
                 }
 
-                map<string, bool> link_appeared;
+                map<string, bool> link_appeared; // HOW TO ASSUME IT'S FALSE BY DEFAULT
                 for (int k = 0; k < LINK_SEQUENCE_LENGTH; k += CHARS_IN_LINK) {
                     string current_link = link_order.substr(k, CHARS_IN_LINK);
                     if (DEFAULT_LINK_ORDER.find(current_link) == DEFAULT_LINK_ORDER.npos) {

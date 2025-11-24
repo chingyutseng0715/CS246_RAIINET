@@ -119,6 +119,54 @@ void Board::setFireWall(int row, int col, Observer *player) {
 	charOwner[make_pair(row, col)] = player;
 }
 
+void Board::setObstacle(int row, int col, char direction) {
+    std::vector<std::pair<int, int>> positions;
+    positions.emplace_back(std::make_pair(row, col));
+    
+    if (direction == 'v') {
+        positions.emplace_back(std::make_pair(row - 1, col));
+        positions.emplace_back(std::make_pair(row + 1, col));
+    } else if (direction == 'h') {
+        positions.emplace_back(std::make_pair(row, col - 1));
+        positions.emplace_back(std::make_pair(row, col + 1));
+    } else if (direction == 'r') {
+        positions.emplace_back(std::make_pair(row - 1, col - 1));
+        positions.emplace_back(std::make_pair(row + 1, col + 1));
+    } else if (direction == 'l') {
+        positions.emplace_back(std::make_pair(row - 1, col + 1));
+        positions.emplace_back(std::make_pair(row + 1, col - 1));
+    } else {
+		throw std::invalid_argument("Invalid direction.");
+	}
+    
+
+    for (auto [r,c] : positions) {
+        if (r < 1 || r >= height - 1 || c < 0 || c >= width) {
+            throw std::out_of_range("Obstacle is outside, cannot be placed");
+        }
+        
+        if ( theBoard[r][c] != '.') {
+            throw std::invalid_argument("Obstacle position is not empty");
+        }
+    }
+    
+    for (auto [r,c] : positions) {
+        theBoard[r][c] = '#';
+    }
+}
+
+void Board::infectLink(char link_char, Observer *player) {
+	Link *link = getLink(link_char);
+	if (link->isInfected()) {
+		throw std::invalid_argument("The Virus is alreadly infected");
+	} else if (!link->isVirus()) {
+		throw std::invalid_argument("The Link is not a virus.");
+	} else if (link->getPlayer() != player) {
+		throw std::invalid_argument("You cannot infect others' link.");
+	}
+	link->setType('I');
+}
+	
 Link* Board::getLink(char link_char) {
 	if (charLinkMapping.count(link_char)) {
 		return charLinkMapping[link_char].get();

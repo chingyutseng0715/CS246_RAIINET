@@ -49,6 +49,7 @@ void TwoPlayerBoard::addPlayer(Observer *player, std::string linkorder) {
 	}
 	for (int i = 0; i < width; ++i) {
 		charLinkMapping[start_char + i] = std::make_shared<Link>(player, start_char + i, linkorder[2 * i], linkorder[2 * i + 1] - '0');
+		player->addLink(start_char + i);
 	}
 	players.emplace_back(player);
 }

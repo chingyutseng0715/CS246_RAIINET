@@ -39,14 +39,36 @@ void Player::download(char link_char) {
 	link->Download();
 	if (link->isVirus()) {
 		downloaded_virus_amount += 1;
+	} else if (link->isInfected()) {
+		if (downloaded_virus_amount == 0) {
+			for (Link *owned_link: owned_links) {
+				if (!owned_link->isVirus()) {
+					owned_link->setType('V');
+				}
+			}
+		} else {
+			for (Link *downloaded_link: downloaded_links) {
+				if (!downloaded_link->isVirus()) {
+					if (!downloaded_link->isInfected()) {
+						downloaded_data_amount -= 1;
+					}
+					downloaded_link->setType('V');
+					downloaded_virus_amount += 1;
+				}
+			}
+		}			
 	} else {
 		downloaded_data_amount += 1;
 	}
 	downloaded_links.emplace_back(link);
 }
 
+void Player::addLink(char link_char) {
+	owned_links.emplace_back(board->getLink(link_char));
+}
+
 void Player::addAbility(char ability_char) {
-	if (ability_char == 'D') {
+/*	if (ability_char == 'D') {
 		abilities.emplace_back(std::make_shared<Download>(this, board));
 	} else if (ability_char == 'F') {
         abilities.emplace_back(std::make_shared<Firewall>(this, board));
@@ -58,7 +80,7 @@ void Player::addAbility(char ability_char) {
         abilities.emplace_back(std::make_shared<Polarize>(this, board));
     } else {
 		throw std::invalid_argument("Invalid ability symbol.");
-	}
+	}*/
 }
 
 void Player::removeAbility(int ability_id) {

@@ -21,6 +21,8 @@ export class Board {
 		virtual void addPlayer(Observer *player, std::string linkorder) = 0;
 		void updateLink(char link_char, char direction);
 		void setFireWall(int row, int col, Observer *player);
+		void infectLink(char link_char, Observer *player);
+		void setObstacle(int row, int col, char direction);
 		Link* getLink(char link_char);
 		char getState(int row, int col);
 		Observer *getcharOwnership(int row, int col);

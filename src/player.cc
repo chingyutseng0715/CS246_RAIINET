@@ -15,6 +15,7 @@ export class Player : public Observer {
     int downloaded_data_amount;
 	Board* board;
 	std::vector<std::shared_ptr<Ability>> abilities;
+	std::vector<Link*> owned_links;
 	std::vector<Link*> downloaded_links;
 	public:
 		Player(std::string name, Board *board, std::string abilitychosen);
@@ -23,6 +24,7 @@ export class Player : public Observer {
 		int getAbilityAmount();
 		Ability *getAbility(int ability_id);
 		void download(char link_char) override;
+		void addLink(char link_char) override;
 		void addAbility(char ability_char) override;
 		void removeAbility(int ability_id) override;
 		void usingAbility(int ability_id, std::string command);

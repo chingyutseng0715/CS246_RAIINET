@@ -25,6 +25,7 @@ export class Link {
 		int getStrength();
 		int getMovePerStep();
 		bool isVirus();
+		bool isInfected();
 		bool isRevealed();
 		bool isDownloaded();
 	friend std::ostream &operator<<(std::ostream &, const Link &);

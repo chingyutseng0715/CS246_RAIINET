@@ -32,7 +32,9 @@ int Link::getStrength() { return strength; }
 
 int Link::getMovePerStep() { return move_per_step; }
 
-bool Link::isVirus() { return type == 'V'; }
+bool Link::isVirus() { return type == 'V' || type == 'I'; }
+
+bool Link::isInfected() { return type == 'I'; }
 
 bool Link::isRevealed() { return revealed; }
 

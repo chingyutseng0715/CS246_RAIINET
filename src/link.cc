@@ -1,28 +1,31 @@
 export module Link;
 
 import <iostream>;
-import <string>;
+import <compare>;
 import Observer;
 
 export class Link {
 	Observer *player;
-	std::string type;
+	char symbol;
+	char type;
 	int strength;
 	int move_per_step;
 	bool revealed;
 	bool downloaded;
 	
 	public:
-		Link(Observer *player, std::string name, int move_per_step);
-		auto operator<=>(const Link &other);
+		Link(Observer *player, char symbol, char type, int strength, int move_per_step = 1);
+		std::strong_ordering operator<=>(const Link &other) const;
 		void setStrength(int strength);
-		void setType(std::string type);
-		void setRevealed(bool revealed);
-		void setDownloaded(bool downloaded);
+		void setType(char type);
 		void setMovePerStep(int move_per_step);
+		void Reveal();
+		void Download();
 		Observer* getPlayer();
-		std::string getType();
+		int getStrength();
 		int getMovePerStep();
+		bool isVirus();
+		bool isInfected();
 		bool isRevealed();
 		bool isDownloaded();
 	friend std::ostream &operator<<(std::ostream &, const Link &);

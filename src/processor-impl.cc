@@ -1,6 +1,6 @@
 module CommandLineProcessor;
 
-using std::string, std::move, std::map, std::invalid_argument;
+using std::string, std::to_string, std::move, std::map, std::invalid_argument, std::vector;
 
 ProcessedInput processCommands(int argc, char* argv[], int player_count) {
     ProcessedInput processed;

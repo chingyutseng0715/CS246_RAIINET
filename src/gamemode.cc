@@ -127,12 +127,12 @@ export enum class PlayerID {
 
 export class GameMode {
 	protected:
-		GameState game_state = GameState::GameRunning; // fine for now, CHANGE to GameState::Menu later once it's set up
 		std::shared_ptr<Board> board;
+		GameState game_state = GameState::GameRunning; // fine for now, CHANGE to GameState::Menu later once it's set up
 		std::vector<std::shared_ptr<Player>> players;
 		std::vector<std::string> ability_orders; // 'may' not be needed
 		std::vector<std::string> link_orders; // 'may' not be needed
-		std::ifstream sequence_file;
+		//std::ifstream sequence_file;
 		bool using_file = false;
 	public:
 		GameMode(std::shared_ptr<Board> board);
@@ -140,5 +140,5 @@ export class GameMode {
 		void displayMenu();
 		virtual PlayerID runGame() = 0;
 		void displayGameOver(PlayerID winner);
-		// virtual ~GameMode();
+		virtual ~GameMode();
 };

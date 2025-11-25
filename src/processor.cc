@@ -5,6 +5,7 @@ import <string>;
 import <utility>;
 import <vector>;
 import <stdexcept>;
+import <map>;
 import <memory>;
 
 const std::string DEFAULT_ABILITY_ORDER = "LFDSP";
@@ -18,7 +19,7 @@ const int LINKS_PER_PLAYER = 8;
 const int CHARS_IN_LINK = 2;
 const int LINK_SEQUENCE_LENGTH = LINKS_PER_PLAYER * CHARS_IN_LINK;
 
-struct ProcessedInput {
+export struct ProcessedInput {
     std::vector<std::string> ability_orders;
     std::vector<std::string> link_orders;
     bool graphics_enabled;

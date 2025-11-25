@@ -5,6 +5,7 @@ import <memory>;
 import <map>;
 import <vector>;
 import <string>;
+import CommandLineProcessor;
 import Observer;
 import Board;
 import Link;

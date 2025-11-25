@@ -2,14 +2,14 @@ export module TwoPlayerMode;
 
 import <iostream>;
 import <fstream>;
-import <istream>;
+import <sstream>;
 import <string>;
 import <memory>;
 import <vector>;
 import <map>;
 import <stdexcept>;
-import GameMode;
 import CommandLineProcessor;
+import GameMode;
 import TwoPlayerBoard;
 import Player;
 

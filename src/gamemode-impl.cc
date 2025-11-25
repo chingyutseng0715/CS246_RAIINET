@@ -1,9 +1,19 @@
 module GameMode;
 
-using std::string;
+import <iostream>;
+import <fstream>;
+import <string>;
+import <vector>;
+import <memory>;
+import Board;
+import Player;
+
+using std::string, std::cout, std::cin, std::endl;
 
 GameMode::GameMode(std::shared_ptr<Board> board) : board{board} {
 }
+
+GameMode::~GameMode() {};
 
 void GameMode::operatingGame() {
     while (true) {

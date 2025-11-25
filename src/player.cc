@@ -42,5 +42,5 @@ export class Player : public Observer {
 		void movingLink(std::string command);
 		void displayAbility(std::ostream &os);
 		void printPlayerView(std::ostream &os);
-		void printPlayerHidden(std::ostream &os);
+		void printPlayer(std::ostream &os, bool hidden);
 };

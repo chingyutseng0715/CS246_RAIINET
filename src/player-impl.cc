@@ -112,7 +112,7 @@ void Player::addAbility(char ability_char) {
 
 char Player::removeAbility() {
 	Ability *ability = nullptr;
-	for (int i = 0; i < abilities.size(); ++i) {
+	for (size_t i = 0; i < abilities.size(); ++i) {
 		if (!abilities[i].get()->isUsed()) {
 			ability = abilities[i].get();
 			break;
@@ -146,21 +146,26 @@ void Player::movingLink(std::string command) {
 }
 
 void Player::displayAbility(std::ostream &os) {
-	for (int i = 0; i < abilities.size(); ++i) {
+	for (size_t i = 0; i < abilities.size(); ++i) {
 		os << "Ability " << i + 1 << ' ' << *getAbility(i + 1) << '\n';
 	}
 }
 
 void Player::printPlayerView(std::ostream &os) {
-	os << name << ":\n";
-	os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V\n";
-	os << "Abilities: " << ability_amount << '\n';
-	os << *board;
-	/* incomplete */
+	printPlayer(os, false);
+	board->printBoard(os, this);
 }
 
-void Player::printPlayerHidden(std::ostream &os) {
+void Player::printPlayer(std::ostream &os, bool hidden) {
 	os << name << ":\n";
     os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V\n";
-    os << "Abilities: " << getAbilityAmount() << '\n';
+    os << "Abilities: " << ability_amount << '\n';
+    for (size_t i = 0; i < owned_links.size() / 2; ++i) {
+        owned_links[i]->printLink(os, hidden);
+    }
+    os << '\n';
+    for (size_t i = owned_links.size() / 2; i < owned_links.size(); ++i) {
+        owned_links[i]->printLink(os, hidden);
+    }
+	os << '\n';
 }

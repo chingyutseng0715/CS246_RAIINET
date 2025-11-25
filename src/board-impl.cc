@@ -193,12 +193,16 @@ Observer *Board::getPlayer(std::string name) {
 	return nullptr;
 }
 
-std::ostream &operator<<(std::ostream &os, const Board &board) {
-	for (int i = 0; i < board.height; ++i) {
-		for (int j = 0; j < board.width; ++j) {
-			os << board.theBoard[i][j];
+void Board::printBoard(std::ostream &os, Observer *player) {
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			os << theBoard[i][j];
 		}
 		os << '\n';
 	}
-	return os;
+	for (size_t i = 0; i < players.size(); ++i) {
+		if (players[i] != player) {
+			players[i]->printPlayer(os, true);
+		}
+	}
 }

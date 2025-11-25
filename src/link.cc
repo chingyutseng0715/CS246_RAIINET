@@ -12,6 +12,7 @@ export class Link {
 	int move_per_step;
 	bool revealed;
 	bool downloaded;
+	bool infected;
 	
 	public:
 		Link(Observer *player, char symbol, char type, int strength, int move_per_step = 1);
@@ -21,6 +22,7 @@ export class Link {
 		void setMovePerStep(int move_per_step);
 		void Reveal();
 		void Download();
+		void Infect();
 		Observer* getPlayer();
 		int getStrength();
 		int getMovePerStep();
@@ -28,7 +30,5 @@ export class Link {
 		bool isInfected();
 		bool isRevealed();
 		bool isDownloaded();
-	friend std::ostream &operator<<(std::ostream &, const Link &);
+		void printLink(std::ostream &os, bool secret = true);
 };
-
-export std::ostream &operator<<(std::ostream &os, const Link &link);

@@ -23,6 +23,7 @@ import HTVirus;
 export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
+	int ability_amount;
 	Board* board;
 	std::vector<std::unique_ptr<Ability>> abilities;
 	std::vector<Link*> owned_links;
@@ -36,9 +37,10 @@ export class Player : public Observer {
 		void download(char link_char) override;
 		void addLink(char link_char) override;
 		void addAbility(char ability_char) override;
-		void removeAbility(int ability_id) override;
+		char removeAbility() override;
 		void usingAbility(int ability_id, std::string command);
 		void movingLink(std::string command);
 		void displayAbility(std::ostream &os);
 		void printPlayerView(std::ostream &os);
+		void printPlayerHidden(std::ostream &os);
 };

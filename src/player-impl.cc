@@ -22,7 +22,7 @@ import Obstacle;
 import HTVirus;
 
 Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, downloaded_virus_amount{0},
-  downloaded_data_amount{0}, board{board} {
+  downloaded_data_amount{0}, ability_amount{0}, board{board} {
 	char input = ' ';
 	std::istringstream iss{abilitychosen};
 	// std::cout << abilitychosen;
@@ -36,16 +36,14 @@ int Player::getDownloadedVirusAmount() { return downloaded_virus_amount; }
 
 int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
 
-int Player::getAbilityAmount() { return abilities.size(); }
+int Player::getAbilityAmount() { return ability_amount; }
 
 Ability *Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
 
 void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);
 	link->Download();
-	if (link->isVirus()) {
-		downloaded_virus_amount += 1;
-	} else if (link->isInfected()) {
+	if (link->isInfected()) {
 		if (downloaded_virus_amount == 0) {
 			for (Link *owned_link: owned_links) {
 				if (!owned_link->isVirus()) {
@@ -62,7 +60,10 @@ void Player::download(char link_char) {
 					downloaded_virus_amount += 1;
 				}
 			}
-		}			
+		}
+		downloaded_virus_amount += 1;		
+	} else if (link->isVirus()) {
+		downloaded_virus_amount += 1;
 	} else {
 		downloaded_data_amount += 1;
 	}
@@ -106,18 +107,26 @@ void Player::addAbility(char ability_char) {
 			throw std::invalid_argument("Invalid ability symbol.");
 			break;
 	}
+	ability_amount += 1;
 }
 
-void Player::removeAbility(int ability_ID) {
+char Player::removeAbility() {
 	Ability *ability = getAbility(ability_ID);
 	if (ability->isUsed()) {
 		throw std::invalid_argument("Ability used or stolen.");
 	}
 	ability->markUsed();
+	ability_amount -= 1;
+	return ability->getName()[0];
 }
 
 void Player::usingAbility(int ability_ID, std::string command) {
-	getAbility(ability_ID)->operatingAbility(command);
+	Ability *ability = getAbility(ability_ID)
+	if (ability->used()) {
+		throw std::invalid_argument("Ability used.");
+	}
+	ability->operatingAbility(command);
+	ability_amount -= 1;
 }
 
 void Player::movingLink(std::string command) {
@@ -139,7 +148,13 @@ void Player::displayAbility(std::ostream &os) {
 void Player::printPlayerView(std::ostream &os) {
 	os << name << ":\n";
 	os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V\n";
-	os << "Abilities: " << getAbilityAmount() << '\n';
+	os << "Abilities: " << ability_amount << '\n';
 	os << *board;
 	/* incomplete */
+}
+
+void Player::printPlayerHidden(std::ostream &os) {
+	os << name << ":\n";
+    os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V\n";
+    os << "Abilities: " << getAbilityAmount() << '\n';
 }

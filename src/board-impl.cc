@@ -164,7 +164,7 @@ void Board::infectLink(char link_char, Observer *player) {
 	} else if (link->getPlayer() != player) {
 		throw std::invalid_argument("You cannot infect others' link.");
 	}
-	link->setType('I');
+	link->Infect();
 }
 	
 Link* Board::getLink(char link_char) {
@@ -180,6 +180,15 @@ char Board::getState(int row, int col) { return theBoard[row][col]; }
 Observer *Board::getcharOwnership(int row, int col) {
 	if (charOwner.count(make_pair(row, col))) {
 		return charOwner[make_pair(row, col)];
+	}
+	return nullptr;
+}
+
+Observer *Board::getPlayer(std::string name) {
+	for (Observer *player: players) {
+		if (player->getName() == name) {
+			return player;
+		}
 	}
 	return nullptr;
 }

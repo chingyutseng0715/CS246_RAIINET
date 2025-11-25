@@ -184,6 +184,7 @@ Observer *Board::getcharOwnership(int row, int col) {
 	return nullptr;
 }
 
+
 std::ostream &operator<<(std::ostream &os, const Board &board) {
 	for (int i = 0; i < board.height; ++i) {
 		for (int j = 0; j < board.width; ++j) {

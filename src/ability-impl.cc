@@ -11,6 +11,10 @@ void Ability::markUsed() {
 	used = true;
 }
 
+std::string Ability::getName() {
+	return name;
+}
+
 std::ostream &operator<<(std::ostream &os, const Ability &ability) {
     if (ability.used) {
 		os << "(used) ";

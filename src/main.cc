@@ -1,10 +1,21 @@
-import <iostream>;
+import <memory>;
 import GameMode;
 import TwoPlayerMode;
 import FourPlayerMode;
+import CommandLineProcessor;
 
-using namespace std;
+const int PLAYERS = 2; // Client can change to 4
 
-int main(int argv, char *argc[]) {
-	return 0;
+int main(int argc, char *argv[]) {
+	// CommandLineProcessor processor;
+	ProcessedInput input = processCommands(argc, argv, PLAYERS);
+
+	std::unique_ptr<GameMode> RAIInet;
+	switch (PLAYERS) {
+		case 2:
+			RAIInet = std::make_unique<TwoPlayerMode>(input);
+		case 4:
+			RAIInet = std::make_unique<TwoPlayerMode>(input);
+	}
+	RAIInet->operatingGame();
 }

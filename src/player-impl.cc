@@ -111,9 +111,15 @@ void Player::addAbility(char ability_char) {
 }
 
 char Player::removeAbility() {
-	Ability *ability = getAbility(ability_ID);
-	if (ability->isUsed()) {
-		throw std::invalid_argument("Ability used or stolen.");
+	Ability *ability = nullptr;
+	for (int i = 0; i < abilities.size(); ++i) {
+		if (!abilities[i].get()->isUsed()) {
+			ability = abilities[i].get();
+			break;
+		}
+	}
+	if (ability == nullptr) {
+		throw std::invalid_argument("No ability cand be stolen.");
 	}
 	ability->markUsed();
 	ability_amount -= 1;
@@ -121,8 +127,8 @@ char Player::removeAbility() {
 }
 
 void Player::usingAbility(int ability_ID, std::string command) {
-	Ability *ability = getAbility(ability_ID)
-	if (ability->used()) {
+	Ability *ability = getAbility(ability_ID);
+	if (ability->isUsed()) {
 		throw std::invalid_argument("Ability used.");
 	}
 	ability->operatingAbility(command);
@@ -140,7 +146,7 @@ void Player::movingLink(std::string command) {
 }
 
 void Player::displayAbility(std::ostream &os) {
-	for (int i = 0 ; i < abilities.size(); ++i) {
+	for (int i = 0; i < abilities.size(); ++i) {
 		os << "Ability " << i + 1 << ' ' << *getAbility(i + 1) << '\n';
 	}
 }

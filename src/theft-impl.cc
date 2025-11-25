@@ -6,7 +6,6 @@ import <stdexcept>;
 import <random>;
 import Ability;
 import Board;
-import Player;
 import Observer;
 import Link;
 

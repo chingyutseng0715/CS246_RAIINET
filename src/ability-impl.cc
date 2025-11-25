@@ -14,6 +14,9 @@ void Ability::markUsed() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Ability &ability) {
-    os << ability.name << ": " << ability.description;
+    if (ability.used) {
+		os << "(used) ";
+	}
+	os << ability.name << ": " << ability.description;
     return os;
 }

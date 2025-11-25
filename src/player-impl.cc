@@ -109,7 +109,7 @@ void Player::movingLink(std::string command) {
 
 void Player::displayAbility(std::ostream &os) {
 	for (int i = 0 ; i < abilities.size(); ++i) {
-		os << *getAbility(i + 1);
+		os << "Ability " << i + 1 << ' ' << *getAbility(i + 1) << '\n';
 	}
 }
 

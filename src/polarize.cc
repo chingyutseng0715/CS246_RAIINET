@@ -1,6 +1,8 @@
 export module Polarize;
 
 import <string>;
+import Observer;
+import Board;
 import Ability;
 
 export class Polarize: public Ability {

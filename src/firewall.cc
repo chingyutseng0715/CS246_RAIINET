@@ -1,6 +1,8 @@
 export module Firewall;
 
 import <string>;
+import Observer;
+import Board;
 import Ability;
 
 export class Firewall: public Ability {

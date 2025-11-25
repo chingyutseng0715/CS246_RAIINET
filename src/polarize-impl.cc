@@ -19,12 +19,11 @@ void Polarize::operatingAbility(std::string command){
 
     Link *target_link = board->getLink(link_char);
     if (target_link && target_link->getPlayer() == player) {
-        std::string curType = target_link->getType();
-        if (curType == "Virus"){
-            target_link->setType("Data");
+        if (target_link->isVirus()){
+            target_link->setType('D');
             markUsed();
-        } else if(curType == "Data") {
-            target_link->setType("Virus");
+        } else {
+            target_link->setType('V');
             markUsed();
         }
     }

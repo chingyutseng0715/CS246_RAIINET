@@ -87,11 +87,11 @@ bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, // prolly move th
 
         // Parse the command
         if (cmd == "abilities") {
-            // print the abilities of current_player_ptr
+            current_player_ptr->displayAbility(cout);
             continue;
 
         } else if (cmd == "board") {
-            // print the board from the perspective of current_player_ptr
+            current_player_ptr->printPlayerView(cout);
             continue;
 
         } else if (cmd == "ability") {
@@ -100,7 +100,9 @@ bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, // prolly move th
             if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
                 throw invalid_argument("Invalid ability ID.");
             }
-            // use the ability with ability_ID
+            string ability_command;
+            if (!getline(iss, ability_command)) throw invalid_argument("Ability command not provided.");
+            current_player_ptr->usingAbility(ability_ID, ability_command)
             ability_used = true;
             continue;
 

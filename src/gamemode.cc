@@ -1,6 +1,7 @@
 export module GameMode;
 
 import <iostream>;
+import <fstream>;
 import <string>;
 import <vector>;
 import <memory>;

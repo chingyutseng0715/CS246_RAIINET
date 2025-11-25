@@ -68,7 +68,7 @@ void Player::addLink(char link_char) {
 }
 
 void Player::addAbility(char ability_char) {
-/*	if (ability_char == 'D') {
+	if (ability_char == 'D') {
 		abilities.emplace_back(std::make_shared<Download>(this, board));
 	} else if (ability_char == 'F') {
         abilities.emplace_back(std::make_shared<Firewall>(this, board));
@@ -80,7 +80,7 @@ void Player::addAbility(char ability_char) {
         abilities.emplace_back(std::make_shared<Polarize>(this, board));
     } else {
 		throw std::invalid_argument("Invalid ability symbol.");
-	}*/
+	}
 }
 
 void Player::removeAbility(int ability_id) {

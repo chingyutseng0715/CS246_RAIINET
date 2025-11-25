@@ -95,7 +95,7 @@ bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, // prolly move th
             continue;
 
         } else if (cmd == "ability") {
-            if (ability_used) throw invalid_argument("An ability has already been played.");
+            if (ability_used) throw invalid_argument("An ability has already been played this turn.");
             int ability_ID;
             if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
                 throw invalid_argument("Invalid ability ID.");
@@ -107,7 +107,7 @@ bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, // prolly move th
             continue;
 
         } else if (cmd == "move") {
-            char link_char;
+            string link_char;
             string direction;
             if (!(iss >> link_char >> direction)) {
                 throw invalid_argument("Missing or invalid arguments.");

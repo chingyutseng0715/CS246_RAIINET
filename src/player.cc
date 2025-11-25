@@ -10,12 +10,21 @@ import Observer;
 import Board;
 import Link;
 import Ability;
+import LinkBoost;
+import Firewall;
+import Download;
+import Scan;
+import Polarize;
+import Upgrade; 
+import Theft;
+import Obstacle;
+import HTVirus;
 
 export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
 	Board* board;
-	std::vector<std::shared_ptr<Ability>> abilities;
+	std::vector<std::unique_ptr<Ability>> abilities;
 	std::vector<Link*> owned_links;
 	std::vector<Link*> downloaded_links;
 	public:

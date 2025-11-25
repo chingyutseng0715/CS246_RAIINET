@@ -1,6 +1,8 @@
 export module Theft;
 
 import <string>;
+import Observer;
+import Board;
 import Ability;
 
 export class Theft: public Ability {

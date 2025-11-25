@@ -16,7 +16,6 @@ export class Ability {
 		Ability(std::string name, std::string description, Observer *owner, Board *board);
 		bool isUsed();
 		void markUsed();
-		virtual ~Ability();
 		virtual void operatingAbility(std::string command) = 0;
 	friend std::ostream &operator<<(std::ostream &os, const Ability &);
 };

@@ -1,10 +1,11 @@
 module Obstacle;
-import Link;
-import Ability;
-import Board;
+
 import <string>;
 import <sstream>;
 import <stdexcept>;
+import Ability;
+import Board;
+import Link;
 
 Obstacle::Obstacle(Observer *owner, Board *board)
     : Ability{"Obstacle", "Place on empty 3*1 square, acts like a wall", owner, board} {}

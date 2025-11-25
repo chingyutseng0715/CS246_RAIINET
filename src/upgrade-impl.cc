@@ -1,15 +1,16 @@
 module Upgrade;
-import Board;
-import Ability;
-import Link;
-import <sstream>;
+
 import <string>;
+import <sstream>;
 import <stdexcept>;
+import Ability;
+import Board;
+import Link;
+
 Upgrade::Upgrade(Observer *owner, Board *board)
     : Ability{"Upgrade", "Upgrade the strength of virus or data", owner, board} {}
 
 void Upgrade::operatingAbility(std::string command){
-
     std::istringstream iss(command);
     char link_char;
     if (!(iss >> link_char)) {

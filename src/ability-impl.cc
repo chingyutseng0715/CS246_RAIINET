@@ -3,8 +3,6 @@ module Ability;
 Ability::Ability(std::string name, std::string description, Observer *owner, Board *board)
 	: name{name}, description{description}, used{false}, player{owner}, board{board} {}
 
-Ability::~Ability() {}
-
 bool Ability::isUsed() {
 	return used;
 }

@@ -2,9 +2,9 @@ CXX = g++-14
 CXXFLAGS = -std=c++20 -fmodules-ts -Wall -g
 CXXH = -std=c++20 -fmodules-ts -c -x c++-system-header
 
-HEADERS = iostream sstream fstream memory utility stdexcept compare vector map string
+HEADERS = iostream sstream fstream memory utility stdexcept compare vector map random string
 GCM = $(HEADERS:%=gcm.cache/usr/include/c++/14/%.gcm)
-SRCS = processor.cc processor-impl.cc observer.cc observer-impl.cc link.cc link-impl.cc board.cc board-impl.cc twoplayerboard.cc twoplayerboard-impl.cc fourplayerboard.cc fourplayerboard-impl.cc ability.cc ability-impl.cc download.cc download-impl.cc firewall.cc firewall-impl.cc link-boost.cc link-boost-impl.cc scan.cc scan-impl.cc polarize.cc polarize-impl.cc player.cc player-impl.cc gamemode.cc gamemode-impl.cc twoplayer.cc twoplayer-impl.cc fourplayer.cc fourplayer-impl.cc main.cc
+SRCS = processor.cc processor-impl.cc observer.cc observer-impl.cc link.cc link-impl.cc board.cc board-impl.cc twoplayerboard.cc twoplayerboard-impl.cc fourplayerboard.cc fourplayerboard-impl.cc ability.cc ability-impl.cc download.cc download-impl.cc firewall.cc firewall-impl.cc link-boost.cc link-boost-impl.cc scan.cc scan-impl.cc polarize.cc polarize-impl.cc upgrade.cc upgrade-impl.cc theft.cc theft-impl.cc obstacle.cc obstacle-impl.cc high-virus.cc high-virus-impl.cc player.cc player-impl.cc gamemode.cc gamemode-impl.cc twoplayer.cc twoplayer-impl.cc fourplayer.cc fourplayer-impl.cc main.cc
 OBJS = $(SRCS:.cc=.o)
 TARGET = RAIInet.out
 

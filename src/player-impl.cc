@@ -11,11 +11,15 @@ import Observer;
 import Board;
 import Link;
 import Ability;
-import Download;
-import Firewall; 
 import LinkBoost;
+import Firewall;
+import Download;
 import Scan;
 import Polarize;
+import Upgrade; 
+import Theft;
+import Obstacle;
+import HTVirus;
 
 Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, downloaded_virus_amount{0},
   downloaded_data_amount{0}, board{board} {
@@ -34,7 +38,7 @@ int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
 
 int Player::getAbilityAmount() { return abilities.size(); }
 
-Ability *Player::getAbility(int ability_id) { return abilities[ability_id - 1].get(); }
+Ability *Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
 
 void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);
@@ -70,31 +74,50 @@ void Player::addLink(char link_char) {
 }
 
 void Player::addAbility(char ability_char) {
-	if (ability_char == 'D') {
-		abilities.emplace_back(std::make_shared<Download>(this, board));
-	} else if (ability_char == 'F') {
-        abilities.emplace_back(std::make_shared<Firewall>(this, board));
-    } else if (ability_char == 'L') {
-        abilities.emplace_back(std::make_shared<LinkBoost>(this, board));
-    } else if (ability_char == 'S') {
-        abilities.emplace_back(std::make_shared<Scan>(this, board));
-    } else if (ability_char == 'P') {
-        abilities.emplace_back(std::make_shared<Polarize>(this, board));
-    } else {
-		throw std::invalid_argument("Invalid ability symbol.");
+	switch (ability_char) {
+		case 'L':
+			abilities.emplace_back(std::make_unique<LinkBoost>(this, board));
+			break;
+		case 'F':
+			abilities.emplace_back(std::make_unique<Firewall>(this, board));
+			break;
+		case 'D':
+			abilities.emplace_back(std::make_unique<Download>(this, board));
+			break;
+		case 'S':
+			abilities.emplace_back(std::make_unique<Scan>(this, board));
+			break;
+		case 'P':
+			abilities.emplace_back(std::make_unique<Polarize>(this, board));
+			break;
+		case 'U':
+			abilities.emplace_back(std::make_unique<Upgrade>(this, board));
+			break;
+		case 'T':
+			abilities.emplace_back(std::make_unique<Theft>(this, board));
+			break;
+		case 'O':
+			abilities.emplace_back(std::make_unique<Obstacle>(this, board));
+			break;
+		case 'H':
+			abilities.emplace_back(std::make_unique<HTVirus>(this, board));
+			break;
+		default:
+			throw std::invalid_argument("Invalid ability symbol.");
+			break;
 	}
 }
 
-void Player::removeAbility(int ability_id) {
-	Ability *ability = getAbility(ability_id);
+void Player::removeAbility(int ability_ID) {
+	Ability *ability = getAbility(ability_ID);
 	if (ability->isUsed()) {
 		throw std::invalid_argument("Ability used or stolen.");
 	}
 	ability->markUsed();
 }
 
-void Player::usingAbility(int ability_id, std::string command) {
-	getAbility(ability_id)->operatingAbility(command);
+void Player::usingAbility(int ability_ID, std::string command) {
+	getAbility(ability_ID)->operatingAbility(command);
 }
 
 void Player::movingLink(std::string command) {

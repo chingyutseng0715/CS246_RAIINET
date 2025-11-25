@@ -1,10 +1,12 @@
-export module highVirus;
+export module HTVirus;
 
 import <string>;
+import Observer;
+import Board;
 import Ability;
 
-export class highVirus: public Ability {
+export class HTVirus: public Ability {
 	public:
-		highVirus(Observer *owner, Board *board);
+		HTVirus(Observer *owner, Board *board);
 		void operatingAbility(std::string command) override;
 };

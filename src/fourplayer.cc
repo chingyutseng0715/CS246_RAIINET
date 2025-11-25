@@ -5,6 +5,7 @@ import <fstream>;
 import <string>;
 import <memory>;
 import <vector>;
+import <map>;
 import CommandLineProcessor;
 import GameMode;
 import FourPlayerBoard;

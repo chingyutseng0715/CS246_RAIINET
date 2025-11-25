@@ -21,7 +21,9 @@ Player::Player(std::string name, Board *board, std::string abilitychosen) : Obse
   downloaded_data_amount{0}, board{board} {
 	char input = ' ';
 	std::istringstream iss{abilitychosen};
+	std::cout << abilitychosen;
 	while (iss >> input) {
+		std::cout << input << '\n';
 		addAbility(input);
 	}
 }

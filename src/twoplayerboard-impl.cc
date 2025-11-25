@@ -11,7 +11,7 @@ using std::make_pair;
 const std::string PLAYER1 = "Player 1";
 const std::string PLAYER2 = "Player 2";
 
-TwoPlayerBoard::TwoPlayerBoard(): Board{8, 8} {
+TwoPlayerBoard::TwoPlayerBoard(): Board{10, 8} {
 	for (int i = 0; i < width; ++i) {
 		theBoard[1][i] = 'a' + i;
 	}

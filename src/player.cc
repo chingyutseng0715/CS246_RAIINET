@@ -19,7 +19,7 @@ export class Player : public Observer {
 	std::vector<Link*> owned_links;
 	std::vector<Link*> downloaded_links;
 	public:
-		Player(std::string name, Board *board, std::string abilitychosen);
+		Player(std::string name, Board *board, std::string abilitychosen = "LFDSP");
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();

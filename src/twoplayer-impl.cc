@@ -7,12 +7,12 @@ const string PLAYER2 = "Player 2";
 
 TwoPlayerMode::TwoPlayerMode(const ProcessedInput &input) : 
     GameMode{make_shared<TwoPlayerBoard>()} {
-    ability_orders = input.ability_orders;
+	ability_orders = input.ability_orders;
     link_orders = input.link_orders;
     players.emplace_back(make_shared<Player>(PLAYER1, board.get(), ability_orders[0])); // Is .get() here fine??? It means every copied ptr of Board is a raw ptr!!!!!
     players.emplace_back(make_shared<Player>(PLAYER2, board.get(), ability_orders[1]));
     
-    for (int i = 0; i < NUM_PLAYERS; ++i) {
+	for (int i = 0; i < NUM_PLAYERS; ++i) {
         // players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board, ability_orders[i]));
         board->addPlayer(players[i].get(), link_orders[i]);
     }

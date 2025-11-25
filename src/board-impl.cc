@@ -14,7 +14,7 @@ const std::string PLAYER2 = "Player 2";
 const std::string PLAYER3 = "Player 3";
 const std::string PLAYER4 = "Player 4";
 
-Board::Board(int height, int width): height{height + 2}, width{width} {
+Board::Board(int height, int width): height{height}, width{width} {
 	for (int i = 0; i < height; ++i) {
 		theBoard.emplace_back(std::vector<char>{});
 		for (int j = 0; j < width; ++j) {

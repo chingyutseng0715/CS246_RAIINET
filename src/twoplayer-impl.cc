@@ -118,7 +118,7 @@ bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, // prolly move th
             if (direction != "up" && direction != "down" && direction != "left" && direction != "right") {
                 throw invalid_argument("Invalid direction.");
             }
-            current_player_ptr->movingLink(link_char, direction);
+            current_player_ptr->movingLink(link_char[0], direction);
             return true;
 
         } else if (cmd == "sequence") {

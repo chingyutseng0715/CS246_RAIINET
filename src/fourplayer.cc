@@ -2,14 +2,11 @@ export module FourPlayerMode;
 
 import <iostream>;
 import <fstream>;
-import <istream>;
 import <string>;
 import <memory>;
 import <vector>;
-import <map>;
-import <stdexcept>;
-import GameMode;
 import CommandLineProcessor;
+import GameMode;
 import FourPlayerBoard;
 import Player;
 
@@ -21,7 +18,4 @@ export class FourPlayerMode : public GameMode {
 	public:
 		FourPlayerMode(const ProcessedInput &input);
 		PlayerID runGame() override;
-		bool conductPlayerTurn(PlayerID current_player, 
-							   std::shared_ptr<Player> current_player_ptr,
-							   bool &ability_used);
 };

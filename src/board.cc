@@ -19,7 +19,7 @@ export class Board {
 	public:
 		Board(int height, int width);
 		virtual void addPlayer(Observer *player, std::string linkorder) = 0;
-		void updateLink(char link_char, char direction);
+		void updateLink(char link_char, std::string direction);
 		void setFireWall(int row, int col, Observer *player);
 		void infectLink(char link_char, Observer *player);
 		void setObstacle(int row, int col, char direction);

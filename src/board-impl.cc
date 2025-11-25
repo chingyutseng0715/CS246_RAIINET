@@ -27,7 +27,7 @@ Board::Board(int height, int width): height{height + 2}, width{width} {
 	}
 }
 
-void Board::updateLink(char link_char, char direction) {
+void Board::updateLink(char link_char, std::string direction) {
 	int row = -1;
 	int col = -1;
 	for (int i = 1; i < height - 1; ++i) {
@@ -45,15 +45,15 @@ void Board::updateLink(char link_char, char direction) {
 	int move_row = row;
 	int move_col = col;
 	int move = charLinkMapping[link_char].get()->getMovePerStep();
-	if (direction == 'u') {
+	if (direction == "up") {
 		move_row -= move;
 		if (move_row < 0) move_row = 0;
-	} else if (direction == 'd') {
+	} else if (direction == "down") {
 		move_row += move;
 		if (move_row > height - 1) move_row = height - 1;
-	} else if (direction == 'l') {
+	} else if (direction == "left") {
 		move_col -= move;
-	} else if (direction == 'r') {
+	} else if (direction == "right") {
 		move_col += move;
 	} else {
 		throw std::invalid_argument("The direction is invalid.");

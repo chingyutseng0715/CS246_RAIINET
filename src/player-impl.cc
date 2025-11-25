@@ -97,13 +97,12 @@ void Player::usingAbility(int ability_id, std::string command) {
 
 void Player::movingLink(std::string command) {
 	std::istringstream iss{command};
-	char link_char = ' ';
-	char direction = ' ';
-	if (iss >> link_char >> direction) {
-		board->updateLink(link_char, direction);
-	} else {
-		throw std::invalid_argument("Invalid moving command.");
-	}
+	char link_char;
+	std::string direction;
+	if (!(iss >> link_char >> direction)) {
+        throw std::invalid_argument("Invalid moving command.");
+    }
+	board->updateLink(link_char, direction);
 }
 
 void Player::displayAbility(std::ostream &os) {

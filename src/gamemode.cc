@@ -2,9 +2,11 @@ export module GameMode;
 
 import <iostream>;
 import <fstream>;
+import <sstream>;
 import <string>;
 import <vector>;
 import <memory>;
+import <stdexcept>;
 import Board;
 import Player;
 
@@ -128,11 +130,11 @@ export enum class PlayerID {
 export class GameMode {
 	protected:
 		std::shared_ptr<Board> board;
-		GameState game_state = GameState::GameRunning; // fine for now, CHANGE to GameState::Menu later once it's set up
+		GameState game_state = GameState::Menu;
 		std::vector<std::shared_ptr<Player>> players;
 		std::vector<std::string> ability_orders; // 'may' not be needed
 		std::vector<std::string> link_orders; // 'may' not be needed
-		//std::ifstream sequence_file;
+		std::ifstream sequence_file{}; // Initialize the ifstream with {}
 		bool using_file = false;
 	public:
 		GameMode(std::shared_ptr<Board> board);
@@ -140,5 +142,6 @@ export class GameMode {
 		void displayMenu();
 		virtual PlayerID runGame() = 0;
 		void displayGameOver(PlayerID winner);
-		virtual ~GameMode();
+		bool conductPlayerTurn(std::shared_ptr<Player> current_player_ptr, bool &ability_used);
+		// virtual ~GameMode();
 };

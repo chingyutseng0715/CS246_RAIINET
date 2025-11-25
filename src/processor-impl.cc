@@ -2,7 +2,7 @@ module CommandLineProcessor;
 
 using std::string, std::move, std::map, std::invalid_argument;
 
-ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int player_count) {
+ProcessedInput processCommands(int argc, char* argv[], int player_count) {
     ProcessedInput processed;
     vector<string> ability_orders(player_count, DEFAULT_ABILITY_ORDER);
     vector<string> link_orders(player_count, DEFAULT_LINK_ORDER);

@@ -6,6 +6,8 @@ import <stdexcept>;
 import <random>;
 import Ability;
 import Board;
+import Player;
+import Observer;
 import Link;
 
 Theft::Theft(Observer *owner, Board *board)
@@ -13,29 +15,23 @@ Theft::Theft(Observer *owner, Board *board)
 
 void Theft::operatingAbility(std::string command) {
 	std::istringstream iss(command);
-	int player_index;
+	std::string player_name;
 
-
-    if (!(iss >> player_index)) {
+	if (!(iss >> player_name)) {
 		throw std::invalid_argument("Invalid command for Theft ability");
 	}
 	
-	Observer *opponent = board->getPlayer(player_index);
+	Observer *opponent = board->getPlayer(player_name);
 	
-	if (opponent && opponent != player) {
-		int ability_count = opponent->getAbilityAmount();
-		
-		if (ability_count > 0) {
-
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> dis(0, ability_count - 1);
-			int random_index = dis(gen);
-			
-			Ability &stolen_ability = opponent->getAbilityAt(random_index);
-			player->addAbility(stolen_ability);
-			opponent->removeAbility(random_index);
-			markUsed();
-		}
+	if (!opponent) {
+		throw std::invalid_argument("Invalid player name");
 	}
+	
+	if (opponent == player) {
+		throw std::invalid_argument("Cannot steal from yourself");
+	}
+	
+	char stolen_ability_char = opponent->removeAbility();
+	player->addAbility(stolen_ability_char);
+	markUsed();
 }

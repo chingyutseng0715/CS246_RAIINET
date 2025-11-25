@@ -10,7 +10,7 @@ import <map>;
 import <stdexcept>;
 import GameMode;
 import CommandLineProcessor;
-import Board;
+import TwoPlayerBoard;
 import Player;
 
 const int NUM_PLAYERS = 2;

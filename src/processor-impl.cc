@@ -18,16 +18,16 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
                 if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
 
                 string ability_order = string(argv[i + 1]);
-                if (ability_order.length() != NUM_ABILITIES) {
+                if (ability_order.length() != ABILITIES_PER_PLAYER) {
                     throw invalid_argument("Invalid number of abilities.");
                 }
                 
                 int char_frequency[NUM_LETTERS_ALPHABET] = {0};
-                for (char c : ability_order) {
-                    if (AVAILABLE_ABILITIES.find(c) == AVAILABLE_ABILITIES.npos) {
+                for (char ability : ability_order) {
+                    if (AVAILABLE_ABILITIES.find(ability) == AVAILABLE_ABILITIES.npos) {
                         throw invalid_argument("Listed ability does not exist.");
                     }
-                    if (++char_frequency[c - 'A'] > MAX_SHARED_ABILITIES) {
+                    if ((++char_frequency[ability - 'A']) > MAX_SHARED_ABILITIES) {
                         throw invalid_argument("Same ability selected more than twice.");
                     }
                 }
@@ -38,6 +38,7 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
                 ++i;
                 break;
             }
+            if (ordering_command_provided) break;
 
             if (string(argv[i]) == "-link" + to_string(j + 1) && !link_order_set[j]) {
                 if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
@@ -65,8 +66,10 @@ ProcessedInput CommandLineProcessor::processCommands(int argc, char* argv[], int
                 ++i;
                 break;
             }
-        }
+            if (ordering_command_provided) break;
 
+        }
+        
         if (ordering_command_provided) continue;
 
         if (string(argv[i]) == "-graphics" && !graphics_set) {

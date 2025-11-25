@@ -55,7 +55,8 @@ PlayerID TwoPlayerMode::runGame() {
     }
 }
 
-bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, 
+// maybe add a playerCount param if I move this func to GameMode
+bool TwoPlayerMode::conductPlayerTurn(PlayerID current_player, // prolly move this func to GameMode since 4-play impl is same
                                       shared_ptr<Player> current_player_ptr, // remove current_player if it isn't used
                                       bool &ability_used) {
     while (true) {

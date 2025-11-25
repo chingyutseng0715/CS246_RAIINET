@@ -1,8 +1,8 @@
 module GameMode;
 
-using std::string, std::cin, std::cout, std::endl, std::ifstream, std::istringstream, std::unique_ptr, std::invalid_argument;
+using std::string, std::cin, std::cout, std::endl, std::ifstream, std::istringstream, std::unique_ptr, std::shared_ptr, std::invalid_argument;
 
-GameMode::GameMode(std::unique_ptr<Board> board) : board{board} {
+GameMode::GameMode(std::unique_ptr<Board> board) : board{std::move(board)} {
 }
 
 void GameMode::operatingGame() {
@@ -58,7 +58,7 @@ void GameMode::displayGameOver(PlayerID winner) {
     // maybe add something to reset the game
 }
 
-bool GameMode::conductPlayerTurn(unique_ptr<Player> current_player_ptr, bool &ability_used) {
+bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr, bool &ability_used) {
     while (true) {
         // Read a line from input
         string line;

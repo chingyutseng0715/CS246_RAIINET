@@ -1,6 +1,6 @@
 module FourPlayerMode;
 
-using std::string, std::shared_ptr, std::make_shared, std::ifstream, std::invalid_argument;
+using std::string, std::cout, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared;
 
 const string PLAYER1 = "Player 1";
 const string PLAYER2 = "Player 2";
@@ -8,7 +8,7 @@ const string PLAYER3 = "Player 3";
 const string PLAYER4 = "Player 4";
 
 FourPlayerMode::FourPlayerMode(const ProcessedInput &input) : 
-    GameMode{make_shared<FourPlayerBoard>()} {
+    GameMode{make_unique<FourPlayerBoard>()} {
     ability_orders = input.ability_orders;
     link_orders = input.link_orders;
     players.emplace_back(make_shared<Player>(PLAYER1, board.get(), ability_orders[0]));
@@ -29,6 +29,7 @@ PlayerID FourPlayerMode::runGame() {
 
     while (true) {
         bool ability_used = false;
+        current_player_ptr->printPlayerView(cout);
 
         // Return false upon EOF or 'quit' and true upon a successful 'move'
         if (!conductPlayerTurn(current_player_ptr, ability_used)) {

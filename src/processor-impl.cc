@@ -9,7 +9,7 @@ ProcessedInput processCommands(int argc, char* argv[], int player_count) {
     vector<bool> ability_order_set(player_count, false);
     vector<bool> link_order_set(player_count, false);
 	bool graphics_set = false;
-
+    
 	for (int i = 1; i < argc; ++i) {
         bool ordering_command_provided = false;
 

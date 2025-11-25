@@ -1,8 +1,8 @@
 module GameMode;
 
-using std::string, std::cin, std::cout, std::endl, std::ifstream, std::istringstream, std::shared_ptr, std::make_shared, std::invalid_argument;
+using std::string, std::cin, std::cout, std::endl, std::ifstream, std::istringstream, std::unique_ptr, std::invalid_argument;
 
-GameMode::GameMode(std::shared_ptr<Board> board) : board{board} {
+GameMode::GameMode(std::unique_ptr<Board> board) : board{board} {
 }
 
 void GameMode::operatingGame() {
@@ -58,15 +58,15 @@ void GameMode::displayGameOver(PlayerID winner) {
     // maybe add something to reset the game
 }
 
-bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr, bool &ability_used) {
+bool GameMode::conductPlayerTurn(unique_ptr<Player> current_player_ptr, bool &ability_used) {
     while (true) {
         // Read a line from input
         string line;
         bool valid_line;
         if (using_file) {
-            valid_line = getline(sequence_file, line) ? true : false; // getline() doesn't return a bool
+            valid_line = static_cast<bool>(getline(sequence_file, line)); // getline() doesn't return a bool
         } else {
-            valid_line = getline(cin, line) ? true : false; // getline() doesn't return a bool
+            valid_line = static_cast<bool>(getline(cin, line)); // getline() doesn't return a bool
         }
 
         // Check whether a line couldn't be read

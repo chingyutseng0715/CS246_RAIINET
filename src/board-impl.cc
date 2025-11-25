@@ -91,7 +91,7 @@ void Board::updateLink(char link_char, std::string direction) {
                 charOwner[make_pair(move_row, move_col)] = player;
 			}
 		}
-	} else if (next_char == 'x' || next_char == 'y' || next_char == 'z' || next_char == 'w') {
+	} else if (next_char == 'x' || next_char == 'y' || next_char == 'z' || next_char == 'w'|| next_char == '.') {
 		theBoard[move_row][move_col] = link_char;
         charOwner[make_pair(move_row, move_col)] = player;
 	} else {

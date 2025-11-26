@@ -30,6 +30,8 @@ void Link::Infect() { infected = true; }
 
 Observer* Link::getPlayer() { return player; }
 
+char Link::getSymbol() { return symbol; }
+
 int Link::getStrength() { return strength; }
 
 int Link::getMovePerStep() { return move_per_step; }

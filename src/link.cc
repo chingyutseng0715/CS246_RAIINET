@@ -24,6 +24,7 @@ export class Link {
 		void Download();
 		void Infect();
 		Observer* getPlayer();
+		char getSymbol();
 		int getStrength();
 		int getMovePerStep();
 		bool isVirus();

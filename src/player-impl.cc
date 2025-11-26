@@ -25,9 +25,7 @@ Player::Player(std::string name, Board *board, std::string abilitychosen) : Obse
   downloaded_data_amount{0}, ability_amount{0}, board{board} {
 	char input = ' ';
 	std::istringstream iss{abilitychosen};
-	// std::cout << abilitychosen;
 	while (iss >> input) {
-		// std::cout << input << '\n';
 		addAbility(input);
 	}
 }
@@ -142,7 +140,12 @@ void Player::movingLink(std::string command) {
 	if (!(iss >> link_char >> direction)) {
         throw std::invalid_argument("Invalid moving command.");
     }
-	board->updateLink(link_char, direction);
+	Link *link = board->getLink(link_char);
+	if (link && link->getPlayer() == this) {
+		board->updateLink(link_char, direction);
+	} else {
+		throw std::invalid_argument("You cannot move a non-exist or other's link.");
+	}
 }
 
 void Player::displayAbility(std::ostream &os) {

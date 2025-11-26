@@ -3,9 +3,9 @@ export module CommandLineProcessor;
 import <iostream>;
 import <string>;
 import <utility>;
+import <algorithm>;
 import <vector>;
 import <stdexcept>;
-import <map>;
 import <memory>;
 
 const std::string DEFAULT_ABILITY_ORDER = "LFDSP";

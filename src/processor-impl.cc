@@ -38,7 +38,6 @@ ProcessedInput processCommands(int argc, char* argv[], int player_count) {
                 ++i;
                 break;
             }
-            if (ordering_command_provided) break;
 
             if (string(argv[i]) == "-link" + to_string(j + 1) && !link_order_set[j]) {
                 if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
@@ -48,16 +47,16 @@ ProcessedInput processCommands(int argc, char* argv[], int player_count) {
                     throw invalid_argument("Invalid link sequence length.");
                 }
 
-                map<string, bool> link_appeared; // HOW TO ASSUME IT'S FALSE BY DEFAULT
+                vector<string> listed_links;
                 for (int k = 0; k < LINK_SEQUENCE_LENGTH; k += CHARS_IN_LINK) {
                     string current_link = link_order.substr(k, CHARS_IN_LINK);
                     if (DEFAULT_LINK_ORDER.find(current_link) == DEFAULT_LINK_ORDER.npos) {
                         throw invalid_argument("Listed link does not exist.");
                     }
-                    if (link_appeared[current_link]) {
+                    if (find(listed_links.begin(), listed_links.end(), current_link) != listed_links.end()) {
                         throw invalid_argument("Same link selected more than once.");
                     }
-                    link_appeared[current_link] = true;
+                    listed_links.emplace_back(current_link);
                 }
 
                 link_orders[j] = link_order;
@@ -66,7 +65,6 @@ ProcessedInput processCommands(int argc, char* argv[], int player_count) {
                 ++i;
                 break;
             }
-            if (ordering_command_provided) break;
 
         }
         

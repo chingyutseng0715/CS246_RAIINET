@@ -5,7 +5,7 @@ using std::string, std::cout, std::to_string, std::unique_ptr, std::make_unique,
 TwoPlayerMode::TwoPlayerMode(const ProcessedInput &input) : 
     GameMode{make_unique<TwoPlayerBoard>()} {
 	for (int i = 0; i < NUM_PLAYERS; ++i) {
-        players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board, input.ability_orders[i]));
+        players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board.get(), input.ability_orders[i]));
         board->addPlayer(players[i].get(), input.link_orders[i]);
     }
 }

@@ -5,7 +5,7 @@ using std::string, std::cout, std::to_string, std::unique_ptr, std::make_unique,
 FourPlayerMode::FourPlayerMode(const ProcessedInput &input) : 
     GameMode{make_unique<FourPlayerBoard>()}, eliminated_players(NUM_PLAYERS, false) {
     for (int i = 0; i < NUM_PLAYERS; ++i) {
-        players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board, input.ability_orders[i]));
+        players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board.get(), input.ability_orders[i]));
         board->addPlayer(players[i].get(), input.link_orders[i]);
     }
 }
@@ -32,7 +32,7 @@ PlayerID FourPlayerMode::runGame() {
 
         // Remove the current player from if the game if they have downloaded 4 viruses
         if (current_player_ptr->getDownloadedVirusAmount() == 4) {
-            eliminatedPlayers[current_player_index] = true;
+            eliminated_players[current_player_index] = true;
             --remaining_players;
         }
 
@@ -46,7 +46,7 @@ PlayerID FourPlayerMode::runGame() {
         // Change which player's turn it is
         do {
             current_player_index = (current_player_index + 1) % NUM_PLAYERS;
-        } while (eliminatedPlayers[current_player_index]);
+        } while (eliminated_players[current_player_index]);
         current_player = player_order[current_player_index];
         current_player_ptr = players[current_player_index];
     }

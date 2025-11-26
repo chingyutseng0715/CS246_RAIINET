@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 Upgrade::Upgrade(Observer *owner, Board *board)
-    : Ability{"Upgrade", "Upgrade the strength of virus or data", owner, board} {}
+    : Ability{"Upgrade", "Input: <Link> | Desc: Upgrade the strength of virus or data by 1", owner, board} {}
 
 void Upgrade::operatingAbility(std::string command){
     std::istringstream iss(command);

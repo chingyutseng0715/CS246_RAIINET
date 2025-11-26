@@ -1,16 +1,34 @@
 module CommandLineProcessor;
 
-using std::string, std::to_string, std::move, std::invalid_argument, std::vector;
+using std::string, std::to_string, std::stoi, std::move, std::invalid_argument, std::vector;
 
-ProcessedInput processCommands(int argc, char* argv[], int player_count) {
+ProcessedInput processCommands(int argc, char* argv[]) {
     ProcessedInput processed;
+    int player_count = TWO_PLAYER_NUM;
+    int first_potential_command_pos = 1;
+
+    if (argc == 1) {
+        return {player_count, vector<string>(player_count, DEFAULT_ABILITY_ORDER), 
+                vector<string>(player_count, DEFAULT_LINK_ORDER), false};
+    }
+
+    if (string(argv[1]) == "-players") {
+        if (argc <= 2) throw invalid_argument("Player count not provided.");
+        player_count = stoi(argv[2]);
+        if (player_count != TWO_PLAYER_NUM && player_count != FOUR_PLAYER_NUM) {
+            throw invalid_argument("Must be either 2 players or 4 players.");
+        }
+
+        first_potential_command_pos += 2;
+    }
+    
     vector<string> ability_orders(player_count, DEFAULT_ABILITY_ORDER);
     vector<string> link_orders(player_count, DEFAULT_LINK_ORDER);
     vector<bool> ability_order_set(player_count, false);
     vector<bool> link_order_set(player_count, false);
 	bool graphics_set = false;
     
-	for (int i = 1; i < argc; ++i) {
+	for (int i = first_potential_command_pos; i < argc; ++i) {
         bool ordering_command_provided = false;
 
         for (int j = 0; j < player_count; ++j) {
@@ -79,6 +97,7 @@ ProcessedInput processCommands(int argc, char* argv[], int player_count) {
         throw invalid_argument("Invalid command-line arguments.");
 	}
 
+    processed.num_players = player_count;
     processed.ability_orders = move(ability_orders);
     processed.link_orders = move(link_orders);
     processed.graphics_enabled = graphics_set;

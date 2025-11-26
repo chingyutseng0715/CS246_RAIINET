@@ -6,7 +6,7 @@ import <sstream>;
 import <string>;
 import <stdexcept>;
 LinkBoost::LinkBoost(Observer *owner, Board *board)
-    : Ability{"Link Boost", "Move 2 steps and also have the ability to jump over obstacles", owner, board} {}
+    : Ability{"Link Boost", "Input: <Link> | Desc: Move 2 steps and also have the ability to jump over obstacles", owner, board} {}
 
 void LinkBoost::operatingAbility(std::string command) {
 	std::istringstream iss(command);

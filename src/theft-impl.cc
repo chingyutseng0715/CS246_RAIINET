@@ -10,7 +10,7 @@ import Observer;
 import Link;
 
 Theft::Theft(Observer *owner, Board *board)
-	: Ability{"Theft", "Steal an assigned other player's ability", owner, board} {}
+	: Ability{"Theft", "Input: <Player> | Desc: Steal an assigned other player's ability", owner, board} {}
 
 void Theft::operatingAbility(std::string command) {
 	std::istringstream iss(command);

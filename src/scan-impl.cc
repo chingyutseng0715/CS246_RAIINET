@@ -7,7 +7,7 @@ import Board;
 import Link;
 
 Scan::Scan(Observer *owner, Board *board)
-	: Ability{"Scan", "Reveals the type and strength of any link on the field", owner, board} {}
+	: Ability{"Scan", "Input: <Link> | Desc: Reveals the type and strength of any link on the field", owner, board} {}
 
 
 void Scan::operatingAbility(std::string command) {

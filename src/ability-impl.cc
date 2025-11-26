@@ -16,9 +16,7 @@ std::string Ability::getName() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Ability &ability) {
-    if (ability.used) {
-		os << "(used) ";
-	}
-	os << ability.name << ": " << ability.description;
+	if (ability.used) os << " (USED)";
+	os << " -- " << ability.description;
     return os;
 }

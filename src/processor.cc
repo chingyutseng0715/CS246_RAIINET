@@ -8,6 +8,9 @@ import <vector>;
 import <stdexcept>;
 import <memory>;
 
+const int TWO_PLAYER_NUM = 2;
+const int FOUR_PLAYER_NUM = 4;
+
 const std::string DEFAULT_ABILITY_ORDER = "LFDSP";
 const std::string AVAILABLE_ABILITIES = "LFDSPHOTU"; // All abilities must be uppercase characters (A-Z)
 const int ABILITIES_PER_PLAYER = 5;
@@ -20,9 +23,10 @@ const int CHARS_IN_LINK = 2;
 const int LINK_SEQUENCE_LENGTH = LINKS_PER_PLAYER * CHARS_IN_LINK;
 
 export struct ProcessedInput {
+    int num_players;
     std::vector<std::string> ability_orders;
     std::vector<std::string> link_orders;
     bool graphics_enabled;
 };
 
-export ProcessedInput processCommands(int argc, char *argv[], int player_count);
+export ProcessedInput processCommands(int argc, char *argv[]);

@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 Polarize::Polarize(Observer *owner, Board *board)
-: Ability{"Polarize", "Changes the link's type to it's opposite with the same stength", owner, board} {}
+: Ability{"Polarize", "Input: <Link> | Desc: Changes the link's type to it's opposite with the same stength", owner, board} {}
 
 void Polarize::operatingAbility(std::string command){
     std::istringstream iss(command);

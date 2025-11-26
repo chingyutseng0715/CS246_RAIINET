@@ -7,7 +7,7 @@ import <sstream>;
 import <stdexcept>;
 
 Firewall::Firewall(Observer *owner, Board *board)
-    : Ability{"Firewall", "Place on empty square, reveals and opponent downloads viruses passing through", owner, board} {}
+    : Ability{"Firewall", "Input: <Row> <Col> | Desc: Place on empty square, reveals and opponent downloads viruses passing through", owner, board} {}
 
 void Firewall::operatingAbility(std::string command) {
 	std::istringstream iss(command);

@@ -4,13 +4,11 @@ import TwoPlayerMode;
 import FourPlayerMode;
 import CommandLineProcessor;
 
-const int PLAYERS = 2; // Client can change to 4
-
 int main(int argc, char *argv[]) {
-	ProcessedInput input = processCommands(argc, argv, PLAYERS);
+	ProcessedInput input = processCommands(argc, argv);
 
 	std::unique_ptr<GameMode> RAIInet;
-	switch (PLAYERS) {
+	switch (input.num_players) {
 		case 2:
 			RAIInet = std::make_unique<TwoPlayerMode>(input);
 			break;

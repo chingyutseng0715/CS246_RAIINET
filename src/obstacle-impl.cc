@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 Obstacle::Obstacle(Observer *owner, Board *board)
-    : Ability{"Obstacle", "Place on empty 3*1 square, acts like a wall", owner, board} {}
+    : Ability{"Obstacle", "Input: <Row> <Col> <Dir> | Desc: Place on empty 3*1 square, acts like a wall", owner, board} {}
 
 void Obstacle::operatingAbility(std::string command) {
 	std::istringstream iss(command);

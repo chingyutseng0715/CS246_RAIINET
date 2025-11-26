@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 HTVirus::HTVirus(Observer *owner, Board *board)
-    : Ability{"Highly Transmissible Virus", "Attach to virus, when infected make downloader's downloaded data become virus, if no data change one of it's virus on board to data, if no virus then the ability is directly mark used", owner, board} {}
+    : Ability{"Highly Transmissible Virus", "Input: <Link> | Desc: Attach to virus, when infected make downloader's downloaded data become virus, if no data change one of it's virus on board to data, if no virus then the ability is directly mark used", owner, board} {}
 
 void HTVirus::operatingAbility(std::string command) {
 	std::istringstream iss(command);

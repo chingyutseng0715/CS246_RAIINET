@@ -2,38 +2,34 @@ module FourPlayerBoard;
 
 import <memory>;
 import <string>;
+import Constants;
 import Observer;
 import Board;
 import Link;
 
 using std::make_pair;
 
-const std::string PLAYER1 = "Player 1";
-const std::string PLAYER2 = "Player 2";
-const std::string PLAYER3 = "Player 3";
-const std::string PLAYER4 = "Player 4";
-
-FourPlayerBoard::FourPlayerBoard(): Board{10, 16} {
+FourPlayerBoard::FourPlayerBoard(): Board{BOARD_HEIGHT, FOUR_PLAYER_BOARD_WIDTH} {
 	for (int i = 0; i < width; ++i) {
 		theBoard[1][i] = 'a' + i;
 	}
-	theBoard[1][3] = 'S';
-	theBoard[1][4] = 'S';
+	theBoard[1][3] = SERVER_PORT_CHAR;
+	theBoard[1][4] = SERVER_PORT_CHAR;
 	theBoard[2][3] = 'd';
 	theBoard[2][4] = 'e';
-	theBoard[1][11] = 'S';
-    theBoard[1][12] = 'S';
+	theBoard[1][11] = SERVER_PORT_CHAR;
+    theBoard[1][12] = SERVER_PORT_CHAR;
     theBoard[2][11] = 'l';
     theBoard[2][12] = 'm';
 	for (int i = 0; i < width; ++i) {
         theBoard[height - 2][i] = 'A' + i;
     }
-    theBoard[height - 2][3] = 'S';
-    theBoard[height - 2][4] = 'S';
+    theBoard[height - 2][3] = SERVER_PORT_CHAR;
+    theBoard[height - 2][4] = SERVER_PORT_CHAR;
     theBoard[height - 3][3] = 'D';
     theBoard[height - 3][4] = 'E';
-	theBoard[height - 2][11] = 'S';
-    theBoard[height - 2][12] = 'S';
+	theBoard[height - 2][11] = SERVER_PORT_CHAR;
+    theBoard[height - 2][12] = SERVER_PORT_CHAR;
     theBoard[height - 3][11] = 'L';
     theBoard[height - 3][12] = 'M';
 }

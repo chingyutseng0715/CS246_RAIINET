@@ -3,7 +3,6 @@ module Theft;
 import <string>;
 import <sstream>;
 import <stdexcept>;
-import <random>;
 import Ability;
 import Board;
 import Observer;

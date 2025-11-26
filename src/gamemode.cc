@@ -7,6 +7,7 @@ import <string>;
 import <vector>;
 import <memory>;
 import <stdexcept>;
+import Constants;
 import Board;
 import Player;
 
@@ -91,9 +92,6 @@ const std::string ASCII_NOBODY = R"(
 ░██    ░███  ░███████  ░██░█████   ░███████   ░█████░██  ░█████░██ 
                                                                ░██ 
                                                          ░███████  )";
-
-export const int DATA_DOWNLOADS_TO_WIN = 4;
-export const int VIRUS_DOWNLOADS_TO_LOSE = 4;
 
 export enum class GameState {
 	Menu,

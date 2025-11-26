@@ -7,20 +7,7 @@ import <algorithm>;
 import <vector>;
 import <stdexcept>;
 import <memory>;
-
-const int TWO_PLAYER_NUM = 2;
-const int FOUR_PLAYER_NUM = 4;
-
-const std::string DEFAULT_ABILITY_ORDER = "LFDSP";
-const std::string AVAILABLE_ABILITIES = "LFDSPHOTU"; // All abilities must be uppercase characters (A-Z)
-const int ABILITIES_PER_PLAYER = 5;
-const int MAX_SHARED_ABILITIES = 2;
-const int NUM_LETTERS_ALPHABET = 26;
-
-const std::string DEFAULT_LINK_ORDER = "V1V2V3V4D1D2D3D4";
-const int LINKS_PER_PLAYER = 8;
-const int CHARS_IN_LINK = 2;
-const int LINK_SEQUENCE_LENGTH = LINKS_PER_PLAYER * CHARS_IN_LINK;
+import Constants;
 
 export struct ProcessedInput {
     int num_players;

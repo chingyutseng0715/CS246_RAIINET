@@ -18,7 +18,7 @@ std::strong_ordering Link::operator<=>(const Link &other) const {
 
 void Link::setStrength(int strength) { this->strength = strength; }
 
-void Link::setType(char type) { this->type = type; }
+void Link::setType(LinkType type) { this->type = type; }
 
 void Link::setMovePerStep(int move_per_step) { this->move_per_step = move_per_step; }
 
@@ -36,7 +36,7 @@ int Link::getStrength() { return strength; }
 
 int Link::getMovePerStep() { return move_per_step; }
 
-bool Link::isVirus() { return type == 'V'; }
+bool Link::isVirus() { return type == LinkType::Virus; }
 
 bool Link::isInfected() { return infected; }
 
@@ -47,7 +47,7 @@ bool Link::isDownloaded() { return downloaded; }
 void Link::printLink(std::ostream &os, bool secret) {
 	os << symbol << ": ";
 	if (revealed || !secret) {
-		os << type << strength;
+		os << static_cast<char>(type) << strength;
 	} else {
 		os << "? ";
 	}

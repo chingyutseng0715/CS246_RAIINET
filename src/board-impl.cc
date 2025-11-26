@@ -154,7 +154,7 @@ void Board::setObstacle(int row, int col, char direction) {
             throw std::out_of_range("Obstacle is outside, cannot be placed");
         }
         
-        if ( theBoard[r][c] != '.') {
+        if (theBoard[r][c] != '.') {
             throw std::invalid_argument("Obstacle position is not empty");
         }
     }

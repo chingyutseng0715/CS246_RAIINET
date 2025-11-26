@@ -16,8 +16,8 @@ export class Board {
 		std::vector<std::vector<char>> theBoard;
 		std::map<char, std::shared_ptr<Link>> charLinkMapping;
 		
-		std::map<std::pair<int, int>, Observer*> charOwner;
-		std::map<std::pair<int, int>, Observer*> firewalls;
+		std::map<std::pair<int, int>, Observer *> charOwner;
+		std::map<std::pair<int, int>, Observer *> firewalls;
 		
 	public:
 		Board(int height, int width);

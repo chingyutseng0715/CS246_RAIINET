@@ -45,7 +45,7 @@ void Player::download(char link_char) {
 		if (downloaded_virus_amount == 0) {
 			for (Link *owned_link : owned_links) {
 				if (!owned_link->isVirus()) {
-					owned_link->setType('V');
+					owned_link->setType(LinkType::Virus);
 				}
 			}
 		} else {
@@ -54,7 +54,7 @@ void Player::download(char link_char) {
 					if (!downloaded_link->isInfected()) {
 						downloaded_data_amount -= 1;
 					}
-					downloaded_link->setType('V');
+					downloaded_link->setType(LinkType::Virus);
 					downloaded_virus_amount += 1;
 				}
 			}

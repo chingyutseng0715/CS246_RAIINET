@@ -4,10 +4,15 @@ import <iostream>;
 import <compare>;
 import Observer;
 
+export enum class LinkType {
+	Data = 'D',
+	Virus = 'V'
+};
+
 export class Link {
 	Observer *player;
 	char symbol;
-	char type;
+	LinkType type;
 	int strength;
 	int move_per_step;
 	bool revealed;
@@ -18,12 +23,12 @@ export class Link {
 		Link(Observer *player, char symbol, char type, int strength, int move_per_step = 1);
 		std::strong_ordering operator<=>(const Link &other) const;
 		void setStrength(int strength);
-		void setType(char type);
+		void setType(LinkType type);
 		void setMovePerStep(int move_per_step);
 		void Reveal();
 		void Download();
 		void Infect();
-		Observer* getPlayer();
+		Observer * getPlayer();
 		char getSymbol();
 		int getStrength();
 		int getMovePerStep();

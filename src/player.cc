@@ -23,7 +23,7 @@ export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
 	int ability_amount;
-	Board* board;
+	Board *board;
 	std::vector<std::unique_ptr<Ability>> abilities;
 	std::vector<Link *> owned_links;
 	std::vector<Link *> downloaded_links;

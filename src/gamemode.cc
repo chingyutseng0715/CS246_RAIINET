@@ -8,6 +8,9 @@ import <vector>;
 import <memory>;
 import <stdexcept>;
 import Constants;
+import CommandLineProcessor;
+import TwoPlayerBoard;
+import FourPlayerBoard;
 import Board;
 import Player;
 
@@ -108,17 +111,23 @@ export enum class PlayerID {
 };
 
 export class GameMode {
-	protected:
-		std::unique_ptr<Board> board;
-		GameState game_state = GameState::Menu;
-		std::vector<std::shared_ptr<Player>> players;
-		std::ifstream sequence_file{}; // Initialize the ifstream with {}
-		bool using_file = false;
+	GameState game_state;
+	std::unique_ptr<Board> board;
+
+	const int num_players;
+	std::vector<std::shared_ptr<Player>> players;
+	std::vector<PlayerID> player_order;
+	int remaining_players;
+	std::vector<bool> eliminated_players;
+
+	bool using_file = false;
+	std::ifstream sequence_file{}; // Initialize the ifstream with {}
+
 	public:
-		GameMode(std::unique_ptr<Board> board);
+		GameMode(const ProcessedInput &input);
 		void operatingGame();
 		void displayMenu();
-		virtual PlayerID runGame() = 0;
+		PlayerID runGame();
 		void displayGameOver(PlayerID winner);
-		bool conductPlayerTurn(std::shared_ptr<Player> current_player_ptr, bool &ability_used);
+		bool conductPlayerTurn(std::shared_ptr<Player> current_player_ptr);
 };

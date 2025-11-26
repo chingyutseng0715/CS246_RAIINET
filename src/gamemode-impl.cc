@@ -1,8 +1,23 @@
 module GameMode;
 
-using std::string, std::cin, std::cout, std::endl, std::ifstream, std::istringstream, std::unique_ptr, std::shared_ptr, std::invalid_argument;
+using std::string, std::cin, std::cout, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument;
 
-GameMode::GameMode(std::unique_ptr<Board> board) : board{std::move(board)} {
+GameMode::GameMode(const ProcessedInput &input) : 
+    game_state{GameState::Menu}, num_players{input.num_players}, 
+    remaining_players{input.num_players}, eliminated_players(input.num_players, false) {
+    
+    if (num_players == TWO_PLAYER_NUM) {
+        board = make_unique<TwoPlayerBoard>();
+        player_order.assign({PlayerID::Player1, PlayerID::Player2});
+    } else if (num_players == FOUR_PLAYER_NUM) {
+        board = make_unique<FourPlayerBoard>();
+        player_order.assign({PlayerID::Player1, PlayerID::Player2, PlayerID::Player3, PlayerID::Player4});
+    }
+
+	for (int i = 0; i < num_players; ++i) {
+        players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board.get(), input.ability_orders[i]));
+        board->addPlayer(players[i].get(), input.link_orders[i]);
+    }
 }
 
 void GameMode::operatingGame() {
@@ -56,7 +71,55 @@ void GameMode::displayGameOver(PlayerID winner) {
     cout << ASCII_WINNER_MESSAGE_END << endl;
 }
 
-bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr, bool &ability_used) {
+PlayerID GameMode::runGame() {
+    // Start the game with Player 1 having the first turn
+    int current_player_index = 0;
+    shared_ptr<Player> current_player_ptr = players[current_player_index];
+
+    while (true) {
+        current_player_ptr->printPlayerView(cout);
+
+        // Conduct the current player's turn, and terminate the game with nobody winning upon EOF
+        // on standard input or the 'quit' command
+        if (!conductPlayerTurn(current_player_ptr)) {
+            return PlayerID::Nobody;
+        }
+
+        for (int i = 0; i < num_players; ++i) {
+            // Return a player if they have downloaded 4 data
+            if (players[i]->getDownloadedDataAmount() == DATA_DOWNLOADS_TO_WIN) {
+                players[i]->printPlayerView(cout);
+                return player_order[i];
+            }
+            // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
+            if (players[i]->getDownloadedVirusAmount() == VIRUS_DOWNLOADS_TO_LOSE) {
+                eliminated_players[i] = true;
+                --remaining_players;
+                cout << "Player " << i + 1 << " has been eliminated!\n" << endl;
+            }
+        }
+
+        // Check if all other players have lost, leaving the remaining player to win
+        if (remaining_players == 1) {
+            for (int i = 0; i < num_players; ++i) {
+                if (!eliminated_players[i]) {
+                    players[i]->printPlayerView(cout);
+                    return player_order[i];
+                }
+            }
+        }
+
+        // Change which player's turn it is
+        do {
+            current_player_index = (current_player_index + 1) % num_players;
+        } while (eliminated_players[current_player_index]);
+        current_player_ptr = players[current_player_index];
+    }
+}
+
+bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
+    bool ability_used = false;
+
     while (true) {
         // Read a line from input
         string line;

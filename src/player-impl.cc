@@ -152,11 +152,13 @@ void Player::displayAbility(std::ostream &os) {
 	for (size_t i = 0; i < abilities.size(); ++i) {
 		os << "Ability " << i + 1 << ' ' << *getAbility(i + 1) << '\n';
 	}
+	os << std::endl;
 }
 
 void Player::printPlayerView(std::ostream &os) {
 	printPlayer(os, false);
 	board->printBoard(os, this);
+	os << std::endl;
 }
 
 void Player::printPlayer(std::ostream &os, bool hidden) {

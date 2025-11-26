@@ -92,12 +92,8 @@ const std::string ASCII_NOBODY = R"(
                                                                ░██ 
                                                          ░███████  )";
 
-const std::string PLAYER1_VALID_LINKS = "abcdefgh";
-const std::string PLAYER2_VALID_LINKS = "ABCDEFGH";
-// const std::string PLAYER3_VALID_LINKS = 
-// const std::string PLAYER4_VALID_LINKS = 
-const int DATA_DOWNLOADS_TO_WIN = 4;
-const int VIRUS_DOWNLOADS_TO_LOSE = 4;
+export const int DATA_DOWNLOADS_TO_WIN = 4;
+export const int VIRUS_DOWNLOADS_TO_LOSE = 4;
 
 export enum class GameState {
 	Menu,

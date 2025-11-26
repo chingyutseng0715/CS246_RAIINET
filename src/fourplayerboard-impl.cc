@@ -6,10 +6,76 @@ import Observer;
 import Board;
 import Link;
 
-FourPlayerBoard::FourPlayerBoard(): Board{8, 8} {
+using std::make_pair;
 
+const std::string PLAYER1 = "Player 1";
+const std::string PLAYER2 = "Player 2";
+const std::string PLAYER3 = "Player 3";
+const std::string PLAYER4 = "Player 4";
+
+FourPlayerBoard::FourPlayerBoard(): Board{10, 16} {
+	for (int i = 0; i < width; ++i) {
+		theBoard[1][i] = 'a' + i;
+	}
+	theBoard[1][3] = 'S';
+	theBoard[1][4] = 'S';
+	theBoard[2][3] = 'd';
+	theBoard[2][4] = 'e';
+	theBoard[1][11] = 'S';
+    theBoard[1][12] = 'S';
+    theBoard[2][11] = 'l';
+    theBoard[2][12] = 'm';
+	for (int i = 0; i < width; ++i) {
+        theBoard[height - 2][i] = 'A' + i;
+    }
+    theBoard[height - 2][3] = 'S';
+    theBoard[height - 2][4] = 'S';
+    theBoard[height - 3][3] = 'D';
+    theBoard[height - 3][4] = 'E';
+	theBoard[height - 2][11] = 'S';
+    theBoard[height - 2][12] = 'S';
+    theBoard[height - 3][11] = 'L';
+    theBoard[height - 3][12] = 'M';
 }
 
 void FourPlayerBoard::addPlayer(Observer *player, std::string linkorder) {
-
+	char start_char = 'a';
+	if (player->getName() == PLAYER1) {
+		start_char = 'a';
+		for (int i = 0; i < width / 2; ++i) {
+        	charOwner[make_pair(0, i)] = player;
+			charOwner[make_pair(1, i)] = player;
+    	}
+		charOwner[make_pair(2, 3)] = player;
+		charOwner[make_pair(2, 4)] = player;
+	} else if (player->getName() == PLAYER2) {
+		start_char = 'A';
+		for (int i = 0; i < width / 2; ++i) {
+	        charOwner[make_pair(height - 2, i)] = player;
+			charOwner[make_pair(height - 1, i)] = player;
+	    }
+		charOwner[make_pair(height - 3, 3)] = player;
+        charOwner[make_pair(height - 3, 4)] = player;
+	} else if (player->getName() == PLAYER3) {
+        start_char = 'i';
+        for (int i = width / 2; i < width; ++i) {
+            charOwner[make_pair(0, i)] = player;
+            charOwner[make_pair(1, i)] = player;
+        }
+        charOwner[make_pair(2, 11)] = player;
+        charOwner[make_pair(2, 12)] = player;
+    } else if (player->getName() == PLAYER4) {
+        start_char = 'I';
+        for (int i = width / 2; i < width; ++i) {
+            charOwner[make_pair(height - 2, i)] = player;
+            charOwner[make_pair(height - 1, i)] = player;
+        }
+        charOwner[make_pair(height - 3, 11)] = player;
+        charOwner[make_pair(height - 3, 12)] = player;
+    }
+	for (int i = 0; i < width / 2; ++i) {
+		charLinkMapping[start_char + i] = std::make_shared<Link>(player, start_char + i, linkorder[2 * i], linkorder[2 * i + 1] - '0');
+		player->addLink(start_char + i);
+	}
+	players.emplace_back(player);
 }

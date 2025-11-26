@@ -28,7 +28,7 @@ void Link::Download() { downloaded = true; }
 
 void Link::Infect() { infected = true; }
 
-Observer* Link::getPlayer() { return player; }
+Observer * Link::getPlayer() { return player; }
 
 int Link::getStrength() { return strength; }
 

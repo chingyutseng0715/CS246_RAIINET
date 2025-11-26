@@ -17,7 +17,7 @@ void Scan::operatingAbility(std::string command) {
 		throw std::invalid_argument("Invalid command for Scan ability");
 	}
 	
-	Link* target_link = board->getLink(link_char);
+	Link *target_link = board->getLink(link_char);
 	if (target_link) {
 		target_link->Reveal();
 		markUsed();

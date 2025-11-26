@@ -176,7 +176,7 @@ void Board::infectLink(char link_char, Observer *player) {
 	link->Infect();
 }
 	
-Link* Board::getLink(char link_char) {
+Link * Board::getLink(char link_char) {
 	if (charLinkMapping.count(link_char)) {
 		return charLinkMapping[link_char].get();
 	}
@@ -186,14 +186,14 @@ Link* Board::getLink(char link_char) {
 
 char Board::getState(int row, int col) { return theBoard[row][col]; }
 
-Observer *Board::getcharOwnership(int row, int col) {
+Observer * Board::getcharOwnership(int row, int col) {
 	if (charOwner.count(make_pair(row, col))) {
 		return charOwner[make_pair(row, col)];
 	}
 	return nullptr;
 }
 
-Observer *Board::getPlayer(std::string name) {
+Observer * Board::getPlayer(std::string name) {
 	for (Observer *player: players) {
 		if (player->getName() == name) {
 			return player;

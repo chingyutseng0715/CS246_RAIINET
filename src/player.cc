@@ -5,7 +5,6 @@ import <memory>;
 import <map>;
 import <vector>;
 import <string>;
-import CommandLineProcessor;
 import Observer;
 import Board;
 import Link;
@@ -26,14 +25,14 @@ export class Player : public Observer {
 	int ability_amount;
 	Board* board;
 	std::vector<std::unique_ptr<Ability>> abilities;
-	std::vector<Link*> owned_links;
-	std::vector<Link*> downloaded_links;
+	std::vector<Link *> owned_links;
+	std::vector<Link *> downloaded_links;
 	public:
 		Player(std::string name, Board *board, std::string abilitychosen = "LFDSP");
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();
-		Ability *getAbility(int ability_id);
+		Ability * getAbility(int ability_id);
 		void download(char link_char) override;
 		void addLink(char link_char) override;
 		void addAbility(char ability_char) override;

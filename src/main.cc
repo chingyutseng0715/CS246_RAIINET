@@ -13,8 +13,10 @@ int main(int argc, char *argv[]) {
 	switch (PLAYERS) {
 		case 2:
 			RAIInet = std::make_unique<TwoPlayerMode>(input);
+			break;
 		case 4:
-			RAIInet = std::make_unique<TwoPlayerMode>(input); // Change to FourPlayerMode once working
+			RAIInet = std::make_unique<FourPlayerMode>(input);
+			break;
 	}
 	RAIInet->operatingGame();
 }

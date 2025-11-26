@@ -19,8 +19,7 @@ void GameMode::operatingGame() {
                 break;
             case GameState::GameOver:
                 displayGameOver(winner);
-                return; // potentially let this or the function above reset the game
-                // break;
+                return;
         }
     }
 }
@@ -55,7 +54,6 @@ void GameMode::displayGameOver(PlayerID winner) {
     }
     cout << winner_str << endl;
     cout << ASCII_WINNER_MESSAGE_END << endl;
-    // maybe add something to reset the game
 }
 
 bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr, bool &ability_used) {

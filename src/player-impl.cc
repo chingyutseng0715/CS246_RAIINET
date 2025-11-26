@@ -23,7 +23,7 @@ import HTVirus;
 
 Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, downloaded_virus_amount{0},
   downloaded_data_amount{0}, ability_amount{0}, board{board} {
-	char input = ' ';
+	char input;
 	std::istringstream iss{abilitychosen};
 	while (iss >> input) {
 		addAbility(input);
@@ -36,14 +36,14 @@ int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
 
 int Player::getAbilityAmount() { return ability_amount; }
 
-Ability *Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
+Ability * Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
 
 void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);
 	link->Download();
 	if (link->isInfected()) {
 		if (downloaded_virus_amount == 0) {
-			for (Link *owned_link: owned_links) {
+			for (Link *owned_link : owned_links) {
 				if (!owned_link->isVirus()) {
 					owned_link->setType('V');
 				}

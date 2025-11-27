@@ -74,6 +74,9 @@ void Board::updateLink(char link_char, std::string direction) {
 			link->Reveal();
 			if (link->isVirus()) {
 				player->download(link_char);
+			} else {
+				theBoard[move_row][move_col] = link_char;
+				charOwner[next_pos] = player;
 			}
 		}
 	} else if (charOwner[next_pos] == player || next_char == OBSTACLE_CHAR) {
@@ -97,11 +100,10 @@ void Board::updateLink(char link_char, std::string direction) {
 		throw std::invalid_argument("Invalid move.");
 	}
 	
-	if (!firewalls.count(pos)) {
-		theBoard[row][col] = EMPTY_SQUARE_CHAR;
-		charOwner.erase(pos);
-	} else {
-		setFireWall(row, col, firewalls[next_pos]);
+	theBoard[row][col] = EMPTY_SQUARE_CHAR;
+    charOwner.erase(pos);
+	if (firewalls.count(pos)) {
+		setFireWall(row, col, firewalls[pos]);
 	}
 }
 

@@ -25,7 +25,7 @@ export class Link {
 		std::strong_ordering operator<=>(const Link &other) const;
 		void setStrength(int strength);
 		void setType(LinkType type);
-		void setMovePerStep(int move_per_step);
+		void boost();
 		void Reveal();
 		void Download();
 		void Infect();

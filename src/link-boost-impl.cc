@@ -21,7 +21,7 @@ void LinkBoost::operatingAbility(std::string command) {
 	
 	Link* target_link = board->getLink(link_char);
 	if (target_link && target_link->getPlayer() == player) {
-		target_link->setMovePerStep(BOOSTED_STEPS_PER_MOVE);
+		target_link->boost();
         markUsed();
 	} else {
 		throw std::invalid_argument("Invalid use of Link Boost ability.");

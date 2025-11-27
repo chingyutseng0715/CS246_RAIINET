@@ -16,12 +16,14 @@ void LinkBoost::operatingAbility(std::string command) {
 	char link_char;
 	
 	if (!(iss >> link_char)) {
-		throw std::invalid_argument("Invalid command for LinkBoost ability.");
+		throw std::invalid_argument("Invalid command for Link Boost ability.");
 	}
 	
 	Link* target_link = board->getLink(link_char);
 	if (target_link && target_link->getPlayer() == player) {
 		target_link->setMovePerStep(BOOSTED_STEPS_PER_MOVE);
         markUsed();
+	} else {
+		throw std::invalid_argument("Invalid use of Link Boost ability.");
 	}
 }

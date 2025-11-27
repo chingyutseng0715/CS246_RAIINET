@@ -18,7 +18,7 @@ void Polarize::operatingAbility(std::string command){
 	}
 
     Link *target_link = board->getLink(link_char);
-    if (target_link && target_link->getPlayer() == player) {
+    if (target_link) {
         if (target_link->isVirus()){
             target_link->setType(LinkType::Data);
             markUsed();
@@ -26,5 +26,7 @@ void Polarize::operatingAbility(std::string command){
             target_link->setType(LinkType::Virus);
             markUsed();
         }
+    } else {
+        throw std::invalid_argument("Invalid use of Polarize ability.");
     }
 }

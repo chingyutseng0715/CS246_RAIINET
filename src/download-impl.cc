@@ -23,5 +23,7 @@ void Download::operatingAbility(std::string command){
     if (target_link && target_link->getPlayer() != player){
         player->download(link_char);
         markUsed();
+    } else {
+        throw std::invalid_argument("Invalid use of Download ability.");
     }
 }

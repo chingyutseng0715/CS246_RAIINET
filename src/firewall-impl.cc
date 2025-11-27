@@ -7,8 +7,8 @@ import Link;
 import Ability;
 import Board;
 
-Firewall::Firewall(Observer *owner, Board *board)
-    : Ability{"Firewall", "Input: <Row> <Col> | Desc: Place a firewall on an empty square. The firewall reveals all links that pass through it, and if any are viruses, it forces opponents to download them", owner, board} {}
+Firewall::Firewall(Observer *owner, Board *board) : 
+	Ability{"Firewall", "Input: <Row> <Col> | Desc: Place a firewall on an empty square. The firewall reveals all links that pass through it, and if any are viruses, it forces opponents to download them", owner, board} {}
 
 void Firewall::operatingAbility(std::string command) {
 	std::istringstream iss(command);

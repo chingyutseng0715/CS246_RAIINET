@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 Upgrade::Upgrade(Observer *owner, Board *board) : 
-    Ability{"Upgrade", "Input: <Link> | Desc: Upgrade the strength of a link by 1", owner, board} {}
+    Ability{"Upgrade", "Input: <Link> | Desc: Upgrade the strength of any of your links by 1", owner, board} {}
 
 void Upgrade::operatingAbility(std::string command) {
     std::istringstream iss(command);
@@ -22,5 +22,7 @@ void Upgrade::operatingAbility(std::string command) {
         int cur_strength = target_link->getStrength();
         target_link->setStrength(cur_strength + 1);
         markUsed();
+    } else {
+        throw std::invalid_argument("Invalid use of Upgrade ability.");
     }
 }

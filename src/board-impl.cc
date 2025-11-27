@@ -23,6 +23,36 @@ Board::Board(int height, int width): height{height}, width{width} {
 	}
 }
 
+void Board::battle(char link_char, char other_link_char) {
+	Link *link = getLink(link_char);
+	Link *other_link = getLink(other_link_char);
+	if (link && other_link) {
+        link->Reveal();
+        other_link->Reveal();
+        if (*link < *other_link) {
+            other_link->getPlayer()->download(link_char);
+        } else {
+            //player->download(next_char);
+            //theBoard[move_row][move_col] = link_char;
+            //charOwner[next_pos] = player;
+        }
+    }
+}
+
+void Board::checkFireWall(int row, int col) {
+	std::pair<int, int> pos = make_pair(row, col);
+	if (firewalls.count(pos)) {
+		if (firewalls[pos] != charOwner[pos]) {
+			Link *link = getLink(theBoard[row][col]);
+			if (link && link->isVirus()) {
+				link->getPlayer()->download(theBoard[row][col]);
+				theBoard[row][col] = EMPTY_SQUARE_CHAR;
+				setFireWall(row, col, firewalls[pos]);
+			}
+		}
+	}
+}
+
 void Board::updateLink(char link_char, std::string direction) {
 	int row = -1;
 	int col = -1;
@@ -86,17 +116,17 @@ void Board::updateLink(char link_char, std::string direction) {
 	} else if (next_char == HORIZONTAL_BORDER_CHAR) {
 		player->download(link_char);
 	} else if (getLink(next_char)) {
-		Link *other_link = getLink(next_char);
-		link->Reveal();
-		other_link->Reveal();
-		if (*link < *other_link) {
-			other_link->getPlayer()->download(link_char);
-		} else {
-			player->download(next_char);
-			theBoard[move_row][move_col] = link_char;
-			charOwner[next_pos] = player;
-		}
-	} else {
+        Link *other_link = getLink(next_char);
+        link->Reveal();
+        other_link->Reveal();
+        if (*link < *other_link) {
+            other_link->getPlayer()->download(link_char);
+        } else {
+            player->download(next_char);
+            theBoard[move_row][move_col] = link_char;
+            charOwner[next_pos] = player;
+        }
+    } else {
 		throw std::invalid_argument("Invalid move.");
 	}
 	

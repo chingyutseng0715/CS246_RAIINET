@@ -42,19 +42,18 @@ void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);
 	link->Download();
 	if (link->isInfected()) {
-		if (downloaded_virus_amount == 0) {
+		if (downloaded_data_amount == 0) {
 			for (Link *owned_link : owned_links) {
 				if (!owned_link->isVirus() && !owned_link->isDownloaded()) {
 					owned_link->setType(LinkType::Virus);
+					break;
 				}
 			}
 		} else {
 			for (Link *downloaded_link: downloaded_links) {
 				if (!downloaded_link->isVirus()) {
-					if (!downloaded_link->isInfected()) {
-						downloaded_data_amount -= 1;
-					}
 					downloaded_link->setType(LinkType::Virus);
+					downloaded_data_amount -= 1;
 					downloaded_virus_amount += 1;
 				}
 			}

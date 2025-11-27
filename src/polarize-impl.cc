@@ -7,24 +7,23 @@ import Ability;
 import Board;
 import Link;
 
-Polarize::Polarize(Observer *owner, Board *board)
-: Ability{"Polarize", "Changes the link's type to it's opposite with the same stength", owner, board} {}
+Polarize::Polarize(Observer *owner, Board *board) : 
+    Ability{"Polarize", "Input: <Link> | Desc: Change a data to a virus of the same strength, or vice versa", owner, board} {}
 
 void Polarize::operatingAbility(std::string command){
     std::istringstream iss(command);
     char link_char;
     if (!(iss >> link_char)) {
-		throw std::invalid_argument("Invalid command for Polarize ability");
+		throw std::invalid_argument("Invalid command for Polarize ability.");
 	}
 
     Link *target_link = board->getLink(link_char);
     if (target_link && target_link->getPlayer() == player) {
-        std::string curType = target_link->getType();
-        if (curType == "Virus"){
-            target_link->setType("Data");
+        if (target_link->isVirus()){
+            target_link->setType(LinkType::Data);
             markUsed();
-        } else if(curType == "Data") {
-            target_link->setType("Virus");
+        } else {
+            target_link->setType(LinkType::Virus);
             markUsed();
         }
     }

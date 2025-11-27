@@ -1,12 +1,12 @@
-export module Polarize;
+export module HTVirus;
 
 import <string>;
 import Observer;
 import Board;
 import Ability;
 
-export class Polarize: public Ability {
+export class HTVirus: public Ability {
 	public:
-		Polarize(Observer *owner, Board *board);
+		HTVirus(Observer *owner, Board *board);
 		void operatingAbility(std::string command) override;
 };

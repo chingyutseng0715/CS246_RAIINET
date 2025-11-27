@@ -1,6 +1,8 @@
 export module Obstacle;
 
 import <string>;
+import Observer;
+import Board;
 import Ability;
 
 export class Obstacle: public Ability {

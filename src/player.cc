@@ -1,31 +1,46 @@
 export module Player;
 
 import <iostream>;
+import <memory>;
 import <map>;
 import <vector>;
 import <string>;
+import Constants;
 import Observer;
 import Board;
 import Link;
 import Ability;
+import LinkBoost;
+import Firewall;
+import Download;
+import Scan;
+import Polarize;
+import Upgrade; 
+import Theft;
+import Obstacle;
+import HTVirus;
 
 export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
-	Board* board;
-	std::map<int, Ability> abilities;
-	std::vector<Link*> owned_links;
-	std::vector<Link*> downloaded_links;
+	int ability_amount;
+	Board *board;
+	std::vector<std::unique_ptr<Ability>> abilities;
+	std::vector<Link *> owned_links;
+	std::vector<Link *> downloaded_links;
 	public:
-		Player(std::string player_name, Board *board, std::vector<int> abilityidchosen);
+		Player(std::string name, Board *board, std::string abilitychosen = DEFAULT_ABILITY_ORDER);
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();
-		std::vector<Ability> &getAbility();
+		Ability * getAbility(int ability_id);
 		void download(char link_char) override;
+		void addLink(char link_char) override;
+		void addAbility(char ability_char) override;
+		char removeAbility() override;
 		void usingAbility(int ability_id, std::string command);
-		void movingLink(char link_char, char direction);
-	friend std::ostream &operator<<(std::ostream &, const Player &);
+		void movingLink(std::string command);
+		void displayAbility(std::ostream &os);
+		void printPlayerView(std::ostream &os);
+		void printPlayer(std::ostream &os, bool hidden);
 };
-
-export std::ostream &operator<<(std::ostream &os, const Player &player);

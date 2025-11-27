@@ -1,10 +1,9 @@
-import <iostream>;
+import <memory>;
 import GameMode;
-import TwoPlayerMode;
-import FourPlayerMode;
+import CommandLineProcessor;
 
-using namespace std;
-
-int main(int argv, char *argc[]) {
-	return 0;
+int main(int argc, char *argv[]) {
+	ProcessedInput input = processCommands(argc, argv);
+	GameMode RAIInet(input);
+	RAIInet.operatingGame();
 }

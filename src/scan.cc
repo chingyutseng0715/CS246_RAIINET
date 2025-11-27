@@ -1,6 +1,8 @@
 export module Scan;
 
 import <string>;
+import Observer;
+import Board;
 import Ability;
 
 export class Scan: public Ability {

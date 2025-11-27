@@ -19,6 +19,6 @@ void Obstacle::operatingAbility(std::string command) {
 		throw std::invalid_argument("Invalid command for Obstacle ability.");
 	}
 	
-	board->setObstacle(row, col, dir);
+	board->setObstacle(row, col - 1, dir);
     markUsed();
 }

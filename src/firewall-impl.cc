@@ -18,6 +18,6 @@ void Firewall::operatingAbility(std::string command) {
 		throw std::invalid_argument("Invalid command for Firewall ability.");
 	}
 	
-	board->setFireWall(row, col, player);
+	board->setFireWall(row, col - 1, player);
     markUsed();
 }

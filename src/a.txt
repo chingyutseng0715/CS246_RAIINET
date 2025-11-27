@@ -1,0 +1,4 @@
+move a down
+
+ability 1 A
+move A up

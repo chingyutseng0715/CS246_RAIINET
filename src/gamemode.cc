@@ -121,7 +121,7 @@ export class GameMode {
 	std::vector<bool> eliminated_players;
 
 	bool using_file = false;
-	std::ifstream sequence_file{}; // Initialize the ifstream with {}
+	std::vector<std::ifstream> sequence_file; // Initialize the ifstream with {}
 
 	bool graphics_enabled;
 

@@ -1,6 +1,6 @@
 module GameMode;
 
-using std::string, std::cin, std::cout, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument;
+using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument;
 
 GameMode::GameMode(const ProcessedInput &input) : 
     num_players{input.num_players}, remaining_players{input.num_players},
@@ -122,23 +122,19 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
     while (true) {
         // Read a line from input
         string line;
-        bool valid_line;
-        if (using_file) {
-            valid_line = static_cast<bool>(getline(sequence_file, line)); // getline() doesn't return a bool
-        } else {
-            valid_line = static_cast<bool>(getline(cin, line)); // getline() doesn't return a bool
-        }
-
-        // Check whether a line couldn't be read
-        if (!valid_line) {
-            // Return to standard input if EOF has been reached while reading a file
-            if (using_file && sequence_file.eof()) {
-                using_file = false;
-                continue;
-            } else { // Otherwise, EOF has been reached on standard input, so terminate the game
-                return false;
-            }
-        }
+       	
+        if (sequence_file.empty()) {
+            getline(cin, line); // getline() doesn't return a bool
+        	if (cin.fail()) {
+				return false;
+			}
+		} else {
+           	getline(sequence_file.back(), line); // getline() doesn't return a bool
+        	if (sequence_file.back().fail()) {
+            	sequence_file.pop_back();
+            	continue;
+        	}
+		}
 
         istringstream iss{line};
         string cmd;
@@ -173,11 +169,13 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
             return true;
 
         } else if (cmd == "sequence") {
-            string sequence_file_name;
-            if (!(iss >> sequence_file_name)) throw invalid_argument("File name not provided.");
-            sequence_file = ifstream(sequence_file_name);
-            if (!sequence_file) throw invalid_argument("File does not exist.");
-            using_file = true;
+            string sequence_file_name = "";
+            if (!(iss >> sequence_file_name)) cerr << "File name not provided.\n";
+            sequence_file.emplace_back(ifstream{sequence_file_name});
+            if (!sequence_file.back()) {
+				sequence_file.pop_back();
+				throw invalid_argument("File does not exist.");
+			}
             continue;
 
         } else if (cmd == "quit") {

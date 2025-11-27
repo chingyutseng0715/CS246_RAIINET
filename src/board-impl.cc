@@ -200,6 +200,25 @@ Observer * Board::getPlayer(std::string name) {
 	return nullptr;
 }
 
+void Board::eliminatePlayer(Observer *player) {
+	for (int i = 1; i < height - 1; ++i) {
+		for (int j = 0; j < width; ++j) {
+			std::pair<int,int> pos = make_pair(i, j);
+			if (charOwner.count(pos) && charOwner[pos] == player) {
+				theBoard[i][j] = EMPTY_SQUARE_CHAR;
+				charOwner.erase(pos);
+				if (firewalls.count(pos)) {
+					if (firewalls[pos] == player) {
+						firewalls.erase(pos);
+					} else {
+						setFireWall(i, j, firewalls[pos]);
+					}
+				}
+			}
+		}
+	}
+}
+					
 void Board::printBoard(std::ostream &os, Observer *player) {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {

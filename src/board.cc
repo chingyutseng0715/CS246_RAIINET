@@ -30,6 +30,7 @@ export class Board {
 		char getState(int row, int col);
 		Observer * getcharOwnership(int row, int col);
 		Observer * getPlayer(std::string name);
+		void eliminatePlayer(Observer *player);
 		void printBoard(std::ostream &os, Observer *player);
 };
 

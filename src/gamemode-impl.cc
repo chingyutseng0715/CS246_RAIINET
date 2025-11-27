@@ -1,6 +1,6 @@
 module GameMode;
 
-using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument;
+using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument, std::out_of_range;
 
 GameMode::GameMode(const ProcessedInput &input) : 
     num_players{input.num_players}, remaining_players{input.num_players},
@@ -120,70 +120,78 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
     bool ability_used = false;
 
     while (true) {
-        // Read a line from input
-        string line;
-       	
-        if (sequence_file.empty()) {
-            getline(cin, line); // getline() doesn't return a bool
-        	if (cin.fail()) {
-				return false;
+		try {
+        	// Read a line from input
+        	string line;
+       		
+        	if (sequence_file.empty()) {
+            	getline(cin, line); // getline() doesn't return a bool
+        		if (cin.fail()) {
+					return false;
+				}
+			} else {
+           		getline(sequence_file.back(), line); // getline() doesn't return a bool
+        		if (sequence_file.back().fail()) {
+            		sequence_file.pop_back();
+            		continue;
+        		}
 			}
-		} else {
-           	getline(sequence_file.back(), line); // getline() doesn't return a bool
-        	if (sequence_file.back().fail()) {
-            	sequence_file.pop_back();
+
+        	istringstream iss{line};
+        	string cmd;
+	
+    	    if (!(iss >> cmd)) continue; // Skip empty lines
+	
+    	    // Parse the command
+        	if (cmd == "abilities") {
+            	current_player_ptr->displayAbility(cout);
             	continue;
+	
+    	    } else if (cmd == "board") {
+        	    current_player_ptr->printPlayerView(cout);
+            	continue;
+	
+    	    } else if (cmd == "ability") {
+        	    if (ability_used) throw invalid_argument("An ability has already been played this turn.");
+            	int ability_ID;
+    	        if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
+        	        throw invalid_argument("Invalid ability ID.");
+        	    }
+            	string ability_command;
+        	    if (!getline(iss, ability_command)) throw invalid_argument("Ability command not provided.");
+            	current_player_ptr->usingAbility(ability_ID, ability_command);
+            	ability_used = true;
+            	continue;
+	
+    	    } else if (cmd == "move") {
+        	    string move_command;
+            	if (!getline(iss, move_command)) throw invalid_argument("Move command not provided.");
+            	current_player_ptr->movingLink(move_command);
+            	return true;
+	
+    	    } else if (cmd == "sequence") {
+        	    string sequence_file_name = "";
+            	if (!(iss >> sequence_file_name)) throw invalid_argument("File name not provided.");
+	            sequence_file.emplace_back(ifstream{sequence_file_name});
+    	        if (!sequence_file.back()) {
+					sequence_file.pop_back();
+					throw invalid_argument("File does not exist.");
+				}
+            	continue;
+	
+    	    } else if (cmd == "quit") {
+        	    return false;
+	
+    	    } else {
+        	    throw invalid_argument("Invalid command.");
+
         	}
+		} catch (invalid_argument &e) {
+			cerr << e.what() << '\n';
+		} catch (out_of_range &e) {
+			cerr << e.what() << '\n';
+		} catch (...) {
+			cerr << "unknown error\n";
 		}
-
-        istringstream iss{line};
-        string cmd;
-
-        if (!(iss >> cmd)) continue; // Skip empty lines
-
-        // Parse the command
-        if (cmd == "abilities") {
-            current_player_ptr->displayAbility(cout);
-            continue;
-
-        } else if (cmd == "board") {
-            current_player_ptr->printPlayerView(cout);
-            continue;
-
-        } else if (cmd == "ability") {
-            if (ability_used) throw invalid_argument("An ability has already been played this turn.");
-            int ability_ID;
-            if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
-                throw invalid_argument("Invalid ability ID.");
-            }
-            string ability_command;
-            if (!getline(iss, ability_command)) throw invalid_argument("Ability command not provided.");
-            current_player_ptr->usingAbility(ability_ID, ability_command);
-            ability_used = true;
-            continue;
-
-        } else if (cmd == "move") {
-            string move_command;
-            if (!getline(iss, move_command)) throw invalid_argument("Move command not provided.");
-            current_player_ptr->movingLink(move_command);
-            return true;
-
-        } else if (cmd == "sequence") {
-            string sequence_file_name = "";
-            if (!(iss >> sequence_file_name)) cerr << "File name not provided.\n";
-            sequence_file.emplace_back(ifstream{sequence_file_name});
-            if (!sequence_file.back()) {
-				sequence_file.pop_back();
-				throw invalid_argument("File does not exist.");
-			}
-            continue;
-
-        } else if (cmd == "quit") {
-            return false;
-
-        } else {
-            throw invalid_argument("Invalid command.");
-
-        }
     }
 }

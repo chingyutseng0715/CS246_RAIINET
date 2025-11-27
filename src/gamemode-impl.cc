@@ -86,12 +86,12 @@ PlayerID GameMode::runGame() {
 
         for (int i = 0; i < num_players; ++i) {
             // Return a player if they have downloaded 4 data
-            if (players[i]->getDownloadedDataAmount() == DATA_DOWNLOADS_TO_WIN) {
+            if (players[i]->getDownloadedDataAmount() >= DATA_DOWNLOADS_TO_WIN) {
                 players[i]->printPlayerView(cout);
                 return player_order[i];
             }
             // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
-            if (players[i]->getDownloadedVirusAmount() == VIRUS_DOWNLOADS_TO_LOSE) {
+            if (players[i]->getDownloadedVirusAmount() >= VIRUS_DOWNLOADS_TO_LOSE) {
                 eliminated_players[i] = true;
                 --remaining_players;
                 cout << "Player " << i + 1 << " has been eliminated!\n" << endl;

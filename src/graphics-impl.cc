@@ -128,3 +128,13 @@ Graphics::~Graphics() {
         
     }
 }
+
+void Graphics::drawWindow(Window window, const std::string &output, bool is_player1) {
+    XClearWindow(display, window);
+
+
+}
+
+void updatePlayer1Window(const std::string &player1_output);
+void updatePlayer2Window(const std::string &player2_output);
+      

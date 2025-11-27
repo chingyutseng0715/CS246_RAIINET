@@ -10,10 +10,11 @@ export class Graphics {
     Window window_p1;
     Window window_p2;
     int screen;
+    void drawWindow(Window window, const std::string &output, bool is_player1);
 public:
     Graphics();
     ~Graphics();
-    void drawWindow(Window window, const std::string &output);
-    void updateWindows(const std::string &player1_output, const std::string &player2_output);
+    void updatePlayer1Window(const std::string &player1_output);
+    void updatePlayer2Window(const std::string &player2_output);
       
 };

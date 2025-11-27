@@ -5,6 +5,7 @@ import <memory>;
 import <map>;
 import <vector>;
 import <string>;
+import Constants;
 import Observer;
 import Board;
 import Link;
@@ -28,7 +29,7 @@ export class Player : public Observer {
 	std::vector<Link *> owned_links;
 	std::vector<Link *> downloaded_links;
 	public:
-		Player(std::string name, Board *board, std::string abilitychosen = "LFDSP");
+		Player(std::string name, Board *board, std::string abilitychosen = DEFAULT_ABILITY_ORDER);
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();

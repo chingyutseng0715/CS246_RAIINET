@@ -30,16 +30,6 @@ const std::string ASCII_INSTRUCTIONS = R"(
 ▌ ▌ ▙▖▄▌▄▌   ▙▖▌▌▐▖▙▖▌    ▐▖▙▌  ▌ ▐▖█▌▙▌
                                       ▄▌
 )";
-const std::string ASCII_WINNER_MESSAGE_END = R"(
-                  ░██                      
-                                           
-░██    ░██    ░██ ░██░████████   ░███████  
-░██    ░██    ░██ ░██░██    ░██ ░██        
- ░██  ░████  ░██  ░██░██    ░██  ░███████  
-  ░██░██ ░██░██   ░██░██    ░██        ░██ 
-   ░███   ░███    ░██░██    ░██  ░███████  
-                                           
-)";
 const std::string ASCII_PLAYER_ONE = R"(
 
 ░█████████  ░██                                                ░██   
@@ -95,6 +85,16 @@ const std::string ASCII_NOBODY = R"(
 ░██    ░███  ░███████  ░██░█████   ░███████   ░█████░██  ░█████░██ 
                                                                ░██ 
                                                          ░███████  )";
+const std::string ASCII_WINNER_MESSAGE_END = R"(
+                  ░██                      
+                                           
+░██    ░██    ░██ ░██░████████   ░███████  
+░██    ░██    ░██ ░██░██    ░██ ░██        
+ ░██  ░████  ░██  ░██░██    ░██  ░███████  
+  ░██░██ ░██░██   ░██░██    ░██        ░██ 
+   ░███   ░███    ░██░██    ░██  ░███████  
+                                           
+)";
 
 export enum class GameState {
 	Menu,
@@ -111,7 +111,7 @@ export enum class PlayerID {
 };
 
 export class GameMode {
-	GameState game_state;
+	GameState game_state = GameState::Menu;
 	std::unique_ptr<Board> board;
 
 	const int num_players;
@@ -122,6 +122,8 @@ export class GameMode {
 
 	bool using_file = false;
 	std::ifstream sequence_file{}; // Initialize the ifstream with {}
+
+	bool graphics_enabled;
 
 	public:
 		GameMode(const ProcessedInput &input);

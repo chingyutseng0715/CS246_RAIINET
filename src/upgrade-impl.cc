@@ -7,14 +7,14 @@ import Ability;
 import Board;
 import Link;
 
-Upgrade::Upgrade(Observer *owner, Board *board)
-    : Ability{"Upgrade", "Input: <Link> | Desc: Upgrade the strength of virus or data by 1", owner, board} {}
+Upgrade::Upgrade(Observer *owner, Board *board) : 
+    Ability{"Upgrade", "Input: <Link> | Desc: Upgrade the strength of a link by 1", owner, board} {}
 
-void Upgrade::operatingAbility(std::string command){
+void Upgrade::operatingAbility(std::string command) {
     std::istringstream iss(command);
     char link_char;
     if (!(iss >> link_char)) {
-		throw std::invalid_argument("Invalid command for Upgrade ability");
+		throw std::invalid_argument("Invalid command for Upgrade ability.");
 	}
 
     Link *target_link = board->getLink(link_char);

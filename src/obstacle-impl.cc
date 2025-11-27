@@ -7,8 +7,8 @@ import Ability;
 import Board;
 import Link;
 
-Obstacle::Obstacle(Observer *owner, Board *board)
-    : Ability{"Obstacle", "Input: <Row> <Col> <Dir> | Desc: Place on empty 3*1 square, acts like a wall", owner, board} {}
+Obstacle::Obstacle(Observer *owner, Board *board) : 
+	Ability{"Obstacle", "Input: <Row> <Col> <Dir> | Desc: Place a 3x1 wall, with the selected square as the center. All squares that the wall will occupy must be non-empty", owner, board} {}
 
 void Obstacle::operatingAbility(std::string command) {
 	std::istringstream iss(command);
@@ -16,7 +16,7 @@ void Obstacle::operatingAbility(std::string command) {
     char dir;
 	
 	if (!(iss >> row >> col >> dir)) {
-		throw std::invalid_argument("Invalid command for Obstacle ability");
+		throw std::invalid_argument("Invalid command for Obstacle ability.");
 	}
 	
 	board->setObstacle(row, col, dir);

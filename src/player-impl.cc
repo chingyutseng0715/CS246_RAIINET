@@ -21,8 +21,8 @@ import Theft;
 import Obstacle;
 import HTVirus;
 
-Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, downloaded_virus_amount{0},
-  downloaded_data_amount{0}, ability_amount{0}, board{board} {
+Player::Player(std::string name, Board *board, std::string abilitychosen) : 
+	Observer{name}, downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, board{board} {
 	char input;
 	std::istringstream iss{abilitychosen};
 	while (iss >> input) {
@@ -44,7 +44,7 @@ void Player::download(char link_char) {
 	if (link->isInfected()) {
 		if (downloaded_virus_amount == 0) {
 			for (Link *owned_link : owned_links) {
-				if (!owned_link->isVirus()) {
+				if (!owned_link->isVirus() && !owned_link->isDownloaded()) {
 					owned_link->setType(LinkType::Virus);
 				}
 			}
@@ -130,7 +130,7 @@ void Player::usingAbility(int ability_ID, std::string command) {
 		throw std::invalid_argument("Ability used.");
 	}
 	ability->operatingAbility(command);
-	ability_amount -= 1;
+	--ability_amount;
 }
 
 void Player::movingLink(std::string command) {

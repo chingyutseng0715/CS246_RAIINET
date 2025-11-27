@@ -7,6 +7,6 @@ import Ability;
 
 export class Theft: public Ability {
 	public:
-	 Theft(Observer *owner, Board *board);
+		Theft(Observer *owner, Board *board);
 		void operatingAbility(std::string command) override;
 };

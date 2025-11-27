@@ -2,11 +2,12 @@ module Link;
 
 import <iostream>;
 import <compare>;
+import Constants;
 import Observer;
 
 Link::Link(Observer *player, char symbol, char type, int strength, int move_per_step) :
-  player{player}, symbol{symbol}, type{type}, strength{strength},
-  move_per_step{move_per_step}, revealed{false}, downloaded{false}, infected{false} {}
+	player{player}, symbol{symbol}, type{type}, strength{strength},
+	move_per_step{move_per_step}, revealed{false}, downloaded{false}, infected{false} {}
 
 std::strong_ordering Link::operator<=>(const Link &other) const {
 	if (strength < other.strength) {
@@ -49,7 +50,7 @@ void Link::printLink(std::ostream &os, bool secret) {
 	if (revealed || !secret) {
 		os << static_cast<char>(type) << strength;
 	} else {
-		os << "? ";
+		os << UNREVEALED_LINK_CHAR << " ";
 	}
 	os << '\t';
 }

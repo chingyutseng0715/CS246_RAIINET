@@ -3,8 +3,8 @@ module GameMode;
 using std::string, std::cin, std::cout, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument;
 
 GameMode::GameMode(const ProcessedInput &input) : 
-    game_state{GameState::Menu}, num_players{input.num_players}, 
-    remaining_players{input.num_players}, eliminated_players(input.num_players, false) {
+    num_players{input.num_players}, remaining_players{input.num_players},
+    eliminated_players(input.num_players, false), graphics_enabled{input.graphics_enabled} {
     
     if (num_players == TWO_PLAYER_NUM) {
         board = make_unique<TwoPlayerBoard>();
@@ -15,7 +15,7 @@ GameMode::GameMode(const ProcessedInput &input) :
     }
 
 	for (int i = 0; i < num_players; ++i) {
-        players.emplace_back(make_shared<Player>("Player " + to_string(i + 1), board.get(), input.ability_orders[i]));
+        players.emplace_back(make_shared<Player>(PLAYER_NAME_PREFIX + to_string(i + 1), board.get(), input.ability_orders[i]));
         board->addPlayer(players[i].get(), input.link_orders[i]);
     }
 }
@@ -43,9 +43,8 @@ void GameMode::displayMenu() {
     cout << ASCII_TITLE << endl;
     cout << ASCII_INSTRUCTIONS << endl;
     string user_input;
-    while (getline(cin, user_input)) {
-        if (user_input == "") return;
-    }
+    getline(cin, user_input);
+    return;
 }
 
 void GameMode::displayGameOver(PlayerID winner) {

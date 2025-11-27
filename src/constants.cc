@@ -20,6 +20,7 @@ export const int LINKS_PER_PLAYER = 8;
 export const int CHARS_IN_LINK = 2;
 export const int LINK_SEQUENCE_LENGTH = LINKS_PER_PLAYER * CHARS_IN_LINK;
 
+export const std::string PLAYER_NAME_PREFIX = "Player ";
 export const std::string PLAYER1 = "Player 1";
 export const std::string PLAYER2 = "Player 2";
 export const std::string PLAYER3 = "Player 3";
@@ -29,4 +30,17 @@ export const int BOARD_HEIGHT = 10;
 export const int TWO_PLAYER_BOARD_WIDTH = 8;
 export const int FOUR_PLAYER_BOARD_WIDTH = 16;
 
+export const char DATA_CHAR = 'D';
+export const char VIRUS_CHAR = 'V';
+export const char UNREVEALED_LINK_CHAR = '?';
 export const char SERVER_PORT_CHAR = 'S';
+export const char HORIZONTAL_BORDER_CHAR = '=';
+export const char EMPTY_SQUARE_CHAR = '.';
+export const char OBSTACLE_CHAR = '#';
+export const char PLAYER1_FIREWALL = 'x';
+export const char PLAYER2_FIREWALL = 'y';
+export const char PLAYER3_FIREWALL = 'z';
+export const char PLAYER4_FIREWALL = 'w';
+
+export const char DEFAULT_STEPS_PER_MOVE = 1;
+export const char BOOSTED_STEPS_PER_MOVE = 2;

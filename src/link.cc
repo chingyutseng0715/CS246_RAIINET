@@ -2,11 +2,12 @@ export module Link;
 
 import <iostream>;
 import <compare>;
+import Constants;
 import Observer;
 
 export enum class LinkType {
-	Data = 'D',
-	Virus = 'V'
+	Data = DATA_CHAR,
+	Virus = VIRUS_CHAR
 };
 
 export class Link {
@@ -20,7 +21,7 @@ export class Link {
 	bool infected;
 	
 	public:
-		Link(Observer *player, char symbol, char type, int strength, int move_per_step = 1);
+		Link(Observer *player, char symbol, char type, int strength, int move_per_step = DEFAULT_STEPS_PER_MOVE);
 		std::strong_ordering operator<=>(const Link &other) const;
 		void setStrength(int strength);
 		void setType(LinkType type);

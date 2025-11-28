@@ -39,6 +39,24 @@ void Board::battle(char link_char, char other_link_char) {
     }
 }
 
+std::pair<int, int> Board::getIndex(char link_char) {
+	for (int i = 1; i < height - 1; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (theBoard[i][j] == link_char) {
+				return make_pair(i, j);
+			}
+		}
+	}
+	throw std::invalid_argument("Link not found.");
+}
+
+void Board::downloadLink(Observer *player, char link_char) {
+	std::pair<int, int> pos = getIndex(link_char);
+	theBoard[pos.first][pos.second] = EMPTY_SQUARE_CHAR;
+	charOwner.erase(pos);
+	player->download(link_char);
+}
+
 void Board::checkFireWall(int row, int col) {
 	std::pair<int, int> pos = make_pair(row, col);
 	if (firewalls.count(pos)) {

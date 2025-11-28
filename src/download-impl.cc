@@ -19,9 +19,9 @@ void Download::operatingAbility(std::string command){
 		throw std::invalid_argument("Invalid command for Download ability.");
 	}
 
-    Link *link = board->getLink(link_char);
-    if (link->getPlayer() != player) {
-		board->downloadLink(player, link_char);
+    Link *target_link = board->getLink(link_char);
+    if (target_link && target_link->getPlayer() != player){
+        player->download(link_char);
         markUsed();
     } else {
         throw std::invalid_argument("Invalid use of Download ability.");

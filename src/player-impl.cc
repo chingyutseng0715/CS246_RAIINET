@@ -116,7 +116,7 @@ char Player::removeAbility() {
 		}
 	}
 	if (ability == nullptr) {
-		throw std::invalid_argument("No ability cand be stolen.");
+		throw std::invalid_argument("No ability can be stolen.");
 	}
 	ability->markUsed();
 	ability_amount -= 1;

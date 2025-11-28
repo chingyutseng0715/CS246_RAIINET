@@ -18,7 +18,7 @@ void Upgrade::operatingAbility(std::string command) {
 	}
 
     Link *target_link = board->getLink(link_char);
-    if (target_link && target_link->getPlayer() == player) {
+    if (target_link && target_link->getPlayer() == player && !target_link->isDownloaded()) {
         int cur_strength = target_link->getStrength();
         target_link->setStrength(cur_strength + 1);
         markUsed();

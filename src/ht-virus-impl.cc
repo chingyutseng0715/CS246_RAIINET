@@ -19,7 +19,7 @@ void HTVirus::operatingAbility(std::string command) {
 	}
 	
 	Link *target_link = board->getLink(link_char);
-	if (target_link && target_link->getPlayer() == player && target_link->isVirus()) {
+	if (target_link && target_link->getPlayer() == player && target_link->isVirus() && !target_link->isDownloaded()) {
 		board->infectLink(link_char, player);
 		markUsed();
 	} else {

@@ -204,10 +204,10 @@ void Board::setObstacle(int row, int col, char direction) {
     std::vector<std::pair<int, int>> positions;
     positions.emplace_back(std::make_pair(row, col));
     
-    if (direction == 'u') {
+    if (direction == 'v') {
         positions.emplace_back(std::make_pair(row - 1, col));
         positions.emplace_back(std::make_pair(row + 1, col));
-    } else if (direction == 'd') {
+    } else if (direction == 'h') {
         positions.emplace_back(std::make_pair(row, col - 1));
         positions.emplace_back(std::make_pair(row, col + 1));
     } else if (direction == 'r') {

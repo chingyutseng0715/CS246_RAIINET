@@ -18,7 +18,7 @@ void Polarize::operatingAbility(std::string command){
 	}
 
     Link *target_link = board->getLink(link_char);
-    if (target_link) {
+    if (target_link && !target_link->isDownloaded()) {
         if (target_link->isVirus()){
             target_link->setType(LinkType::Data);
             markUsed();

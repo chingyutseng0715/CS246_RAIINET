@@ -10,5 +10,7 @@ int main(int argc, char *argv[]) {
 		RAIInet.operatingGame();
 	} catch (std::invalid_argument &e) {
 		std::cerr << e.what() << '\n';
+	} catch (...) {
+		std::cerr << "Error occurs. Program terminates.\n";
 	}
 }

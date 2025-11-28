@@ -26,15 +26,16 @@ Board::Board(int height, int width): height{height}, width{width} {
 void Board::battle(char link_char, char other_link_char) {
 	Link *link = getLink(link_char);
 	Link *other_link = getLink(other_link_char);
+	std::pair<int, int> next_pos = getIndex(other_link_char);
 	if (link && other_link) {
         link->Reveal();
         other_link->Reveal();
         if (*link < *other_link) {
-            other_link->getPlayer()->download(link_char);
+            downloadLink(other_link->getPlayer(), link_char);
         } else {
-            //player->download(next_char);
-            //theBoard[move_row][move_col] = link_char;
-            //charOwner[next_pos] = player;
+            downloadLink(link->getPlayer(), other_link_char);
+			charOwner[next_pos] = link->getPlayer();
+			theBoard[next_pos.first][next_pos.second] = link_char;
         }
     }
 }
@@ -54,6 +55,9 @@ void Board::downloadLink(Observer *player, char link_char) {
 	std::pair<int, int> pos = getIndex(link_char);
 	theBoard[pos.first][pos.second] = EMPTY_SQUARE_CHAR;
 	charOwner.erase(pos);
+	if (firewalls.count(pos)) {
+		setFireWall(pos.first, pos.second, firewalls[pos]);
+	}
 	player->download(link_char);
 }
 
@@ -62,9 +66,9 @@ void Board::checkFireWall(int row, int col) {
 	if (firewalls.count(pos)) {
 		if (firewalls[pos] != charOwner[pos]) {
 			Link *link = getLink(theBoard[row][col]);
+			link->Reveal();
 			if (link && link->isVirus()) {
-				link->getPlayer()->download(theBoard[row][col]);
-				theBoard[row][col] = EMPTY_SQUARE_CHAR;
+				downloadLink(link->getPlayer(), theBoard[row][col]);
 				setFireWall(row, col, firewalls[pos]);
 			}
 		}
@@ -72,19 +76,9 @@ void Board::checkFireWall(int row, int col) {
 }
 
 void Board::updateLink(char link_char, std::string direction) {
-	int row = -1;
-	int col = -1;
-	for (int i = 1; i < height - 1; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (theBoard[i][j] == link_char) {
-				row = i;
-				col = j;
-			}
-		}
-	}
-	if (row == -1 && col == -1) {
-		throw std::invalid_argument("Link not found.");
-	}
+	std::pair<int, int> pos = getIndex(link_char);
+	int row = pos.first;
+	int col = pos.second;
 	
 	int move_row = row;
 	int move_col = col;
@@ -110,49 +104,40 @@ void Board::updateLink(char link_char, std::string direction) {
 	Link *link = getLink(link_char);
 	Observer *player = link->getPlayer();
 	char next_char = theBoard[move_row][move_col];
-	std::pair<int, int> pos = make_pair(row, col);
 	std::pair<int, int> next_pos = make_pair(move_row, move_col);
-	if (next_char == EMPTY_SQUARE_CHAR) {
-		theBoard[move_row][move_col] = link_char;
-		charOwner[next_pos] = player;
-	} else if (firewalls.count(next_pos)) {
-		if (firewalls[next_pos] == player) {
-			theBoard[move_row][move_col] = link_char;
-		} else {
-			link->Reveal();
-			if (link->isVirus()) {
-				player->download(link_char);
-			} else {
-				theBoard[move_row][move_col] = link_char;
-				charOwner[next_pos] = player;
-			}
-		}
-	} else if (charOwner[next_pos] == player || next_char == OBSTACLE_CHAR) {
-		throw std::invalid_argument("Invalid move.");
-	} else if (next_char == SERVER_PORT_CHAR) {
-		charOwner[next_pos]->download(link_char);
-	} else if (next_char == HORIZONTAL_BORDER_CHAR) {
-		player->download(link_char);
-	} else if (getLink(next_char)) {
-        Link *other_link = getLink(next_char);
-        link->Reveal();
-        other_link->Reveal();
-        if (*link < *other_link) {
-            other_link->getPlayer()->download(link_char);
-        } else {
-            player->download(next_char);
-            theBoard[move_row][move_col] = link_char;
-            charOwner[next_pos] = player;
+	if (charOwner[next_pos] == player || next_char == OBSTACLE_CHAR) {
+        throw std::invalid_argument("Invalid move.");
+    }
+	
+	if (firewalls.count(next_pos)) {
+		if (firewalls[next_pos] != player) {
+            link->Reveal();
+            if (link->isVirus()) {
+                downloadLink(player, link_char);
+				return;
+            }
         }
-    } else {
-		throw std::invalid_argument("Invalid move.");
 	}
 	
-	theBoard[row][col] = EMPTY_SQUARE_CHAR;
-    charOwner.erase(pos);
-	if (firewalls.count(pos)) {
-		setFireWall(row, col, firewalls[pos]);
+	if (next_char == SERVER_PORT_CHAR) {
+		downloadLink(charOwner[next_pos], link_char);
+	} else if (next_char == HORIZONTAL_BORDER_CHAR) {
+		downloadLink(player, link_char);
+	} else if (getLink(next_char)) {
+		battle(link_char, next_char);
+    } 
+	
+	if (!link->isDownloaded()) {
+		theBoard[move_row][move_col] = link_char;
+        charOwner[next_pos] = player;
+        theBoard[row][col] = EMPTY_SQUARE_CHAR;
+        charOwner.erase(pos);
+        if (firewalls.count(pos)) {
+            setFireWall(row, col, firewalls[pos]);
+        }
 	}
+	
+	return;
 }
 
 void Board::setFireWall(int row, int col, Observer *player) {
@@ -171,17 +156,16 @@ void Board::setFireWall(int row, int col, Observer *player) {
         theBoard[row][col] = PLAYER4_FIREWALL;
     }
 	firewalls[make_pair(row, col)] = player;
-	charOwner[make_pair(row, col)] = player;
 }
 
 void Board::setObstacle(int row, int col, char direction) {
     std::vector<std::pair<int, int>> positions;
     positions.emplace_back(std::make_pair(row, col));
     
-    if (direction == 'v') {
+    if (direction == 'u') {
         positions.emplace_back(std::make_pair(row - 1, col));
         positions.emplace_back(std::make_pair(row + 1, col));
-    } else if (direction == 'h') {
+    } else if (direction == 'd') {
         positions.emplace_back(std::make_pair(row, col - 1));
         positions.emplace_back(std::make_pair(row, col + 1));
     } else if (direction == 'r') {

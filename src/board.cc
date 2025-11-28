@@ -24,6 +24,7 @@ export class Board {
 	public:
 		Board(int height, int width);
 		virtual void addPlayer(Observer *player, std::string link_order) = 0;
+		bool movable(char link_char);
 		void downloadLink(Observer *player, char link_char);
 		void checkFirewall(int row, int col);
 		void updateLink(char link_char, std::string direction);

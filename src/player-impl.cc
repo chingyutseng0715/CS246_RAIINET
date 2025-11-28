@@ -7,6 +7,7 @@ import <map>;
 import <vector>;
 import <stdexcept>;
 import <string>;
+import Constants;
 import Observer;
 import Board;
 import Link;
@@ -37,6 +38,23 @@ int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
 int Player::getAbilityAmount() { return ability_amount; }
 
 Ability * Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
+
+bool Player::movable() {
+	for (Link *link: owned_links) {
+		if (!link->isDownloaded() && board->movable(link->getSymbol())) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Player::win() {
+	return downloaded_data_amount >= DATA_DOWNLOADS_TO_WIN;
+}
+
+bool Player::lose() {
+	return downloaded_virus_amount >= VIRUS_DOWNLOADS_TO_LOSE || !movable();
+}
 
 void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);

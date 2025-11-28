@@ -4,6 +4,7 @@ import <iostream>;
 import <vector>;
 import <map>;
 import <stdexcept>;
+import <algorithm>;
 import Constants;
 import Observer;
 import Link;
@@ -51,6 +52,34 @@ std::pair<int, int> Board::getIndex(char link_char) {
 	throw std::invalid_argument("Link not found.");
 }
 
+bool Board::movable(char link_char) {
+	std::pair<int, int> pos = getIndex(link_char);
+	Link *link = getLink(link_char);
+	Observer *player = link->getPlayer();
+	int row = pos.first;
+	int col = pos.second;
+	int move = link->getMovePerStep();
+	std::vector<std::pair<int, int>> possible_pos;
+	
+	possible_pos.emplace_back(make_pair(std::max(0, row - move), col));
+	possible_pos.emplace_back(make_pair(std::min(height - 1, row + move), col));
+	possible_pos.emplace_back(make_pair(row, col + move));
+	possible_pos.emplace_back(make_pair(row, col - move));
+	
+	for (std::pair<int, int> cur_pos: possible_pos) {
+		if (cur_pos.second < 0 || cur_pos.second >= width) {
+			continue;
+		}
+		if (theBoard[cur_pos.first][cur_pos.second] == OBSTACLE_CHAR || (charOwner.count(cur_pos) && charOwner[cur_pos] == player)) {
+			continue;
+		} else {
+			return true;
+		}
+	}
+	return false;
+}
+	
+	
 void Board::downloadLink(Observer *player, char link_char) {
 	std::pair<int, int> pos = getIndex(link_char);
 	theBoard[pos.first][pos.second] = EMPTY_SQUARE_CHAR;
@@ -84,11 +113,9 @@ void Board::updateLink(char link_char, std::string direction) {
 	int move_col = col;
 	int move = charLinkMapping[link_char].get()->getMovePerStep();
 	if (direction == "up") {
-		move_row -= move;
-		if (move_row < 0) move_row = 0;
+		move_row = std::max(move_row - move, 0);
 	} else if (direction == "down") {
-		move_row += move;
-		if (move_row > height - 1) move_row = height - 1;
+		move_row = std::min(move_row + move, height - 1);
 	} else if (direction == "left") {
 		move_col -= move;
 	} else if (direction == "right") {
@@ -105,7 +132,7 @@ void Board::updateLink(char link_char, std::string direction) {
 	Observer *player = link->getPlayer();
 	char next_char = theBoard[move_row][move_col];
 	std::pair<int, int> next_pos = make_pair(move_row, move_col);
-	if (charOwner[next_pos] == player || next_char == OBSTACLE_CHAR) {
+	if ((charOwner.count(next_pos) && charOwner[next_pos] == player) || next_char == OBSTACLE_CHAR) {
         throw std::invalid_argument("Invalid move.");
     }
 	

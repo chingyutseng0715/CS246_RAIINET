@@ -94,12 +94,12 @@ PlayerID GameMode::runGame() {
         // Go through each player to check for a winner or eliminated player
         for (int i = 0; i < num_players; ++i) {
             // Return a player if they have downloaded 4 data
-            if (players[i]->getDownloadedDataAmount() >= DATA_DOWNLOADS_TO_WIN) {
+            if (players[i]->win()) {
                 players[i]->printPlayerView(cout);
                 return player_order[i];
             }
             // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
-            if (players[i]->getDownloadedVirusAmount() >= VIRUS_DOWNLOADS_TO_LOSE) {
+            if (players[i]->lose()) {
                 eliminated_players[i] = true;
 				board->eliminatePlayer(players[i].get());
                 --remaining_players;
@@ -131,7 +131,11 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
     while (true) {
 		try {
         	string line;
-
+			
+			if ((ability_used || current_player_ptr->getAbilityAmount() == 0) && !current_player_ptr->movable()) {
+				return true;
+			}
+			
             // If there are no sequence files to read from, read from standard input
         	if (sequence_file.empty()) {
             	getline(cin, line);

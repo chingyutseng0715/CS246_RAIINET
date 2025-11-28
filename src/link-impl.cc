@@ -52,5 +52,5 @@ void Link::printLink(std::ostream &os, bool secret) {
 	} else {
 		os << UNREVEALED_LINK_CHAR << " ";
 	}
-	os << '\t';
+	os << "  ";
 }

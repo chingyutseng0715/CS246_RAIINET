@@ -1,7 +1,7 @@
 module GameMode;
 
 using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, std::ifstream, 
-      std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, 
+      std::istringstream, std::ostringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, 
       std::invalid_argument, std::out_of_range;
 
 GameMode::GameMode(const ProcessedInput &input) : 
@@ -24,8 +24,51 @@ GameMode::GameMode(const ProcessedInput &input) :
                                                  input.ability_orders[i]));
         board->addPlayer(players[i].get(), input.link_orders[i]);
     }
+	
+	if (graphics_enabled) {
+		windows.emplace_back(make_shared<Xwindow>());
+	}
 }
 
+void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> player) {
+	ostringstream oss;
+	player->printPlayerView(oss);
+	istringstream iss{oss.str()};
+	window->clearWindow();
+	int y = 50;
+	bool isBoard = false;
+	while (true) {
+		string output = "";
+		getline(iss, output);
+		if (iss.fail()) {
+			break;
+		}
+		
+		
+		if (isBoard) {
+			for (size_t i = 0; i < output.length(); ++i) {
+				Link *link = board->getLink(output[i]);
+				if (link && (link->isRevealed() || link->getPlayer() == player.get())) {
+					if (link->isVirus()) {
+						window->fillRectangle(50 + i * 6, y - 10, 6, 10, Xwindow::Red);
+					} else {
+						window->fillRectangle(50 + i * 6, y - 10, 6, 10, Xwindow::Green);
+					}
+				}
+			}
+		}
+		window->drawString(50, y, output);
+		y += 15;
+		if (output[0] == HORIZONTAL_BORDER_CHAR) {
+			if (isBoard) {
+				isBoard = false;
+			} else {
+				isBoard = true;
+			}
+		} 
+	}
+}
+	
 void GameMode::operatingGame() {
     while (true) {
         PlayerID winner;
@@ -84,6 +127,9 @@ PlayerID GameMode::runGame() {
     while (true) {
         // Print the board at the start of every turn
         current_player_ptr->printPlayerView(cout);
+		if (graphics_enabled) {
+			refreshWindow(windows[0], current_player_ptr);
+		}
 
         // Conduct the current player's turn, and terminate the game with nobody winning upon EOF
         // on standard input or the 'quit' command
@@ -186,6 +232,9 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
             	current_player_ptr->usingAbility(ability_ID, ability_command);
             	ability_used = true;
 				current_player_ptr->printPlayerView(cout);
+				if (graphics_enabled) {
+					refreshWindow(windows[0], current_player_ptr);
+				}
             	continue;
 	
     	    } else if (cmd == "move") {

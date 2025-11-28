@@ -307,7 +307,7 @@ void Board::printBoard(std::ostream &os, Observer *player) {
 		for (int j = 0; j < width; ++j) {
 			os << theBoard[i][j];
 		}
-		os << '\n';
+		os << std::endl;
 	}
 	for (size_t i = 0; i < players.size(); ++i) {
 		if (players[i] != player) {

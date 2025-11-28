@@ -119,7 +119,6 @@ void Board::updateLink(char link_char, std::string direction) {
         }
 	}
 	
-<<<<<<< HEAD
 	if (next_char == SERVER_PORT_CHAR) {
 		downloadLink(charOwner[next_pos], link_char);
 	} else if (next_char == HORIZONTAL_BORDER_CHAR) {
@@ -136,12 +135,6 @@ void Board::updateLink(char link_char, std::string direction) {
         if (firewalls.count(pos)) {
             setFireWall(row, col, firewalls[pos]);
         }
-=======
-	theBoard[row][col] = EMPTY_SQUARE_CHAR;
-    charOwner.erase(pos);
-	if (firewalls.count(pos)) {
-		setFirewall(row, col, firewalls[pos]);
->>>>>>> c718a931ce26ce8a94d76dd2ceacbdff1eaf4608
 	}
 	
 	return;

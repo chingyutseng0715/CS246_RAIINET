@@ -249,6 +249,12 @@ void Board::eliminatePlayer(Observer *player) {
 			}
 		}
 	}
+	for (auto it = players.begin(); it != players.end(); ++it) {
+		if (*it == player) {
+			players.erase(it);
+			break;
+		}
+	}
 }
 					
 void Board::printBoard(std::ostream &os, Observer *player) {

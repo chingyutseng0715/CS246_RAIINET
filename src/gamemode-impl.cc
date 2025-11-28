@@ -101,6 +101,7 @@ PlayerID GameMode::runGame() {
             // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
             if (players[i]->getDownloadedVirusAmount() >= VIRUS_DOWNLOADS_TO_LOSE) {
                 eliminated_players[i] = true;
+				board->eliminatePlayer(players[i].get());
                 --remaining_players;
                 cout << "Player " << i + 1 << " has been eliminated!\n" << endl;
             }

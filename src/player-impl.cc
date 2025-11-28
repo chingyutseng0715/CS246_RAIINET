@@ -7,6 +7,7 @@ import <map>;
 import <vector>;
 import <stdexcept>;
 import <string>;
+import Constants;
 import Observer;
 import Board;
 import Link;
@@ -21,8 +22,8 @@ import Theft;
 import Obstacle;
 import HTVirus;
 
-Player::Player(std::string name, Board *board, std::string abilitychosen) : 
-	Observer{name}, downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, board{board} {
+Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, 
+	downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, lose{false}, win{false}, board{board} {
 	char input;
 	std::istringstream iss{abilitychosen};
 	while (iss >> input) {
@@ -37,6 +38,24 @@ int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
 int Player::getAbilityAmount() { return ability_amount; }
 
 Ability * Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
+
+bool Player::movable() {
+	for (Link *link: owned_links) {
+		if (!link->isDownloaded() && board->movable(link->getSymbol())) {
+			return true;
+		}
+	}
+	lose = true;
+	return false;
+}
+
+bool Player::isWin() {
+	return win;
+}
+
+bool Player::isLose() {
+	return lose;
+}
 
 void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);
@@ -65,6 +84,13 @@ void Player::download(char link_char) {
 		downloaded_data_amount += 1;
 	}
 	downloaded_links.emplace_back(link);
+	
+	if (downloaded_data_amount >= DATA_DOWNLOADS_TO_WIN) {
+		win = true;
+	}
+	if (downloaded_virus_amount >= VIRUS_DOWNLOADS_TO_LOSE) {
+		lose = true;
+	}
 }
 
 void Player::addLink(char link_char) {
@@ -116,7 +142,7 @@ char Player::removeAbility() {
 		}
 	}
 	if (ability == nullptr) {
-		throw std::invalid_argument("No ability cand be stolen.");
+		throw std::invalid_argument("No ability can be stolen.");
 	}
 	ability->markUsed();
 	ability_amount -= 1;
@@ -129,7 +155,7 @@ void Player::usingAbility(int ability_ID, std::string command) {
 		throw std::invalid_argument("Ability used.");
 	}
 	ability->operatingAbility(command);
-	--ability_amount;
+	ability_amount -= 1;
 }
 
 void Player::movingLink(std::string command) {
@@ -150,7 +176,6 @@ void Player::movingLink(std::string command) {
 void Player::displayAbility(std::ostream &os) {
 	for (size_t i = 0; i < abilities.size(); ++i) {
 		os << "(ID: " << i + 1 << ") " << abilities[i]->getName() << *getAbility(i + 1) << std::endl;
-		// os << "Ability " << i + 1 << ' ' << *getAbility(i + 1) << '\n';
 	}
 	os << std::endl;
 }

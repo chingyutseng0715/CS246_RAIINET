@@ -21,7 +21,7 @@ void Link::setStrength(int strength) { this->strength = strength; }
 
 void Link::setType(LinkType type) { this->type = type; }
 
-void Link::setMovePerStep(int move_per_step) { this->move_per_step = move_per_step; }
+void Link::Boost() { move_per_step += 1; }
 
 void Link::Reveal() { revealed = true; }
 

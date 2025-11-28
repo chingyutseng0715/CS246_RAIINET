@@ -24,6 +24,8 @@ export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
 	int ability_amount;
+	bool lose;
+	bool win;
 	Board *board;
 	std::vector<std::unique_ptr<Ability>> abilities;
 	std::vector<Link *> owned_links;
@@ -34,6 +36,9 @@ export class Player : public Observer {
 		int getDownloadedDataAmount();
 		int getAbilityAmount();
 		Ability * getAbility(int ability_id);
+		bool movable();
+		bool isWin();
+		bool isLose();
 		void download(char link_char) override;
 		void addLink(char link_char) override;
 		void addAbility(char ability_char) override;

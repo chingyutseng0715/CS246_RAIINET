@@ -1,21 +1,27 @@
 module GameMode;
 
-using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, std::ifstream, std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, std::invalid_argument, std::out_of_range;
+using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, std::ifstream, 
+      std::istringstream, std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared, 
+      std::invalid_argument, std::out_of_range;
 
 GameMode::GameMode(const ProcessedInput &input) : 
     num_players{input.num_players}, remaining_players{input.num_players},
     eliminated_players(input.num_players, false), graphics_enabled{input.graphics_enabled} {
     
+    // Create the board and assign the player order based on the number of players
     if (num_players == TWO_PLAYER_NUM) {
         board = make_unique<TwoPlayerBoard>();
         player_order.assign({PlayerID::Player1, PlayerID::Player2});
     } else if (num_players == FOUR_PLAYER_NUM) {
         board = make_unique<FourPlayerBoard>();
-        player_order.assign({PlayerID::Player1, PlayerID::Player2, PlayerID::Player3, PlayerID::Player4});
+        player_order.assign({PlayerID::Player1, PlayerID::Player2, 
+                             PlayerID::Player3, PlayerID::Player4});
     }
 
+    // Store each player and pass them to the board
 	for (int i = 0; i < num_players; ++i) {
-        players.emplace_back(make_shared<Player>(PLAYER_NAME_PREFIX + to_string(i + 1), board.get(), input.ability_orders[i]));
+        players.emplace_back(make_shared<Player>(PLAYER_NAME_PREFIX + to_string(i + 1), board.get(), 
+                                                 input.ability_orders[i]));
         board->addPlayer(players[i].get(), input.link_orders[i]);
     }
 }
@@ -67,7 +73,7 @@ void GameMode::displayGameOver(PlayerID winner) {
             break;
     }
     cout << winner_str << endl;
-    cout << ASCII_WINNER_MESSAGE_END << endl;
+    cout << ASCII_WINNER_MESSAGE_POSTFIX << endl;
 }
 
 PlayerID GameMode::runGame() {
@@ -76,6 +82,7 @@ PlayerID GameMode::runGame() {
     shared_ptr<Player> current_player_ptr = players[current_player_index];
 
     while (true) {
+        // Print the board at the start of every turn
         current_player_ptr->printPlayerView(cout);
 
         // Conduct the current player's turn, and terminate the game with nobody winning upon EOF
@@ -84,21 +91,26 @@ PlayerID GameMode::runGame() {
             return PlayerID::Nobody;
         }
 
+        // Go through each player to check for a winner or eliminated player
         for (int i = 0; i < num_players; ++i) {
+			if (eliminated_players[i]) {
+				continue;
+			}
             // Return a player if they have downloaded 4 data
-            if (players[i]->getDownloadedDataAmount() >= DATA_DOWNLOADS_TO_WIN) {
+            if (players[i]->isWin()) {
                 players[i]->printPlayerView(cout);
                 return player_order[i];
             }
             // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
-            if (players[i]->getDownloadedVirusAmount() >= VIRUS_DOWNLOADS_TO_LOSE) {
+            if (players[i]->isLose()) {
                 eliminated_players[i] = true;
+				board->eliminatePlayer(players[i].get());
                 --remaining_players;
                 cout << "Player " << i + 1 << " has been eliminated!\n" << endl;
             }
         }
 
-        // Check if all other players have lost, leaving the remaining player to win
+        // Check if all players but 1 have lost, leaving the remaining player to win
         if (remaining_players == 1) {
             for (int i = 0; i < num_players; ++i) {
                 if (!eliminated_players[i]) {
@@ -121,17 +133,21 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
 
     while (true) {
 		try {
-        	// Read a line from input
         	string line;
-       		
+			
+			if ((ability_used || current_player_ptr->getAbilityAmount() == 0) && !current_player_ptr->movable()) {
+				return true;
+			}
+			
+            // If there are no sequence files to read from, read from standard input
         	if (sequence_file.empty()) {
-            	getline(cin, line); // getline() doesn't return a bool
-        		if (cin.fail()) {
+            	getline(cin, line);
+        		if (cin.fail()) { // Terminate the game upon a failed read (i.e. EOF) from standard input
 					return false;
 				}
-			} else {
-           		getline(sequence_file.back(), line); // getline() doesn't return a bool
-        		if (sequence_file.back().fail()) {
+			} else { // Otherwise, read from the most current sequence file
+           		getline(sequence_file.back(), line);
+        		if (sequence_file.back().fail()) { // Pop back the current file if it is empty
             		sequence_file.pop_back();
             		continue;
         		}
@@ -152,26 +168,36 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
             	continue;
 	
     	    } else if (cmd == "ability") {
-        	    if (ability_used) throw invalid_argument("An ability has already been played this turn.");
+        	    if (ability_used) {
+                    throw invalid_argument("An ability has already been played this turn.");
+                }
             	int ability_ID;
     	        if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
         	        throw invalid_argument("Invalid ability ID.");
         	    }
             	string ability_command;
-        	    if (!getline(iss, ability_command)) throw invalid_argument("Ability command not provided.");
+        	    if (!getline(iss, ability_command)) {
+                    throw invalid_argument("Ability command not provided.");
+                }
             	current_player_ptr->usingAbility(ability_ID, ability_command);
             	ability_used = true;
             	continue;
 	
     	    } else if (cmd == "move") {
         	    string move_command;
-            	if (!getline(iss, move_command)) throw invalid_argument("Move command not provided.");
+            	if (!getline(iss, move_command)) {
+                    throw invalid_argument("Move command not provided.");
+                }
             	current_player_ptr->movingLink(move_command);
             	return true;
 	
     	    } else if (cmd == "sequence") {
-        	    string sequence_file_name = "";
-            	if (!(iss >> sequence_file_name)) throw invalid_argument("File name not provided.");
+        	    string sequence_file_name;
+            	if (!(iss >> sequence_file_name)) {
+                    throw invalid_argument("File name not provided.");
+                }
+
+                // Add the sequence file and remove it if it failed to open
 	            sequence_file.emplace_back(ifstream{sequence_file_name});
     	        if (!sequence_file.back()) {
 					sequence_file.pop_back();
@@ -187,11 +213,11 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
 
         	}
 		} catch (invalid_argument &e) {
-			cerr << e.what() << '\n';
+			cerr << e.what() << endl;
 		} catch (out_of_range &e) {
-			cerr << e.what() << '\n';
+			cerr << e.what() << endl;
 		} catch (...) {
-			cerr << "unknown error\n";
+			cerr << "Unknown error." << endl;
 		}
     }
 }

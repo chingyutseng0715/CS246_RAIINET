@@ -4,19 +4,22 @@ using std::string, std::to_string, std::stoi, std::move, std::invalid_argument, 
 
 ProcessedInput processCommands(int argc, char* argv[]) {
     ProcessedInput processed;
-    int player_count = TWO_PLAYER_NUM;
     int first_potential_command_pos = 1;
 
+    // Return a ProcessedInput with default options if no command-line arguments are provided
+    int player_count = TWO_PLAYER_NUM;
+    bool graphics_set = DEFAULT_GRAPHICS_SETTING;
     if (argc == 1) {
         return {player_count, vector<string>(player_count, DEFAULT_ABILITY_ORDER), 
-                vector<string>(player_count, DEFAULT_LINK_ORDER), false};
+                vector<string>(player_count, DEFAULT_LINK_ORDER), graphics_set};
     }
 
+    // Check if a flag indicating the number of player's was provided
     if (string(argv[1]) == "-players") {
         if (argc <= 2) throw invalid_argument("Player count not provided.");
         player_count = stoi(argv[2]);
         if (player_count != TWO_PLAYER_NUM && player_count != FOUR_PLAYER_NUM) {
-            throw invalid_argument("Must be either 2 players or 4 players.");
+            throw invalid_argument("Game must contain either 2 players or 4 players.");
         }
 
         first_potential_command_pos += 2;
@@ -26,14 +29,15 @@ ProcessedInput processCommands(int argc, char* argv[]) {
     vector<string> link_orders(player_count, DEFAULT_LINK_ORDER);
     vector<bool> ability_order_set(player_count, false);
     vector<bool> link_order_set(player_count, false);
-	bool graphics_set = false;
     
+    // Loop through each command-line argument
 	for (int i = first_potential_command_pos; i < argc; ++i) {
         bool ordering_command_provided = false;
 
         for (int j = 0; j < player_count; ++j) {
+            // Check if a flag indicating a player's abilities was provided
             if (string(argv[i]) == "-ability" + to_string(j + 1) && !ability_order_set[j]) {
-                if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
+                if (argc <= i + 1) throw invalid_argument("Ability ordering not provided.");
 
                 string ability_order = string(argv[i + 1]);
                 if (ability_order.length() != ABILITIES_PER_PLAYER) {
@@ -57,8 +61,9 @@ ProcessedInput processCommands(int argc, char* argv[]) {
                 break;
             }
 
+            // Check if a flag indicating a player's links was provided
             if (string(argv[i]) == "-link" + to_string(j + 1) && !link_order_set[j]) {
-                if (argc <= i + 1) throw invalid_argument("Ordering not provided.");
+                if (argc <= i + 1) throw invalid_argument("Link ordering not provided.");
 
                 string link_order = string(argv[i + 1]);
                 if (link_order.length() != LINK_SEQUENCE_LENGTH) {
@@ -88,8 +93,8 @@ ProcessedInput processCommands(int argc, char* argv[]) {
         
         if (ordering_command_provided) continue;
 
+        // Check if a flag indicating graphics to be enabled was provided
         if (string(argv[i]) == "-graphics" && !graphics_set) {
-			// Code to enable graphics to be added (maybe)
 			graphics_set = true;
             continue;
 		}

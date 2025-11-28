@@ -168,7 +168,6 @@ void Player::movingLink(std::string command) {
 void Player::displayAbility(std::ostream &os) {
 	for (size_t i = 0; i < abilities.size(); ++i) {
 		os << "(ID: " << i + 1 << ") " << abilities[i]->getName() << *getAbility(i + 1) << std::endl;
-		// os << "Ability " << i + 1 << ' ' << *getAbility(i + 1) << '\n';
 	}
 	os << std::endl;
 }

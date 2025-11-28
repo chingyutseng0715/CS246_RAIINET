@@ -185,6 +185,7 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
                 }
             	current_player_ptr->usingAbility(ability_ID, ability_command);
             	ability_used = true;
+				current_player_ptr->printPlayerView(cout);
             	continue;
 	
     	    } else if (cmd == "move") {

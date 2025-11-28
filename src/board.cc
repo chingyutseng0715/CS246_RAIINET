@@ -12,6 +12,7 @@ export class Board {
 	protected:
 		int height;
 		int width;
+		int obstacle_tick;
 		std::vector<Observer *> players;
 		std::vector<std::vector<char>> theBoard;
 		std::map<char, std::shared_ptr<Link>> charLinkMapping;

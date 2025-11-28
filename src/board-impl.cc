@@ -11,7 +11,7 @@ import Link;
 
 using std::make_pair;
 
-Board::Board(int height, int width): height{height}, width{width} {
+Board::Board(int height, int width): height{height}, width{width}, obstacle_tick{0} {
 	for (int i = 0; i < height; ++i) {
 		theBoard.emplace_back(std::vector<char>{});
 		for (int j = 0; j < width; ++j) {
@@ -141,7 +141,7 @@ void Board::updateLink(char link_char, std::string direction) {
             link->Reveal();
             if (link->isVirus()) {
                 downloadLink(player, link_char);
-				return;
+				next_char = EMPTY_SQUARE_CHAR; // this is just to avoid entering any following if
             }
         }
 	}
@@ -164,7 +164,18 @@ void Board::updateLink(char link_char, std::string direction) {
         }
 	}
 	
-	return;
+	if (obstacle_tick > 0) {
+		obstacle_tick -= 1;
+		if (obstacle_tick == 0) {
+			for (int i = 1; i < height - 1; ++i) {
+				for (int j = 0; j < width; ++j) {
+					if (theBoard[i][j] == OBSTACLE_CHAR) {
+						theBoard[i][j] = EMPTY_SQUARE_CHAR;
+					}
+				}
+			}
+		}
+	}
 }
 
 void Board::setFirewall(int row, int col, Observer *player) {
@@ -186,6 +197,10 @@ void Board::setFirewall(int row, int col, Observer *player) {
 }
 
 void Board::setObstacle(int row, int col, char direction) {
+	if (obstacle_tick != 0 ) {
+		throw std::invalid_argument("Only one obstacle can exist at once.");
+	}
+	
     std::vector<std::pair<int, int>> positions;
     positions.emplace_back(std::make_pair(row, col));
     
@@ -219,6 +234,8 @@ void Board::setObstacle(int row, int col, char direction) {
     for (auto [r,c] : positions) {
         theBoard[r][c] = OBSTACLE_CHAR;
     }
+	
+	obstacle_tick = 3 * players.size();
 }
 
 void Board::infectLink(char link_char, Observer *player) {

@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 Obstacle::Obstacle(Observer *owner, Board *board) : 
-	Ability{"Obstacle", "Input: <Row> <Col> <Dir> | Desc: Place a 3x1 wall, with the selected square as the center. All squares that the wall will occupy must be non-empty", owner, board} {}
+	Ability{"Obstacle", "Input: <Row> <Col> <Dir> | Desc: Place a 3x1 wall, with the selected square as the center. All squares that the wall will occupy must be non-empty and only one obstacle can exist at one time.", owner, board} {}
 
 void Obstacle::operatingAbility(std::string command) {
 	std::istringstream iss(command);

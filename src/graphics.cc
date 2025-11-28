@@ -10,7 +10,9 @@ export class Graphics {
     Window window_p1;
     Window window_p2;
     int screen;
-    void drawWindow(Window window, const std::string &output, bool is_player1);
+    void drawWindow(Window window, const std::string &board_output, const std::string &title, bool is_player1);
+    void fillRectangle(Window window, int x, int y, int width, int height, int colour);
+    void drawString(Window window, int x, int y, const std::string &msg);
 public:
     Graphics();
     ~Graphics();

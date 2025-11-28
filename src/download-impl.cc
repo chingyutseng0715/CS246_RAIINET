@@ -8,8 +8,8 @@ import Ability;
 import Board;
 import Link;
 
-Download::Download(Observer *owner, Board *board)
-    :Ability("Download", "Input: <Link> | Desc: Immediately download an opponent's link", owner, board){}
+Download::Download(Observer *owner, Board *board) : 
+    Ability("Download", "Input: <Enemy Link> | Desc: Immediately download an opponent's link", owner, board){}
 
 void Download::operatingAbility(std::string command){
     std::istringstream iss(command);
@@ -18,10 +18,10 @@ void Download::operatingAbility(std::string command){
     if (!(iss >> link_char)) {
 		throw std::invalid_argument("Invalid command for Download ability.");
 	}
-	
-	Link *link = board->getLink(link_char);
-    if (link->getPlayer() != player) {
-		board->downloadLink(player, link_char);
+
+    Link *link = board->getLink(link_char);
+    if (link->getPlayer() != player){
+        board->downloadLink(player, link_char);
         markUsed();
     } else {
         throw std::invalid_argument("Invalid use of Download ability.");

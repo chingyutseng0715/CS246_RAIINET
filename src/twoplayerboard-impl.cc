@@ -26,7 +26,7 @@ TwoPlayerBoard::TwoPlayerBoard(): Board{BOARD_HEIGHT, TWO_PLAYER_BOARD_WIDTH} {
     theBoard[height - 3][4] = 'E';
 }
 
-void TwoPlayerBoard::addPlayer(Observer *player, std::string linkorder) {
+void TwoPlayerBoard::addPlayer(Observer *player, std::string link_order) {
 	char start_char = 'a';
 	if (player->getName() == PLAYER1) {
 		start_char = 'a';
@@ -46,7 +46,7 @@ void TwoPlayerBoard::addPlayer(Observer *player, std::string linkorder) {
         charOwner[make_pair(height - 3, 4)] = player;
 	}
 	for (int i = 0; i < width; ++i) {
-		charLinkMapping[start_char + i] = std::make_shared<Link>(player, start_char + i, linkorder[2 * i], linkorder[2 * i + 1] - '0');
+		charLinkMapping[start_char + i] = std::make_shared<Link>(player, start_char + i, link_order[2 * i], link_order[2 * i + 1] - '0');
 		player->addLink(start_char + i);
 	}
 	players.emplace_back(player);

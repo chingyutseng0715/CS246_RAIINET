@@ -61,7 +61,7 @@ void Board::downloadLink(Observer *player, char link_char) {
 	player->download(link_char);
 }
 
-void Board::checkFireWall(int row, int col) {
+void Board::checkFirewall(int row, int col) {
 	std::pair<int, int> pos = make_pair(row, col);
 	if (firewalls.count(pos)) {
 		if (firewalls[pos] != charOwner[pos]) {
@@ -119,6 +119,7 @@ void Board::updateLink(char link_char, std::string direction) {
         }
 	}
 	
+<<<<<<< HEAD
 	if (next_char == SERVER_PORT_CHAR) {
 		downloadLink(charOwner[next_pos], link_char);
 	} else if (next_char == HORIZONTAL_BORDER_CHAR) {
@@ -135,12 +136,18 @@ void Board::updateLink(char link_char, std::string direction) {
         if (firewalls.count(pos)) {
             setFireWall(row, col, firewalls[pos]);
         }
+=======
+	theBoard[row][col] = EMPTY_SQUARE_CHAR;
+    charOwner.erase(pos);
+	if (firewalls.count(pos)) {
+		setFirewall(row, col, firewalls[pos]);
+>>>>>>> c718a931ce26ce8a94d76dd2ceacbdff1eaf4608
 	}
 	
 	return;
 }
 
-void Board::setFireWall(int row, int col, Observer *player) {
+void Board::setFirewall(int row, int col, Observer *player) {
 	if (row < 1 || row >= height - 1 || col < 0 || col >= width) {
 		throw std::out_of_range("The coordinate of the Firewall is invalid.");
 	} else if (theBoard[row][col] != EMPTY_SQUARE_CHAR) {
@@ -243,7 +250,7 @@ void Board::eliminatePlayer(Observer *player) {
 					if (firewalls[pos] == player) {
 						firewalls.erase(pos);
 					} else {
-						setFireWall(i, j, firewalls[pos]);
+						setFirewall(i, j, firewalls[pos]);
 					}
 				}
 			}

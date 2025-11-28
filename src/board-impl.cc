@@ -57,7 +57,7 @@ void Board::downloadLink(Observer *player, char link_char) {
 	player->download(link_char);
 }
 
-void Board::checkFireWall(int row, int col) {
+void Board::checkFirewall(int row, int col) {
 	std::pair<int, int> pos = make_pair(row, col);
 	if (firewalls.count(pos)) {
 		if (firewalls[pos] != charOwner[pos]) {
@@ -65,7 +65,7 @@ void Board::checkFireWall(int row, int col) {
 			if (link && link->isVirus()) {
 				link->getPlayer()->download(theBoard[row][col]);
 				theBoard[row][col] = EMPTY_SQUARE_CHAR;
-				setFireWall(row, col, firewalls[pos]);
+				setFirewall(row, col, firewalls[pos]);
 			}
 		}
 	}
@@ -151,11 +151,11 @@ void Board::updateLink(char link_char, std::string direction) {
 	theBoard[row][col] = EMPTY_SQUARE_CHAR;
     charOwner.erase(pos);
 	if (firewalls.count(pos)) {
-		setFireWall(row, col, firewalls[pos]);
+		setFirewall(row, col, firewalls[pos]);
 	}
 }
 
-void Board::setFireWall(int row, int col, Observer *player) {
+void Board::setFirewall(int row, int col, Observer *player) {
 	if (row < 1 || row >= height - 1 || col < 0 || col >= width) {
 		throw std::out_of_range("The coordinate of the Firewall is invalid.");
 	} else if (theBoard[row][col] != EMPTY_SQUARE_CHAR) {

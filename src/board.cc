@@ -23,11 +23,11 @@ export class Board {
 		std::pair<int, int> getIndex(char symbol);
 	public:
 		Board(int height, int width);
-		virtual void addPlayer(Observer *player, std::string linkorder) = 0;
+		virtual void addPlayer(Observer *player, std::string link_order) = 0;
 		void downloadLink(Observer *player, char link_char);
-		void checkFireWall(int row, int col);
+		void checkFirewall(int row, int col);
 		void updateLink(char link_char, std::string direction);
-		void setFireWall(int row, int col, Observer *player);
+		void setFirewall(int row, int col, Observer *player);
 		void infectLink(char link_char, Observer *player);
 		void setObstacle(int row, int col, char direction);
 		Link * getLink(char link_char);

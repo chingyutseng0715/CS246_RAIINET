@@ -259,7 +259,7 @@ void Board::eliminatePlayer(Observer *player) {
 					if (firewalls[pos] == player) {
 						firewalls.erase(pos);
 					} else {
-						setFireWall(i, j, firewalls[pos]);
+						setFirewall(i, j, firewalls[pos]);
 					}
 				}
 			}

@@ -22,8 +22,8 @@ import Theft;
 import Obstacle;
 import HTVirus;
 
-Player::Player(std::string name, Board *board, std::string abilitychosen) : 
-	Observer{name}, downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, board{board} {
+Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, 
+	downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, lose{false}, win{false}, board{board} {
 	char input;
 	std::istringstream iss{abilitychosen};
 	while (iss >> input) {
@@ -45,15 +45,16 @@ bool Player::movable() {
 			return true;
 		}
 	}
+	lose = true;
 	return false;
 }
 
-bool Player::win() {
-	return downloaded_data_amount >= DATA_DOWNLOADS_TO_WIN;
+bool Player::isWin() {
+	return win;
 }
 
-bool Player::lose() {
-	return downloaded_virus_amount >= VIRUS_DOWNLOADS_TO_LOSE || !movable();
+bool Player::isLose() {
+	return lose;
 }
 
 void Player::download(char link_char) {
@@ -83,6 +84,13 @@ void Player::download(char link_char) {
 		downloaded_data_amount += 1;
 	}
 	downloaded_links.emplace_back(link);
+	
+	if (downloaded_data_amount >= DATA_DOWNLOADS_TO_WIN) {
+		win = true;
+	}
+	if (downloaded_virus_amount >= VIRUS_DOWNLOADS_TO_LOSE) {
+		lose = true;
+	}
 }
 
 void Player::addLink(char link_char) {

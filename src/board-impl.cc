@@ -237,7 +237,6 @@ Link * Board::getLink(char link_char) {
 	if (charLinkMapping.count(link_char)) {
 		return charLinkMapping[link_char].get();
 	}
-	std::cout << charLinkMapping.count(link_char);
 	return nullptr;
 }
 

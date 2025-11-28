@@ -93,13 +93,16 @@ PlayerID GameMode::runGame() {
 
         // Go through each player to check for a winner or eliminated player
         for (int i = 0; i < num_players; ++i) {
+			if (eliminated_players[i]) {
+				continue;
+			}
             // Return a player if they have downloaded 4 data
-            if (players[i]->win()) {
+            if (players[i]->isWin()) {
                 players[i]->printPlayerView(cout);
                 return player_order[i];
             }
             // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
-            if (players[i]->lose()) {
+            if (players[i]->isLose()) {
                 eliminated_players[i] = true;
 				board->eliminatePlayer(players[i].get());
                 --remaining_players;

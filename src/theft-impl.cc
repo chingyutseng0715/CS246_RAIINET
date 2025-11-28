@@ -1,5 +1,6 @@
 module Theft;
 
+import <iostream>;
 import <string>;
 import <sstream>;
 import <stdexcept>;
@@ -31,7 +32,11 @@ void Theft::operatingAbility(std::string command) {
 		throw std::invalid_argument("You cannot steal from yourself.");
 	}
 	
-	char stolen_ability_char = opponent->removeAbility();
-	player->addAbility(stolen_ability_char);
+	try {
+		char stolen_ability_char = opponent->removeAbility();
+		player->addAbility(stolen_ability_char);
+	} catch (...) {
+		std::cerr << "No ability stolen. The ability is marked used\n";
+	}
 	markUsed();
 }

@@ -135,7 +135,11 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
 		try {
         	string line;
 			
-			if ((ability_used || current_player_ptr->getAbilityAmount() == 0) && !current_player_ptr->movable()) {
+			if (current_player_ptr->isWin() || current_player_ptr->isLose()) {
+				return true;
+			}
+			
+			if ((ability_used || current_player_ptr->getUsableAbilityAmount() == 0) && !current_player_ptr->movable()) {
 				return true;
 			}
 			

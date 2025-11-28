@@ -44,3 +44,5 @@ export const char PLAYER4_FIREWALL = 'w';
 export const char OBSTACLE_CHAR = '#';
 
 export const char DEFAULT_STEPS_PER_MOVE = 1;
+
+export const char NULL_ABILITY = '#';

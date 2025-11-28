@@ -34,6 +34,7 @@ export class Board {
 		void setObstacle(int row, int col, char direction);
 		Link * getLink(char link_char);
 		char getState(int row, int col);
+		int getObstacleTick();
 		Observer * getcharOwnership(int row, int col);
 		Observer * getPlayer(std::string name);
 		void eliminatePlayer(Observer *player);

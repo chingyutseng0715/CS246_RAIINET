@@ -208,7 +208,7 @@ void Player::movingLink(std::string command) {
 	if (link && link->getPlayer() == this) {
 		board->updateLink(link_char, direction);
 	} else {
-		throw std::invalid_argument("You cannot move a non-exist or other's link.");
+		throw std::invalid_argument("You cannot move a link that is non-exist or belongs to another player.");
 	}
 }
 

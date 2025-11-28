@@ -56,7 +56,7 @@ void Board::downloadLink(Observer *player, char link_char) {
 	theBoard[pos.first][pos.second] = EMPTY_SQUARE_CHAR;
 	charOwner.erase(pos);
 	if (firewalls.count(pos)) {
-		setFireWall(pos.first, pos.second, firewalls[pos]);
+		setFirewall(pos.first, pos.second, firewalls[pos]);
 	}
 	player->download(link_char);
 }
@@ -69,7 +69,7 @@ void Board::checkFirewall(int row, int col) {
 			link->Reveal();
 			if (link && link->isVirus()) {
 				downloadLink(link->getPlayer(), theBoard[row][col]);
-				setFireWall(row, col, firewalls[pos]);
+				setFirewall(row, col, firewalls[pos]);
 			}
 		}
 	}
@@ -133,7 +133,7 @@ void Board::updateLink(char link_char, std::string direction) {
         theBoard[row][col] = EMPTY_SQUARE_CHAR;
         charOwner.erase(pos);
         if (firewalls.count(pos)) {
-            setFireWall(row, col, firewalls[pos]);
+            setFirewall(row, col, firewalls[pos]);
         }
 	}
 	

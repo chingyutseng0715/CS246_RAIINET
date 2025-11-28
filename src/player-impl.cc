@@ -22,7 +22,7 @@ import Theft;
 import Obstacle;
 import HTVirus;
 
-Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name}, 
+Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name},
 	downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, lose{false}, win{false}, board{board} {
 	char input;
 	std::istringstream iss{abilitychosen};
@@ -47,6 +47,45 @@ bool Player::movable() {
 	}
 	lose = true;
 	return false;
+}
+
+int Player::getUsableAbilityAmount() {
+	int count = 0;
+	for (size_t i = 0; i < abilities.size(); ++i) {
+		Ability *ability = getAbility(i + 1);
+		if (ability->isUsed()) {
+			continue;
+		} 
+		switch (ability->getName()[0]) {
+        	case 'L':
+        	case 'P':
+        	case 'U':
+				for (Link *link: owned_links) {
+					if (!link->isDownloaded()) {
+						++count;
+						break;
+					}
+				}
+            	break;
+        	case 'O':
+            	if (board->getObstacleTick() == 0) {
+                	++count;
+            	}
+				break;
+        	case 'H':
+            	for (Link *link: owned_links) {
+                	if (link->isVirus() && !link->isDownloaded()) {
+                    	++count;
+                    	break;
+                	}
+            	}
+            	break;
+        	default:
+				++count;
+            	break;
+    	}
+	}
+	return count;
 }
 
 bool Player::isWin() {
@@ -142,7 +181,7 @@ char Player::removeAbility() {
 		}
 	}
 	if (ability == nullptr) {
-		throw std::invalid_argument("No ability can be stolen.");
+		return NULL_ABILITY;
 	}
 	ability->markUsed();
 	ability_amount -= 1;

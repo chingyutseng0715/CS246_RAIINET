@@ -37,6 +37,7 @@ export class Player : public Observer {
 		int getAbilityAmount();
 		Ability * getAbility(int ability_id);
 		bool movable();
+		int getUsableAbilityAmount();
 		bool isWin();
 		bool isLose();
 		void download(char link_char) override;

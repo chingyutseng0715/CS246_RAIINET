@@ -257,6 +257,8 @@ Link * Board::getLink(char link_char) {
 	return nullptr;
 }
 
+int Board::getObstacleTick() { return obstacle_tick; }
+
 char Board::getState(int row, int col) { return theBoard[row][col]; }
 
 Observer * Board::getcharOwnership(int row, int col) {

@@ -37,7 +37,13 @@ int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
 
 int Player::getAbilityAmount() { return ability_amount; }
 
-Ability * Player::getAbility(int ability_ID) { return abilities[ability_ID - 1].get(); }
+Ability * Player::getAbility(int ability_ID) { 
+	if (ability_ID >= 1 && ability_ID <= static_cast<int>(abilities.size())) {
+		return abilities[ability_ID - 1].get();
+	} else {
+		return nullptr;
+	}
+}
 
 bool Player::movable() {
 	for (Link *link: owned_links) {

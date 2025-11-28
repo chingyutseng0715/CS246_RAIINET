@@ -176,7 +176,7 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
                     throw invalid_argument("An ability has already been played this turn.");
                 }
             	int ability_ID;
-    	        if (!(iss >> ability_ID) || ability_ID < 1 || ability_ID > 5) {
+    	        if (!(iss >> ability_ID) || current_player_ptr->getAbility(ability_ID) == nullptr) {
         	        throw invalid_argument("Invalid ability ID.");
         	    }
             	string ability_command;

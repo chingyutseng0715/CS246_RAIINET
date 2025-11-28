@@ -129,7 +129,7 @@ void Player::usingAbility(int ability_ID, std::string command) {
 		throw std::invalid_argument("Ability used.");
 	}
 	ability->operatingAbility(command);
-	--ability_amount;
+	ability_amount -= 1;
 }
 
 void Player::movingLink(std::string command) {

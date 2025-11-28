@@ -15,4 +15,6 @@ export struct ProcessedInput {
     bool graphics_enabled;
 };
 
+// processCommands(argc, argv) Processes all command-line arguments and return them as a
+//   ProcessedInput. Use default values for options with flags not provided.
 export ProcessedInput processCommands(int argc, char *argv[]);

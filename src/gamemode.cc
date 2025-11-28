@@ -14,6 +14,7 @@ import FourPlayerBoard;
 import Board;
 import Player;
 
+// Constant (raw) strings, serving as ASCII art for the Menu and GameOver screens
 const std::string ASCII_TITLE = R"(
  ███████████     █████████   █████ █████                      █████   
 ░░███░░░░░███   ███░░░░░███ ░░███ ░░███                      ░░███    
@@ -85,7 +86,7 @@ const std::string ASCII_NOBODY = R"(
 ░██    ░███  ░███████  ░██░█████   ░███████   ░█████░██  ░█████░██ 
                                                                ░██ 
                                                          ░███████  )";
-const std::string ASCII_WINNER_MESSAGE_END = R"(
+const std::string ASCII_WINNER_MESSAGE_POSTFIX = R"(
                   ░██                      
                                            
 ░██    ░██    ░██ ░██░████████   ░███████  
@@ -120,16 +121,26 @@ export class GameMode {
 	int remaining_players;
 	std::vector<bool> eliminated_players;
 
-	bool using_file = false;
-	std::vector<std::ifstream> sequence_file; // Initialize the ifstream with {}
+	std::vector<std::ifstream> sequence_file;
 
 	bool graphics_enabled;
 
 	public:
+		// Constructor; takes input that's been pre-processed from the command line
 		GameMode(const ProcessedInput &input);
+		// Operate the different gameState
 		void operatingGame();
+
+		// displayMenu() Displays a basic Menu screen, starting the game once the player hits 'Enter'
 		void displayMenu();
+
+		// runGame() Runs the game of RAIInet and returns the winner's PlayerID when the game finishes
 		PlayerID runGame();
+
+		// displayGameOver(winner) Displays a basic GameOver screen that highlights the winner
 		void displayGameOver(PlayerID winner);
+
+		// conductPlayerTurn(current_player_ptr) Conducts a single turn for the player being pointed
+		//   to by current_player_ptr
 		bool conductPlayerTurn(std::shared_ptr<Player> current_player_ptr);
 };

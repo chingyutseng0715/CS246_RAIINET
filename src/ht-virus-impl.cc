@@ -8,7 +8,7 @@ import Board;
 import Link;
 
 HTVirus::HTVirus(Observer *owner, Board *board) : 
-	Ability{"Highly Transmissible Virus", "Input: <Link> | Desc: Choose to infect one of your viruses as highly transmissible. When the player downloads the infected virus, all of the previous data downloaded by the player will turn into viruses. If no data is found, one of the opponent's data on the board will become a virus. If neither works, no effect occurs", owner, board} {}
+	Ability{"Highly Transmissible Virus", "Input: <Owned Virus> | Desc: Choose to infect one of your viruses as highly transmissible. When the player downloads the infected virus, all of the previous data downloaded by the player will turn into viruses. If no data is found, one of the opponent's data on the board will become a virus. If neither works, no effect occurs", owner, board} {}
 
 void HTVirus::operatingAbility(std::string command) {
 	std::istringstream iss(command);

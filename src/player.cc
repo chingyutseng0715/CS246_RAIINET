@@ -19,6 +19,7 @@ import Upgrade;
 import Theft;
 import Obstacle;
 import HTVirus;
+import xwindow;
 
 export class Player : public Observer {
 	int downloaded_virus_amount;
@@ -26,12 +27,14 @@ export class Player : public Observer {
 	int ability_amount;
 	bool lose;
 	bool win;
+	bool graphic;
 	Board *board;
 	std::vector<std::unique_ptr<Ability>> abilities;
 	std::vector<Link *> owned_links;
 	std::vector<Link *> downloaded_links;
+	Xwindow window;
 	public:
-		Player(std::string name, Board *board, std::string abilitychosen = DEFAULT_ABILITY_ORDER);
+		Player(std::string name, Board *board, std::string abilitychosen = DEFAULT_ABILITY_ORDER, bool graphic = true);
 		int getDownloadedVirusAmount();
 		int getDownloadedDataAmount();
 		int getAbilityAmount();

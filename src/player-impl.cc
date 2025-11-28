@@ -22,8 +22,11 @@ import Theft;
 import Obstacle;
 import HTVirus;
 
-Player::Player(std::string name, Board *board, std::string abilitychosen) : Observer{name},
-	downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, lose{false}, win{false}, board{board} {
+Player::Player(std::string name, Board *board, std::string abilitychosen, bool graphic) : Observer{name},
+	downloaded_virus_amount{0}, downloaded_data_amount{0}, ability_amount{0}, lose{false}, win{false}, graphic{graphic}, board{board} {
+	if (!graphic) {
+		window.close();
+	}
 	char input;
 	std::istringstream iss{abilitychosen};
 	while (iss >> input) {
@@ -229,6 +232,27 @@ void Player::printPlayerView(std::ostream &os) {
 	printPlayer(os, false);
 	board->printBoard(os, this);
 	os << std::endl;
+	if (graphic) {
+		window.clearWindow();
+		std::ostringstream oss;
+		printPlayer(oss, false);
+    	board->printBoard(oss, this);
+    	oss << std::endl;
+		
+		std::istringstream iss{oss.str()};
+		int y = 50;
+		while (true) {
+			
+			std::string output = "";
+			std::getline(iss, output);
+			if (iss.fail()) {
+				break;
+			}
+			
+			window.drawString(50, y, output, Xwindow::Red);
+			y += 10;
+		}
+	}
 }
 
 void Player::printPlayer(std::ostream &os, bool hidden) {
@@ -242,5 +266,5 @@ void Player::printPlayer(std::ostream &os, bool hidden) {
     for (size_t i = owned_links.size() / 2; i < owned_links.size(); ++i) {
         owned_links[i]->printLink(os, hidden);
     }
-	os << '\n';
+	os << '\n';		
 }

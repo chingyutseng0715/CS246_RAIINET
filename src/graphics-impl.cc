@@ -65,7 +65,7 @@ Graphics::Graphics()
         BlackPixel(display, screen)  // This is the colour of the background
     );
 
-    // conver strings to XTextProperty which is the only type that XSetWMProperties receive - p1
+    // Convert strings to XTextProperty which is the only type that XSetWMProperties receive - p1
     XTextProperty window_name_p1, icon_name_p1;
     char window_name_str_p1[] = "Player 1";
     char icon_name_str_p1[] = "Player 1";
@@ -78,7 +78,7 @@ Graphics::Graphics()
     XSetWMProperties(display, window_p1, &window_name_p1, &icon_name_p1,
                      nullptr, 0, nullptr, nullptr, nullptr);
 
-    // conver strings to XTextProperty which is the only type that XSetWMProperties receive - p2
+    // Convert strings to XTextProperty which is the only type that XSetWMProperties receive - p2
     XTextProperty window_name_p2, icon_name_p2;
     char window_name_str_p2[] = "Player 2";
     char icon_name_str_p2[] = "Player 2";

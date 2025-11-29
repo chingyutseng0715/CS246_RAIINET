@@ -10,7 +10,7 @@ Link::Link(Observer *player, char symbol, char type, int strength, int move_per_
 	move_per_step{move_per_step}, revealed{false}, downloaded{false}, infected{false} {}
 
 std::strong_ordering Link::operator<=>(const Link &other) const {
-	if (strength < other.strength) {
+	if (strength < other.strength) { // Check if the strength of this link is less than other's
 		return std::strong_ordering::less;
 	} else {
 		return std::strong_ordering::greater;
@@ -47,9 +47,9 @@ bool Link::isDownloaded() { return downloaded; }
 
 void Link::printLink(std::ostream &os, bool secret) {
 	os << symbol << ": ";
-	if (revealed || !secret) {
+	if (revealed || !secret) { // Print the type & strength of the link if it's revealed or not a secret
 		os << static_cast<char>(type) << strength;
-	} else {
+	} else { // Otherwise, keep the link hidden
 		os << UNREVEALED_LINK_CHAR << " ";
 	}
 	os << "  ";

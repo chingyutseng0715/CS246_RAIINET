@@ -23,7 +23,7 @@ import HTVirus;
 export class Player : public Observer {
 	int downloaded_virus_amount;
     int downloaded_data_amount;
-	int ability_amount;
+	int ability_amount; // the remained unused ability amount
 	bool lose;
 	bool win;
 	Board *board;
@@ -33,12 +33,6 @@ export class Player : public Observer {
 	public:
 		// Constructor
 		Player(std::string name, Board *board, std::string abilitychosen = DEFAULT_ABILITY_ORDER);
-
-		// getDownloadedVirusAmount() return the downloaded_virus_amount
-		int getDownloadedVirusAmount();
-
-		// getDownloadedDataAmount() return the downloaded_data_amount
-		int getDownloadedDataAmount();
 
 		// getAbilityAmount() return the ability amount
 		int getAbilityAmount();

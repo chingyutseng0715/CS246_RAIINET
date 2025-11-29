@@ -26,10 +26,10 @@ GameMode::GameMode(const ProcessedInput &input) :
         board->addPlayer(players[i].get(), input.link_orders[i]);
     }
 	
-	if (graphics_enabled) {
+	if (graphics_enabled) { // flipped graphic contruction
 		windows.emplace_back(make_shared<Xwindow>());
 	}
-	if (graphic_bonus) {
+	if (graphic_bonus) { // all players graphic construction
 		for (int i = 0; i < num_players; ++i) {
 			windows.emplace_back(make_shared<Xwindow>());
 		}
@@ -39,36 +39,36 @@ GameMode::GameMode(const ProcessedInput &input) :
 void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> player) {
 	ostringstream oss;
 	player->printPlayerView(oss);
-	istringstream iss{oss.str()};
+	istringstream iss{oss.str()}; // record the output of the players' view
 	window->clearWindow();
-	int y = 50;
-	bool isBoard = false;
-	int width = window->getWidth();
-	int height = window->getHeight();
+	int y = 50; // the start y for the output
+	bool isBoard = false; // record if is now the board
+	int width = window->getWidth(); // width of the font
+	int height = window->getHeight(); // height of the font
 	while (true) {
 		string output = "";
 		getline(iss, output);
-		if (iss.fail()) {
+		if (iss.fail()) { // output to the windows until nothing read
 			break;
 		}
 		
 		
-		if (isBoard) {
+		if (isBoard) { // color the links that are revealed or belongs to the player
 			for (size_t i = 0; i < output.length(); ++i) {
 				Link *link = board->getLink(output[i]);
-				if (link && (link->isRevealed() || link->getPlayer() == player.get())) {
-					if (link->isVirus()) {
+				if (link && (link->isRevealed() || link->getPlayer() == player.get())) { // revealed or owned
+					if (link->isVirus()) { // colored virus red
 						window->fillRectangle(50 + i * width, y - height, width, height, Xwindow::Red);
-					} else {
+					} else { // colored data green
 						window->fillRectangle(50 + i * width, y - height, width, height, Xwindow::Green);
 					}
 				}
 			}
 		}
-		window->drawString(50, y, output);
-		y += height + 2;
-		if (output[0] == HORIZONTAL_BORDER_CHAR) {
-			if (isBoard) {
+		window->drawString(50, y, output); 
+		y += height + 2; // draw the string line by line
+		if (output[0] == HORIZONTAL_BORDER_CHAR) { // check the condition of between the board
+			if (isBoard) { // the border is the condition to check
 				isBoard = false;
 			} else {
 				isBoard = true;
@@ -78,12 +78,12 @@ void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> play
 }
 
 void GameMode::refreshPlayersWindow() {
-	if (graphics_enabled) {
+	if (graphics_enabled) { // if we enable both kinds of graphics, the index start with 1
 		for (size_t i = 1; i < windows.size(); ++i) {
-			if (eliminated_players[i - 1]) continue;
+			if (eliminated_players[i - 1]) continue; // skip the eliminated player since its window was closed
 			refreshWindow(windows[i], players[i - 1]);
 		}
-	} else {
+	} else { // no flipped graphic emplaced before players windows
 		for (size_t i = 0; i < windows.size(); ++i) {
 			if (eliminated_players[i]) continue;
 			refreshWindow(windows[i], players[i]);
@@ -94,7 +94,7 @@ void GameMode::refreshPlayersWindow() {
 void GameMode::operatingGame() {
     while (true) {
         PlayerID winner;
-        switch (game_state) {
+        switch (game_state) { // gameing state
             case GameState::Menu:
                 displayMenu();
                 game_state = GameState::GameRunning;
@@ -120,7 +120,7 @@ void GameMode::displayMenu() {
 
 void GameMode::displayGameOver(PlayerID winner) {
     string winner_str;
-    switch(winner) {
+    switch(winner) { // the winner output
         case PlayerID::Player1:
             winner_str = ASCII_PLAYER_ONE;
             break;
@@ -149,11 +149,11 @@ PlayerID GameMode::runGame() {
     while (true) {
         // Print the board at the start of every turn
 		current_player_ptr->printPlayerView(cout);
-		if (graphics_enabled) {
+		if (graphics_enabled) { // refresh the flipped graphics if enabled
 			refreshWindow(windows[0], current_player_ptr);
 		}
 		
-		if (graphic_bonus) {
+		if (graphic_bonus) { // refresh players window if enabled
 			refreshPlayersWindow();
 		}
         // Conduct the current player's turn, and terminate the game with nobody winning upon EOF
@@ -172,14 +172,14 @@ PlayerID GameMode::runGame() {
                 players[i]->printPlayerView(cout);
                 return player_order[i];
             }
-            // Remove a player from the game if they have downloaded 4 viruses (and thus lost)
+            // Remove a player from the game if they have downloaded 4 viruses or not movable (and thus lost)
             if (players[i]->isLose()) {
                 eliminated_players[i] = true;
 				board->eliminatePlayer(players[i].get());
                 --remaining_players;
-				if (graphic_bonus) {
+				if (graphic_bonus) { // if player window enabled, close its window
 					windows[i + graphics_enabled]->close();
-				}
+				} 
                 cout << "Player " << i + 1 << " has been eliminated!\n" << endl;
             }
         }
@@ -246,7 +246,7 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
             	continue;
 	
     	    } else if (cmd == "ability") {
-        	    if (ability_used) {
+        	    if (ability_used) { // disallow multiple play on ability
                     throw invalid_argument("An ability has already been played this turn.");
                 }
             	int ability_ID;
@@ -260,7 +260,7 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
             	current_player_ptr->usingAbility(ability_ID, ability_command);
             	ability_used = true;
 				current_player_ptr->printPlayerView(cout);
-				if (graphics_enabled) {
+				if (graphics_enabled) { /// refresh the windows after valid use of ability
 					refreshWindow(windows[0], current_player_ptr);
 				}
 				if (graphic_bonus) {
@@ -273,7 +273,7 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
             	if (!getline(iss, move_command)) {
                     throw invalid_argument("Move command not provided.");
                 }
-            	current_player_ptr->movingLink(move_command);
+            	current_player_ptr->movingLink(move_command); // we don't display here since it's the next turn
             	return true;
 	
     	    } else if (cmd == "sequence") {

@@ -15,9 +15,12 @@ export class Board {
 		int obstacle_tick;
 		std::vector<Observer *> players;
 		std::vector<std::vector<char>> theBoard;
+		// charLinkMapping maps the char to the Link with the char symbol
 		std::map<char, std::shared_ptr<Link>> charLinkMapping;
 		
+		// charOwner records who owns the box by coordinates (including links and ports and boarders)
 		std::map<std::pair<int, int>, Observer *> charOwner;
+		// firewalls records the player placed the firewalls by coordinates
 		std::map<std::pair<int, int>, Observer *> firewalls;
 		
 		// battle(link_char, other_link_char) conduct a battle between links with char link_char 
@@ -41,9 +44,6 @@ export class Board {
 		//   let the given player download it
 		void downloadLink(Observer *player, char link_char);
 
-		// checkFirewall(row, col) check if a firewall exists at the given row and col. If an
-		//   opponent's link is on it, reveal it. If it is a virus, make them download it
-		void checkFirewall(int row, int col);
 
 		// updateLink(link_char, direction) move the link with symbol link_char in the given direction
 		void updateLink(char link_char, std::string direction);
@@ -60,20 +60,14 @@ export class Board {
 		// getLink(link_char) return a Link * to the link with symbol link_char
 		Link * getLink(char link_char);
 
-		// getState(row, col) return the char on/state of the board at the given row and col
-		char getState(int row, int col);
-
 		// getObstacleTick() return obstacle_tick (to be used by the Obstacle ability)
 		int getObstacleTick();
-
-		// getcharOwnership(row, col)
-		Observer * getcharOwnership(int row, int col);
 
 		// getPlayer(name) return an Observer * to the player with the given name. If such a player
 		//   doesn't exist, return nullptr
 		Observer * getPlayer(std::string name);
 
-		// eliminatePlayer(player) remove the presence of player from the board
+		// eliminatePlayer(player) remove the presence of player from the board as well as its belongings
 		void eliminatePlayer(Observer *player);
 
 		// printBoard(os, player) print the board from the perspective of player to the ostream os

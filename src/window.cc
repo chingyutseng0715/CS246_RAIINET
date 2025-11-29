@@ -27,12 +27,16 @@ export class Xwindow {
 
   // Draws a string
   void drawString(int x, int y, std::string msg);
-
+  
+  // close the window
   void close();
 
+  // clear the output on the window
   void clearWindow();
   
+  // return the font height
   int getHeight();
+  // return the font width
   int getWidth();
 };
 

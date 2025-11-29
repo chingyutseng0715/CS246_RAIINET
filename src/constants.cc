@@ -43,6 +43,8 @@ export const char PLAYER3_FIREWALL = 'z';
 export const char PLAYER4_FIREWALL = 'w';
 export const char OBSTACLE_CHAR = '#';
 
+export const int OBSTACLE_ROUND = 3;
+
 export const char DEFAULT_STEPS_PER_MOVE = 1;
 
 export const char NULL_ABILITY = '#';

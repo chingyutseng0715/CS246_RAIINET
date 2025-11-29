@@ -22,7 +22,7 @@ Xwindow::Xwindow(int width, int height) {
   XSelectInput(d, w, ExposureMask | KeyPressMask);
   XMapRaised(d, w);
 
-  Pixmap pix = XCreatePixmap(d,w,width,
+  pix = XCreatePixmap(d,w,width,
         height,DefaultDepth(d,DefaultScreen(d)));
   gc = XCreateGC(d, pix, 0,(XGCValues *)0);
 
@@ -30,7 +30,7 @@ Xwindow::Xwindow(int width, int height) {
   XFlush(d);
   
   // Set up font
-  XFontStruct* font = XLoadQueryFont(d, "fixed");
+  font = XLoadQueryFont(d, "fixed");
   font_height = font->ascent + font->descent;
   font_width = font->max_bounds.width;
   XSetFont(d, gc, font->fid);
@@ -62,10 +62,10 @@ Xwindow::Xwindow(int width, int height) {
 }
 
 Xwindow::~Xwindow() {
-  if (!d) { // avoid double close if closed before
-    XFreeGC(d, gc);
-    XCloseDisplay(d);
-  }
+  XUnloadFont(d, font->fid);
+  XFreePixmap(d, pix);
+  XFreeGC(d, gc);
+  XCloseDisplay(d);
 }
 
 void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
@@ -76,11 +76,6 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
 
 void Xwindow::drawString(int x, int y, string msg) {
   XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
-}
-
-void Xwindow::close() { 
-  XFreeGC(d, gc);
-  XCloseDisplay(d);
 }
 
 void Xwindow::clearWindow() {

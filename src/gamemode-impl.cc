@@ -6,7 +6,8 @@ using std::string, std::cin, std::cout, std::cerr, std::endl, std::to_string, st
 
 GameMode::GameMode(const ProcessedInput &input) : 
     num_players{input.num_players}, remaining_players{input.num_players},
-    eliminated_players(input.num_players, false), graphics_enabled{input.graphics_enabled} {
+    eliminated_players(input.num_players, false), graphics_enabled{input.graphics_enabled}, 
+	graphic_bonus{input.graphic_bonus} {
     
     // Create the board and assign the player order based on the number of players
     if (num_players == TWO_PLAYER_NUM) {
@@ -28,6 +29,11 @@ GameMode::GameMode(const ProcessedInput &input) :
 	if (graphics_enabled) {
 		windows.emplace_back(make_shared<Xwindow>());
 	}
+	if (graphic_bonus) {
+		for (int i = 0; i < num_players; ++i) {
+			windows.emplace_back(make_shared<Xwindow>());
+		}
+	}
 }
 
 void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> player) {
@@ -37,6 +43,8 @@ void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> play
 	window->clearWindow();
 	int y = 50;
 	bool isBoard = false;
+	int width = window->getWidth();
+	int height = window->getHeight();
 	while (true) {
 		string output = "";
 		getline(iss, output);
@@ -50,15 +58,15 @@ void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> play
 				Link *link = board->getLink(output[i]);
 				if (link && (link->isRevealed() || link->getPlayer() == player.get())) {
 					if (link->isVirus()) {
-						window->fillRectangle(50 + i * 6, y - 10, 6, 10, Xwindow::Red);
+						window->fillRectangle(50 + i * width, y - height, width, height, Xwindow::Red);
 					} else {
-						window->fillRectangle(50 + i * 6, y - 10, 6, 10, Xwindow::Green);
+						window->fillRectangle(50 + i * width, y - height, width, height, Xwindow::Green);
 					}
 				}
 			}
 		}
 		window->drawString(50, y, output);
-		y += 15;
+		y += height + 2;
 		if (output[0] == HORIZONTAL_BORDER_CHAR) {
 			if (isBoard) {
 				isBoard = false;
@@ -68,7 +76,21 @@ void GameMode::refreshWindow(shared_ptr<Xwindow> window, shared_ptr<Player> play
 		} 
 	}
 }
-	
+
+void GameMode::refreshPlayersWindow() {
+	if (graphics_enabled) {
+		for (size_t i = 1; i < windows.size(); ++i) {
+			if (eliminated_players[i - 1]) continue;
+			refreshWindow(windows[i], players[i - 1]);
+		}
+	} else {
+		for (size_t i = 0; i < windows.size(); ++i) {
+			if (eliminated_players[i]) continue;
+			refreshWindow(windows[i], players[i]);
+		}
+	}
+}
+
 void GameMode::operatingGame() {
     while (true) {
         PlayerID winner;
@@ -126,11 +148,13 @@ PlayerID GameMode::runGame() {
 
     while (true) {
         // Print the board at the start of every turn
-        current_player_ptr->printPlayerView(cout);
 		if (graphics_enabled) {
 			refreshWindow(windows[0], current_player_ptr);
 		}
-
+		
+		if (graphic_bonus) {
+			refreshPlayersWindow();
+		}
         // Conduct the current player's turn, and terminate the game with nobody winning upon EOF
         // on standard input or the 'quit' command
         if (!conductPlayerTurn(current_player_ptr)) {
@@ -152,6 +176,9 @@ PlayerID GameMode::runGame() {
                 eliminated_players[i] = true;
 				board->eliminatePlayer(players[i].get());
                 --remaining_players;
+				if (graphic_bonus) {
+					windows[i + graphics_enabled]->close();
+				}
                 cout << "Player " << i + 1 << " has been eliminated!\n" << endl;
             }
         }
@@ -231,9 +258,11 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
                 }
             	current_player_ptr->usingAbility(ability_ID, ability_command);
             	ability_used = true;
-				current_player_ptr->printPlayerView(cout);
 				if (graphics_enabled) {
 					refreshWindow(windows[0], current_player_ptr);
+				}
+				if (graphic_bonus) {
+					refreshPlayersWindow();
 				}
             	continue;
 	

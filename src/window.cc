@@ -8,6 +8,8 @@ export class Xwindow {
   Display *d;
   Window w;
   int s;
+  int font_height;
+  int font_width;
   GC gc;
   unsigned long colours[10];
 
@@ -29,5 +31,8 @@ export class Xwindow {
   void close();
 
   void clearWindow();
+  
+  int getHeight();
+  int getWidth();
 };
 

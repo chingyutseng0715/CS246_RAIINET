@@ -31,10 +31,6 @@ Player::Player(std::string name, Board *board, std::string abilitychosen) : Obse
 	}
 }
 
-int Player::getDownloadedVirusAmount() { return downloaded_virus_amount; }
-
-int Player::getDownloadedDataAmount() { return downloaded_data_amount; }
-
 int Player::getAbilityAmount() { return ability_amount; }
 
 Ability * Player::getAbility(int ability_ID) { 
@@ -46,48 +42,48 @@ Ability * Player::getAbility(int ability_ID) {
 }
 
 bool Player::movable() {
-	for (Link *link: owned_links) {
+	for (Link *link: owned_links) { // if any link is movable, return true
 		if (!link->isDownloaded() && board->movable(link->getSymbol())) {
 			return true;
 		}
 	}
-	lose = true;
+	lose = true; // if no links are movable, the player loses
 	return false;
 }
 
 int Player::getUsableAbilityAmount() {
-	int count = 0;
+	int count = 0; // counts the ability that one player can use
 	for (size_t i = 0; i < abilities.size(); ++i) {
 		Ability *ability = getAbility(i + 1);
 		if (ability->isUsed()) {
 			continue;
 		} 
 		switch (ability->getName()[0]) {
-        	case 'L':
-        	case 'P':
-        	case 'U':
+        	case 'L': // Link-boost
+        	case 'P': // Polarize
+        	case 'U': // Upgrade
 				for (Link *link: owned_links) {
 					if (!link->isDownloaded()) {
-						++count;
+						++count; // can be used as long as you have a link on the board
 						break;
 					}
 				}
             	break;
-        	case 'O':
+        	case 'O': // Obstacle
             	if (board->getObstacleTick() == 0) {
-                	++count;
-            	}
+                	++count; // can be used only when there is no other obstacles placed
+            	} // it is really impossible to be unable to place it physically, thus no checking on this
 				break;
-        	case 'H':
+        	case 'H': // HTVirus
             	for (Link *link: owned_links) {
                 	if (link->isVirus() && !link->isDownloaded()) {
-                    	++count;
+                    	++count; // can used only when you have virus on the board
                     	break;
                 	}
             	}
             	break;
         	default:
-				++count;
+				++count; // other abilities can be used as long as the game keeps going
             	break;
     	}
 	}
@@ -105,17 +101,17 @@ bool Player::isLose() {
 void Player::download(char link_char) {
 	Link* link = board->getLink(link_char);
 	link->Download();
-	if (link->isInfected()) {
-		if (downloaded_data_amount == 0) {
+	if (link->isInfected()) { // the download process for a infected virus
+		if (downloaded_data_amount == 0) { // if no data downloaded
 			for (Link *owned_link : owned_links) {
 				if (!owned_link->isVirus() && !owned_link->isDownloaded()) {
-					owned_link->setType(LinkType::Virus);
+					owned_link->setType(LinkType::Virus); // change a data on the board to virus
 					break;
 				}
 			}
 		} else {
 			for (Link *downloaded_link: downloaded_links) {
-				if (!downloaded_link->isVirus()) {
+				if (!downloaded_link->isVirus()) { // change all the downloaded data to virus
 					downloaded_link->setType(LinkType::Virus);
 					downloaded_data_amount -= 1;
 					downloaded_virus_amount += 1;
@@ -131,10 +127,10 @@ void Player::download(char link_char) {
 	downloaded_links.emplace_back(link);
 	
 	if (downloaded_data_amount >= DATA_DOWNLOADS_TO_WIN) {
-		win = true;
+		win = true; // check the winning conditions
 	}
 	if (downloaded_virus_amount >= VIRUS_DOWNLOADS_TO_LOSE) {
-		lose = true;
+		lose = true; // check the losing conditions
 	}
 }
 
@@ -181,17 +177,17 @@ void Player::addAbility(char ability_char) {
 char Player::removeAbility() {
 	Ability *ability = nullptr;
 	for (size_t i = 0; i < abilities.size(); ++i) {
-		if (!abilities[i].get()->isUsed()) {
+		if (!abilities[i].get()->isUsed()) { // find the first unused ability
 			ability = abilities[i].get();
 			break;
 		}
 	}
 	if (ability == nullptr) {
-		return NULL_ABILITY;
+		return NULL_ABILITY; // if no unused ability, return a state represents nothing removed
 	}
-	ability->markUsed();
+	ability->markUsed(); // mark as used to represent removed
 	ability_amount -= 1;
-	return ability->getName()[0];
+	return ability->getName()[0]; // return the type of the ability
 }
 
 void Player::usingAbility(int ability_ID, std::string command) {
@@ -199,7 +195,7 @@ void Player::usingAbility(int ability_ID, std::string command) {
 	if (ability->isUsed()) {
 		throw std::invalid_argument("Ability used.");
 	}
-	ability->operatingAbility(command);
+	ability->operatingAbility(command); // use the ability
 	ability_amount -= 1;
 }
 
@@ -211,7 +207,7 @@ void Player::movingLink(std::string command) {
         throw std::invalid_argument("Invalid moving command.");
     }
 	Link *link = board->getLink(link_char);
-	if (link && link->getPlayer() == this) {
+	if (link && link->getPlayer() == this) { // check if the link exists and belongs to the player
 		board->updateLink(link_char, direction);
 	} else {
 		throw std::invalid_argument("You cannot move a link that is non-exist or belongs to another player.");

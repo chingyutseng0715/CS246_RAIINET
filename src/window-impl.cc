@@ -28,7 +28,8 @@ Xwindow::Xwindow(int width, int height) {
 
   XFlush(d);
   XFlush(d);
-
+  
+  // Set up font
   XFontStruct* font = XLoadQueryFont(d, "fixed");
   font_height = font->ascent + font->descent;
   font_width = font->max_bounds.width;
@@ -51,14 +52,8 @@ Xwindow::Xwindow(int width, int height) {
   // Make window non-resizeable.
   XSizeHints hints;
   hints.flags = (USPosition | PSize | PMinSize | PMaxSize );
-  hints.height = height;
-  hints.width = width;
-  hints.base_height = 0;
-  hints.min_height = height;
-  hints.base_width = 0;
-  hints.min_width = width;
-  hints.max_height = 50 * height;
-  hints.max_width = 50 * width;
+  hints.height = hints.base_height = hints.min_height = hints.max_height = height;
+  hints.width = hints.base_width = hints.min_width = hints.max_width = width;
   XSetNormalHints(d, w, &hints);
 
   XSynchronize(d,True);
@@ -67,7 +62,7 @@ Xwindow::Xwindow(int width, int height) {
 }
 
 Xwindow::~Xwindow() {
-  if (!d) {
+  if (!d) { // avoid double close if closed before
     XFreeGC(d, gc);
     XCloseDisplay(d);
   }

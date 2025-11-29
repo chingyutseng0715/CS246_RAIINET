@@ -12,7 +12,7 @@ Link::Link(Observer *player, char symbol, char type, int strength, int move_per_
 std::strong_ordering Link::operator<=>(const Link &other) const {
 	if (strength < other.strength) { // Check if the strength of this link is less than other's
 		return std::strong_ordering::less;
-	} else {
+	} else { // the left one is who initiate the battle and would win if strength are equal
 		return std::strong_ordering::greater;
 	}
 }

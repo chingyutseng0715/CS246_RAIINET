@@ -125,11 +125,13 @@ export class GameMode {
 
 	std::vector<std::ifstream> sequence_file;
 
-	bool graphics_enabled;
-	bool graphic_bonus;
+	bool graphics_enabled; // the flipped graphic enable or not
+	bool graphic_bonus; // all players windows enable or not
 	std::vector<std::shared_ptr<Xwindow>> windows;
 	
+	// refreshWindow(window, player) refreshes the flipped window
 	void refreshWindow(std::shared_ptr<Xwindow> window, std::shared_ptr<Player> player);
+	// refreshPlayersWindow() refreshes all players' windows
 	void refreshPlayersWindow();
 	public:
 		// Constructor; takes input that's been pre-processed from the command line

@@ -24,8 +24,7 @@ export class Board {
 		//   and other_link_char
 		void battle(char link_char, char other_link_char);
 
-		// battle(link_char, other_link_char) return the pair of coordinates for the link with 
-		//   char symbol
+		// getIndex(symbol) return the pair of coordinates for the link with char symbol
 		std::pair<int, int> getIndex(char symbol);
 	public:
 		// Constructor; create the Board given the height and width

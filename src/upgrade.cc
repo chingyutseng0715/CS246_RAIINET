@@ -22,3 +22,4 @@ export class Upgrade: public Ability {
 		// Throws: std::invalid_argument if command format is invalid or target is invalid
 		void operatingAbility(std::string command) override;
 };
+

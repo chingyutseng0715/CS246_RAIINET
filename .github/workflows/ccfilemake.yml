@@ -15,8 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up dependencies
-      run:
-          sudo apt-get update
-          sudo apt-get install -y libx11-dev
+      run: sudo apt-get install -y libx11-dev
     - name: check if the .cc compoiles
       run: make -C ./src

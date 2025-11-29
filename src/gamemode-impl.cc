@@ -148,6 +148,7 @@ PlayerID GameMode::runGame() {
 
     while (true) {
         // Print the board at the start of every turn
+		current_player_ptr->printPlayerView(cout);
 		if (graphics_enabled) {
 			refreshWindow(windows[0], current_player_ptr);
 		}
@@ -258,6 +259,7 @@ bool GameMode::conductPlayerTurn(shared_ptr<Player> current_player_ptr) {
                 }
             	current_player_ptr->usingAbility(ability_ID, ability_command);
             	ability_used = true;
+				current_player_ptr->printPlayerView(cout);
 				if (graphics_enabled) {
 					refreshWindow(windows[0], current_player_ptr);
 				}

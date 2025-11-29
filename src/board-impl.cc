@@ -283,6 +283,9 @@ void Board::eliminatePlayer(Observer *player) {
 		for (int j = 0; j < width; ++j) {
 			std::pair<int,int> pos = make_pair(i, j);
 			if ((charOwner.count(pos) && charOwner[pos] == player) || (firewalls.count(pos) && firewalls[pos] == player)) {
+				if (getLink(theBoard[i][j])) {
+					getLink(theBoard[i][j])->Download();
+				}
 				theBoard[i][j] = EMPTY_SQUARE_CHAR;
 				charOwner.erase(pos);
 				if (firewalls.count(pos)) {

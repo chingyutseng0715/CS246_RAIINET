@@ -10,7 +10,9 @@ export class Xwindow {
   int s;
   int font_height;
   int font_width;
+  Pixmap pix;
   GC gc;
+  XFontStruct* font;
   unsigned long colours[10];
 
  public:
@@ -27,9 +29,6 @@ export class Xwindow {
 
   // Draws a string
   void drawString(int x, int y, std::string msg);
-  
-  // close the window
-  void close();
 
   // clear the output on the window
   void clearWindow();

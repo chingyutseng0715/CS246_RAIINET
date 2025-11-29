@@ -177,9 +177,6 @@ PlayerID GameMode::runGame() {
                 eliminated_players[i] = true;
 				board->eliminatePlayer(players[i].get());
                 --remaining_players;
-				if (graphic_bonus) { // if player window enabled, close its window
-					windows[i + graphics_enabled]->close();
-				} 
                 cout << "Player " << i + 1 << " has been eliminated!\n" << endl;
             }
         }

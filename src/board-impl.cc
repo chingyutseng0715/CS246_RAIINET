@@ -29,11 +29,12 @@ void Board::battle(char link_char, char other_link_char) {
 	Link *other_link = getLink(other_link_char);
 	std::pair<int, int> next_pos = getIndex(other_link_char);
 	if (link && other_link) {
+		// Reveal both links
         link->Reveal();
         other_link->Reveal();
-        if (*link < *other_link) {
+        if (*link < *other_link) { // If other_link is stronger than link, let it's owner download link
             downloadLink(other_link->getPlayer(), link_char);
-        } else {
+        } else { // Otherwise, let the owner of link download other_link and update it's position
             downloadLink(link->getPlayer(), other_link_char);
 			charOwner[next_pos] = link->getPlayer();
 			theBoard[next_pos.first][next_pos.second] = link_char;
@@ -307,7 +308,7 @@ void Board::printBoard(std::ostream &os, Observer *player) {
 		for (int j = 0; j < width; ++j) {
 			os << theBoard[i][j];
 		}
-		os << '\n';
+		os << std::endl;
 	}
 	for (size_t i = 0; i < players.size(); ++i) {
 		if (players[i] != player) {

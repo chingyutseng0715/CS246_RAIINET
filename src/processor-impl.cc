@@ -9,6 +9,7 @@ ProcessedInput processCommands(int argc, char* argv[]) {
     // Return a ProcessedInput with default options if no command-line arguments are provided
     int player_count = TWO_PLAYER_NUM;
     bool graphics_set = DEFAULT_GRAPHICS_SETTING;
+	bool graphic_bonus_set = DEFAULT_GRAPHICS_SETTING;
     if (argc == 1) {
         return {player_count, vector<string>(player_count, DEFAULT_ABILITY_ORDER), 
                 vector<string>(player_count, DEFAULT_LINK_ORDER), graphics_set};
@@ -99,6 +100,11 @@ ProcessedInput processCommands(int argc, char* argv[]) {
             continue;
 		}
         
+		if (string(argv[i]) == "-graphicsbonus" && !graphic_bonus_set) {
+            graphic_bonus_set = true;
+            continue;
+        }
+		
         throw invalid_argument("Invalid command-line arguments.");
 	}
 
@@ -106,5 +112,6 @@ ProcessedInput processCommands(int argc, char* argv[]) {
     processed.ability_orders = move(ability_orders);
     processed.link_orders = move(link_orders);
     processed.graphics_enabled = graphics_set;
+	processed.graphic_bonus = graphic_bonus_set;
     return processed;
 }

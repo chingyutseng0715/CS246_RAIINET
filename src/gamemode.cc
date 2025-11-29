@@ -13,6 +13,8 @@ import TwoPlayerBoard;
 import FourPlayerBoard;
 import Board;
 import Player;
+import Link;
+import xwindow;
 
 // Constant (raw) strings, serving as ASCII art for the Menu and GameOver screens
 const std::string ASCII_TITLE = R"(
@@ -124,7 +126,11 @@ export class GameMode {
 	std::vector<std::ifstream> sequence_file;
 
 	bool graphics_enabled;
-
+	bool graphic_bonus;
+	std::vector<std::shared_ptr<Xwindow>> windows;
+	
+	void refreshWindow(std::shared_ptr<Xwindow> window, std::shared_ptr<Player> player);
+	void refreshPlayersWindow();
 	public:
 		// Constructor; takes input that's been pre-processed from the command line
 		GameMode(const ProcessedInput &input);

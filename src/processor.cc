@@ -13,6 +13,7 @@ export struct ProcessedInput {
     std::vector<std::string> ability_orders;
     std::vector<std::string> link_orders;
     bool graphics_enabled;
+	bool graphic_bonus;
 };
 
 // processCommands(argc, argv) Processes all command-line arguments and return them as a

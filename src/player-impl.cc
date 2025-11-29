@@ -232,15 +232,15 @@ void Player::printPlayerView(std::ostream &os) {
 }
 
 void Player::printPlayer(std::ostream &os, bool hidden) {
-	os << name << ":\n";
-    os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V\n";
-    os << "Abilities: " << ability_amount << '\n';
+	os << name << ":" << std::endl;
+    os << "Downloaded: " << downloaded_data_amount << "D, " << downloaded_virus_amount << "V" << std::endl;
+    os << "Abilities: " << ability_amount << std::endl;
     for (size_t i = 0; i < owned_links.size() / 2; ++i) {
         owned_links[i]->printLink(os, hidden);
     }
-    os << '\n';
+    os << std::endl;
     for (size_t i = owned_links.size() / 2; i < owned_links.size(); ++i) {
         owned_links[i]->printLink(os, hidden);
     }
-	os << '\n';
+	os << std::endl;		
 }

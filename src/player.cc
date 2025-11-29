@@ -72,7 +72,7 @@ export class Player : public Observer {
 		// removeAbility() remove the first unused ability and return it's ability character
 		char removeAbility() override;
 
-		// usingAbility(ability_id, command) use the ability with the given ability_id and \
+		// usingAbility(ability_id, command) use the ability with the given ability_id and 
 		//   coresponding command
 		void usingAbility(int ability_id, std::string command);
 

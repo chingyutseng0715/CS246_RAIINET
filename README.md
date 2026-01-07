@@ -21,7 +21,7 @@ This is our CS246 project, aiming to build a board game(RAIINET), using CS246's 
 
 ### Prerequisites
 
-* List any software, tools, or libraries needed before installation (e.g., Python, Node.js, etc.)
+* C++20, g++-14 compiler, Linux with X11 graphics enabled
 
 ### Steps
 
@@ -53,17 +53,28 @@ This is our CS246 project, aiming to build a board game(RAIINET), using CS246's 
 
 ## Usage
 
-Provide examples of how to use the project once it's installed.
+The following are the command used to operate the game.
 
+### Command line
+Use the following command
 ```bash
-# Example of command line usage:
-python app.py --option value
+./RAIInet <arguments>
 ```
+The followings are the rules for arguments
+* ```-players <N>``` specifies the number of players. <N> is the number of players which can be either 2 or 4. If not specified, the default players would be 2.
 
-Or, if your project has a web interface:
+* ```-ability1 <ABILITYSTRING>``` specifies the abilities for player 1 (this is a list of the 5 abilities player 1 will use). If not specified, use the default set of abilities (Link boost, Firewall, Download, Scan, Polarize in that order). The abilities are given by a string consisting of the first letter of each ability. The available letters are given here.
 
-1. Open a browser and navigate to `http://localhost:8000` (or the appropriate URL).
-2. Login with credentials or follow the instructions for usage.
+* ```-ability2 <ABILITYSTRING>``` is as above but for the second player. 
+
+* ```-link1``` specifies the order of links player 1 receives. The string should list what each link a, b, ..., h should be. For example, the example board in the display section can be made with-p1order V1D4V3V2D3V4D2D1. If this argument is not specified, your program should use the ordering V1V2V3V4D1D2D3D4. •
+
+* ```-link2``` is as above but for the second player. 
+
+* ```-graphics``` should enable your graphical interface.
+
+
+### Stardard input
 
 ---
 
